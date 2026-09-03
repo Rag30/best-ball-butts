@@ -1,0 +1,575 @@
+import json
+
+"""Render data/derived/seasons.json -> docs/index.html (served by GitHub Pages)."""
+from pathlib import Path
+ROOT = Path(__file__).resolve().parent.parent
+data = json.load(open(ROOT / "data" / "derived" / "seasons.json"))
+data_json = json.dumps(data)
+OUT_PATH = ROOT / "docs" / "index.html"
+
+html = """<title>Best Ball Butts</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+  --bg: #f5f1e9;
+  --surface: #ffffff;
+  --surface-2: #ece4d6;
+  --ink: #241f16;
+  --ink-dim: #756a58;
+  --accent: #b8791e;
+  --accent-strong: #96611a;
+  --accent-ink: #fffaf0;
+  --border: #ddd2bd;
+  --unlucky: #b3413c;
+  --unlucky-bg: rgba(179,65,60,0.10);
+  --unlucky-bar: #c15650;
+  --lucky: #2f7a4f;
+  --lucky-bg: rgba(47,122,79,0.10);
+  --lucky-bar: #3d8f61;
+  --gold: #a3781a;
+  --gold-bg: rgba(163,120,26,0.12);
+  --shadow: 0 1px 2px rgba(36,31,22,0.06), 0 8px 24px -12px rgba(36,31,22,0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17130d; --surface: #221c14; --surface-2: #2b2318;
+    --ink: #f2e9d8; --ink-dim: #a89880;
+    --accent: #dba54a; --accent-strong: #f0bd66; --accent-ink: #201705;
+    --border: #3a3020;
+    --unlucky: #e2857e; --unlucky-bg: rgba(226,133,126,0.14); --unlucky-bar: #c1594f;
+    --lucky: #7fce9f; --lucky-bg: rgba(127,206,159,0.14); --lucky-bar: #3d8f61;
+    --gold: #e8c065; --gold-bg: rgba(232,192,101,0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 28px -12px rgba(0,0,0,0.5);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17130d; --surface: #221c14; --surface-2: #2b2318;
+  --ink: #f2e9d8; --ink-dim: #a89880;
+  --accent: #dba54a; --accent-strong: #f0bd66; --accent-ink: #201705;
+  --border: #3a3020;
+  --unlucky: #e2857e; --unlucky-bg: rgba(226,133,126,0.14); --unlucky-bar: #c1594f;
+  --lucky: #7fce9f; --lucky-bg: rgba(127,206,159,0.14); --lucky-bar: #3d8f61;
+  --gold: #e8c065; --gold-bg: rgba(232,192,101,0.14);
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 28px -12px rgba(0,0,0,0.5);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; padding: 28px 20px 80px; }
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+.masthead { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  border-bottom: 3px solid var(--ink); padding-bottom: 14px; margin-bottom: 6px; }
+.masthead h1 { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: clamp(32px, 5.5vw, 52px);
+  letter-spacing: 0.5px; margin: 0; line-height: 0.9; text-wrap: balance; }
+.masthead .sub { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--accent-strong); }
+.meta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--ink-dim); font-size: 13px; margin: 10px 0 22px; }
+.live-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 100px; padding: 4px 10px 4px 8px; font-weight: 600; color: var(--ink); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lucky); animation: pulse 2s infinite; }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(47,122,79,0.45); } 70% { box-shadow: 0 0 0 6px rgba(47,122,79,0); } 100% { box-shadow: 0 0 0 0 rgba(47,122,79,0); } }
+
+.season-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.season-btn { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.5px;
+  background: var(--surface); border: 1px solid var(--border); color: var(--ink-dim); padding: 9px 20px; border-radius: 10px;
+  cursor: pointer; box-shadow: var(--shadow); }
+.season-btn:hover { color: var(--ink); }
+.season-btn.active { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--border); margin-bottom: 22px; overflow-x: auto; }
+.tab-btn { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 15.5px; letter-spacing: 0.3px;
+  background: none; border: none; color: var(--ink-dim); padding: 9px 14px 11px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--accent); }
+.tab-btn:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.season-panel { display: none; }
+.season-panel.active { display: block; }
+.panel { display: none; }
+.panel.active { display: block; }
+.subtabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+.subtab-btn { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12.5px; background: var(--surface); border: 1px solid var(--border);
+  color: var(--ink-dim); padding: 6px 14px; border-radius: 100px; cursor: pointer; }
+.subtab-btn:hover { color: var(--ink); }
+.subtab-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.subpanel { display: none; }
+.subpanel.active { display: block; }
+
+.section-title { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 21px; margin: 0 0 4px; }
+.section-desc { color: var(--ink-dim); font-size: 13.5px; max-width: 68ch; margin: 0 0 16px; line-height: 1.5; }
+
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 14px; margin-bottom: 26px; }
+.verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.verdict-card .label { font-family: 'Big Shoulders Display', sans-serif; text-transform: uppercase; letter-spacing: 1.5px;
+  font-size: 11.5px; color: var(--ink-dim); font-weight: 700; margin-bottom: 9px; }
+.verdict-line { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 4px 0; font-size: 14px; }
+.verdict-line b { font-weight: 700; }
+.verdict-line .tag { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
+.tag-unlucky { color: var(--unlucky); background: var(--unlucky-bg); }
+.tag-lucky { color: var(--lucky); background: var(--lucky-bg); }
+.tag-gold { color: var(--gold); background: var(--gold-bg); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(205px,1fr)); gap: 10px; margin-bottom: 26px; }
+.mcard { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; box-shadow: var(--shadow); }
+.mcard .name-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.mcard .name { font-weight: 700; font-size: 15px; }
+.mcard .rank { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-dim); }
+.mcard .big { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 600; }
+.mcard .cap { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
+.mcard .split { display: flex; gap: 10px; margin-top: 10px; font-size: 11.5px; }
+.mcard .split span { display: flex; align-items: center; gap: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); background: var(--surface); margin-bottom: 28px; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+th, td { padding: 7px 9px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--border); }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); font-weight: 600; z-index: 1; }
+td:first-child { box-shadow: 1px 0 0 var(--border); }
+tbody tr:hover td:first-child { background: var(--surface-2); }
+thead th { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; letter-spacing: 0.5px; font-size: 12.5px; color: var(--ink-dim);
+  background: var(--surface-2); position: sticky; top: 0; z-index: 2; }
+thead th:first-child { z-index: 3; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--surface-2); }
+td, th { font-variant-numeric: tabular-nums; font-family: 'IBM Plex Mono', monospace; }
+td:first-child, th:first-child { font-family: 'Inter', sans-serif; }
+
+.score-margin { font-size: 10.5px; font-weight: 600; margin-left: 3px; opacity: 0.85; }
+.sep { color: var(--ink-dim); opacity: 0.6; margin: 0 1px; }
+[data-tip] { cursor: help; }
+table.compact thead th { text-align: left; }
+#tip { position: fixed; z-index: 1000; pointer-events: none; display: none; background: var(--ink); color: var(--bg);
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; padding: 6px 9px; border-radius: 6px;
+  box-shadow: var(--shadow); white-space: nowrap; }
+#tip.show { display: block; }
+.cell-opp { display: block; font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 600; margin-top: 2px; line-height: 1.1; }
+table.compact { font-size: 11px; }
+table.compact th, table.compact td { padding: 5px 6px; }
+
+.card-subhead { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.3px;
+  color: var(--ink); background: var(--surface-2); padding: 9px 12px; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); }
+.card-subhead:first-child { border-top: none; }
+.card-subhead span { display: block; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 11.5px; letter-spacing: 0; color: var(--ink-dim); margin-top: 2px; text-transform: none; }
+
+.bar-cell { position: relative; min-width: 66px; text-align: center; }
+.bar-track { position: relative; height: 19px; display: flex; align-items: center; justify-content: center; }
+table.grid-table thead th:not(:first-child) { text-align: center; }
+.bar-fill { position: absolute; top: 2px; bottom: 2px; border-radius: 3px; }
+.bar-val { position: relative; z-index: 1; font-size: 11px; font-weight: 600; padding: 0 5px; }
+
+.legend { display: flex; gap: 18px; align-items: center; font-size: 12px; color: var(--ink-dim); margin: -6px 0 16px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+.pill { display: inline-block; padding: 1px 7px; border-radius: 100px; font-size: 10.5px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+.pill-w { background: var(--lucky-bg); color: var(--lucky); }
+.pill-l { background: var(--unlucky-bg); color: var(--unlucky); }
+.pill-gold { background: var(--gold-bg); color: var(--gold); }
+
+.report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 18px 20px; margin-bottom: 16px; }
+.report-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.report-head .wk { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 22px; }
+.report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 10px 18px; }
+.rstat { }
+.rstat .k { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-dim); font-weight: 700; margin-bottom: 3px; }
+.rstat .v { font-size: 14px; }
+.rstat .v b { font-weight: 700; }
+.rstat .num { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+.standings-mini { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.standings-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 100px; padding: 3px 9px; font-size: 11.5px; }
+.standings-chip .r { font-family: 'IBM Plex Mono', monospace; color: var(--ink-dim); }
+.chg-up { color: var(--lucky); } .chg-down { color: var(--unlucky); }
+
+.empty-state { background: var(--surface); border: 1px dashed var(--border); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--ink-dim); }
+.empty-state .big { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 28px; color: var(--ink); margin-bottom: 8px; }
+.roster-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+.roster-chips span { background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; padding: 5px 14px; font-size: 13px; font-weight: 600; }
+
+.foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--ink-dim); font-size: 12px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <div>
+      <div class="sub">The Unluckiness Index&trade; &amp; League Archive</div>
+      <h1>Best Ball Butts</h1>
+    </div>
+  </div>
+  <div class="meta-row">
+    <span class="live-badge"><span class="live-dot"></span> Pulled from Sleeper API</span>
+    <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
+  </div>
+
+  <div class="season-tabs" id="seasonTabs">
+    <button class="season-btn active" data-season="career">Career</button>
+  </div>
+
+  <div class="season-panel active" id="season-career"></div>
+  <div id="seasonPanels"></div>
+
+  <div class="foot">
+    <span>Built with data from the Sleeper API for league <strong>Best Ball Butts</strong>.</span>
+  </div>
+</div>
+
+<script>
+const DATA = __DATA_JSON__;
+
+function fmt(n, digits=1) {
+  if (n === null || n === undefined) return '—';
+  const s = n.toFixed(digits);
+  return (n > 0 ? '+' : '') + s;
+}
+function fmt0(n, digits=2) {
+  if (n === null || n === undefined) return '—';
+  return n.toFixed(digits);
+}
+
+/* ---------------- CAREER PANEL ---------------- */
+function renderCareer() {
+  const el = document.getElementById('season-career');
+  const list = DATA.career;
+  let html = `<div class="section-title">All-Time Standings</div>
+  <div class="table-scroll"><table><thead><tr>
+    <th>#</th><th style="text-align:left">Manager</th><th>Seasons</th><th>W</th><th>L</th><th>Points For</th>
+    <th>Median W</th><th>Median L</th><th>Titles</th>
+  </tr></thead><tbody>`;
+  list.forEach((c,i) => {
+    html += `<tr><td>${i+1}</td><td style="text-align:left">${c.name}</td><td>${c.seasons}</td>
+      <td><span class="pill pill-w">${c.wins}W</span></td><td><span class="pill pill-l">${c.losses}L</span></td>
+      <td>${fmt0(c.pf)}</td><td>${c.medianWins}</td><td>${c.medianLosses}</td>
+      <td>${c.championships > 0 ? `<span class="pill pill-gold">${'🏆'.repeat(c.championships)}</span>` : '—'}</td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+
+  html += `<div class="section-title">Championship History</div>
+  <div class="table-scroll"><table><thead><tr><th style="text-align:left">Season</th><th style="text-align:left">Champion</th><th style="text-align:left">Runner-up</th><th style="text-align:left">3rd Place</th></tr></thead><tbody>`;
+  Object.keys(DATA.seasons).sort().forEach(yr => {
+    const s = DATA.seasons[yr];
+    if (!s || !s.standings) return;
+    const champ = s.standings.find(x => x.playoffResult === 'Champion');
+    const runner = s.standings.find(x => x.playoffResult === 'Runner-up');
+    const third = s.standings.find(x => x.playoffResult === '3rd Place');
+    html += `<tr><td>${yr}</td><td style="text-align:left">🏆 ${champ ? champ.name : '—'}</td><td style="text-align:left">${runner ? runner.name : '—'}</td><td style="text-align:left">${third ? third.name : '—'}</td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  el.innerHTML = html;
+}
+
+/* ---------------- STANDINGS + SCORES ---------------- */
+function renderStandings(season, prefix) {
+  let html = `<div class="section-title">Head-to-Head Standings</div>
+  <div class="section-desc">Regular-season record, points, and how the playoffs actually shook out.</div>
+  <div class="table-scroll"><table><thead><tr>
+    <th>#</th><th style="text-align:left">Manager</th><th>W</th><th>L</th><th>Points For</th><th>Points Against</th><th>Avg / Wk</th><th>Std Dev</th><th style="text-align:left">Playoffs</th>
+  </tr></thead><tbody>`;
+  season.standings.forEach((s, i) => {
+    const badge = s.playoffResult === 'Champion' ? '<span class="pill pill-gold">🏆 Champion</span>'
+      : s.playoffResult && s.playoffResult !== '—' ? `<span class="pill">${s.playoffResult}</span>` : '—';
+    html += `<tr><td>${i+1}</td><td style="text-align:left">${s.name}</td>
+      <td><span class="pill pill-w">${s.wins}W</span></td><td><span class="pill pill-l">${s.losses}L</span></td>
+      <td>${fmt0(s.pf)}</td><td>${fmt0(s.pa)}</td><td>${fmt0(s.avg)}</td><td>${fmt0(s.sd)}</td><td style="text-align:left">${badge}</td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+
+  html += `<div class="section-title">League Median Standings</div>
+  <div class="section-desc">Each week counts twice: once for your head-to-head result, once for whether you beat the league median score.</div>
+  <div class="table-scroll"><table><thead><tr><th>#</th><th style="text-align:left">Manager</th><th>W</th><th>L</th></tr></thead><tbody>`;
+  season.medianStandings.forEach((s,i) => {
+    html += `<tr><td>${i+1}</td><td style="text-align:left">${s.name}</td><td><span class="pill pill-w">${s.wins}W</span></td><td><span class="pill pill-l">${s.losses}L</span></td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+
+  html += `<div class="section-title">Weekly Scores, Margin &amp; Schedule</div>
+  <div class="section-desc">Each cell: score / points against (winner in bold), with the opponent and result underneath. Hover for the margin; hover the totals for averages.</div>
+  <div class="table-scroll">
+    <table class="compact"><thead><tr><th style="text-align:left">Manager</th>`;
+  season.weeks.forEach(w => html += `<th>Wk ${w}</th>`);
+  html += `<th>Total PF</th><th>Total PA</th></tr></thead><tbody>`;
+  season.managers.forEach(m => {
+    const scoreArr = season.scores[m];
+    const paArr = season.oppScores[m];
+    const marginArr = season.margin[m];
+    const totalPF = scoreArr.reduce((a,b)=>a+b,0);
+    const totalPA = paArr.reduce((a,b)=>a+b,0);
+    html += `<tr><td>${m}</td>` + scoreArr.map((v,i) => {
+      const pa = paArr[i];
+      const mg = marginArr[i];
+      const opp = season.opponents[m][i];
+      const res = season.results[m][i];
+      const resCls = res === 'W' ? 'lucky' : res === 'L' ? 'unlucky' : 'ink-dim';
+      const myScore = res === 'W' ? `<b>${v.toFixed(1)}</b>` : v.toFixed(1);
+      const theirScore = res === 'L' ? `<b>${pa.toFixed(1)}</b>` : pa.toFixed(1);
+      return `<td style="text-align:left" data-tip="Margin ${fmt(mg)} vs ${opp}">${myScore}<span class="sep">/</span>${theirScore}<span class="cell-opp" style="color:var(--${resCls})">${opp} ${res}</span></td>`;
+    }).join('') + `<td style="font-weight:700" data-tip="Avg PF ${season.seasonAvg[m].toFixed(1)}">${totalPF.toFixed(1)}</td><td style="font-weight:700" data-tip="Avg PA ${(totalPA/paArr.length).toFixed(1)}">${totalPA.toFixed(1)}</td></tr>`;
+  });
+  html += `<tr><td style="font-style:italic;color:var(--ink-dim)">league median</td>` + season.weeklyMedian.map(v => `<td style="text-align:left;color:var(--ink-dim)">${v.toFixed(1)}</td>`).join('') + `<td></td><td></td></tr>`;
+  html += `</tbody></table>
+  </div>`;
+
+  document.getElementById(prefix + '-standings').innerHTML = html;
+}
+
+/* ---------------- UNLUCKINESS PANELS ---------------- */
+function buildBarCell(val, maxAbs, flipped, tipText) {
+  if (val === null || val === undefined) return `<td class="bar-cell">—</td>`;
+  const pct = Math.max(4, Math.round((Math.abs(val)/maxAbs)*100));
+  const cls = val >= 0 ? 'unlucky' : 'lucky';
+  const varFill = val >= 0 ? 'var(--unlucky-bar)' : 'var(--lucky-bar)';
+  const varBg = val >= 0 ? 'var(--unlucky-bg)' : 'var(--lucky-bg)';
+  const ring = flipped ? `box-shadow: inset 0 0 0 1.5px var(--gold);` : '';
+  const tip = `${tipText}${flipped ? ' — flipped the result' : ''}`;
+  return `<td class="bar-cell" style="background:${varBg}; ${ring}" data-tip="${tip}">
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${varFill}; ${val>=0 ? 'left:0' : 'right:0'}"></div>
+    <span class="bar-val" style="color:var(--${cls})">${fmt(val)}${flipped ? ' 🔑' : ''}</span></div>
+  </td>`;
+}
+
+function renderUnluckyPanel(elId, season, uiKey, sumKey, title, desc, flipsKey, tipFn) {
+  tipFn = tipFn || ((m, i, v) => `vs ${season.opponents[m][i]}: ${fmt(v)}`);
+  const el = document.getElementById(elId);
+  const ui = season[uiKey];
+  const summary = season[sumKey];
+  const flips = flipsKey ? season[flipsKey] : null;
+
+  let maxAbs = 1;
+  Object.values(ui).forEach(arr => arr.forEach(v => { if (v !== null) maxAbs = Math.max(maxAbs, Math.abs(v)); }));
+
+  const ranked = Object.entries(summary).sort((a,b)=> b[1].total - a[1].total);
+
+  let cards = `<div class="cards">`;
+  ranked.forEach(([name, s], i) => {
+    const sign = s.total >= 0 ? 'unlucky' : 'lucky';
+    cards += `<div class="mcard">
+      <div class="name-row"><span class="name">${name}</span><span class="rank">#${i+1}</span></div>
+      <div class="big" style="color:var(--${sign})">${fmt(s.total)}</div>
+      <div class="cap">total Unluckiness Index (pts)</div>
+      <div class="split">
+        <span><span class="dot" style="background:var(--unlucky)"></span>${s.unlucky} unlucky wks</span>
+        <span><span class="dot" style="background:var(--lucky)"></span>${s.lucky} lucky wks</span>
+      </div>
+    </div>`;
+  });
+  cards += `</div>`;
+
+  let grid = `<div class="table-scroll"><table class="grid-table"><thead><tr><th style="text-align:left">Manager</th>`;
+  season.weeks.forEach(w => grid += `<th>Wk ${w}</th>`);
+  grid += `</tr></thead><tbody>`;
+  season.managers.forEach(m => {
+    grid += `<tr><td>${m}</td>` + ui[m].map((v,i) => buildBarCell(v, maxAbs, flips ? flips[m][i] : false, v === null ? '' : tipFn(m, i, v))).join('') + `</tr>`;
+  });
+  grid += `</tbody></table></div>`;
+
+  let summaryTable = `<div class="table-scroll"><table><thead><tr>
+    <th style="text-align:left">Manager</th><th># Unlucky Wks</th><th># Lucky Wks</th><th>Total &Delta;</th><th>Avg &Delta; / Wk</th>
+  </tr></thead><tbody>`;
+  ranked.forEach(([name, s]) => {
+    summaryTable += `<tr><td>${name}</td><td>${s.unlucky}</td><td>${s.lucky}</td>
+      <td style="color:var(--${s.total>=0?'unlucky':'lucky'})">${fmt(s.total)}</td>
+      <td style="color:var(--${s.weekly>=0?'unlucky':'lucky'})">${fmt(s.weekly,2)}</td></tr>`;
+  });
+  summaryTable += `</tbody></table></div>`;
+
+  el.innerHTML = `<div class="section-title">${title}</div>
+    ${desc ? `<div class="section-desc">${desc}</div>` : ''}
+    ${cards}
+    <div class="legend">
+      <span><span class="dot" style="background:var(--unlucky)"></span> Unlucky week &mdash; opponent scored above their baseline</span>
+      <span><span class="dot" style="background:var(--lucky)"></span> Lucky week &mdash; opponent scored below their baseline</span>
+      ${flips ? '<span>🔑 gold ring = this deviation actually flipped the result</span>' : ''}
+      <span>Hover a cell for the opponent's name</span>
+    </div>
+    ${grid}
+    <div class="section-title" style="font-size:17px;margin-top:6px">Season Summary</div>
+    ${summaryTable}`;
+}
+
+/* ---------------- WEEKLY REPORTS (Sleeper-style recap, archived) ---------------- */
+function renderWeeklyReports(elId, season) {
+  const el = document.getElementById(elId);
+  let html = `<div class="section-title">Weekly Reports</div>`;
+
+  season.weeklyReports.slice().reverse().forEach(r => {
+    html += `<div class="report-card">
+      <div class="report-head"><span class="wk">Week ${r.week}</span></div>
+      <div class="report-grid">
+        <div class="rstat"><div class="k">Top Scorer</div><div class="v"><b>${r.topScorer.name}</b> <span class="num">${r.topScorer.score.toFixed(1)}</span></div></div>
+        <div class="rstat"><div class="k">Low Scorer</div><div class="v"><b>${r.lowScorer.name}</b> <span class="num">${r.lowScorer.score.toFixed(1)}</span></div></div>
+        <div class="rstat"><div class="k">Overachiever</div><div class="v"><b>${r.overachiever.name}</b> <span class="num" style="color:var(--lucky)">${fmt(r.overachiever.delta)}</span> vs. avg</div></div>
+        <div class="rstat"><div class="k">Underachiever</div><div class="v"><b>${r.underachiever.name}</b> <span class="num" style="color:var(--unlucky)">${fmt(r.underachiever.delta)}</span> vs. avg</div></div>
+        ${r.highestInLoss ? `<div class="rstat"><div class="k">Highest Score in a Loss</div><div class="v"><b>${r.highestInLoss.name}</b> <span class="num">${r.highestInLoss.score.toFixed(1)}</span></div></div>` : ''}
+        ${r.lowestInWin ? `<div class="rstat"><div class="k">Lowest Score in a Win</div><div class="v"><b>${r.lowestInWin.name}</b> <span class="num">${r.lowestInWin.score.toFixed(1)}</span></div></div>` : ''}
+        ${r.biggestVictory ? `<div class="rstat"><div class="k">Biggest Victory</div><div class="v"><b>${r.biggestVictory.name}</b> over ${r.biggestVictory.opp} <span class="num">(+${r.biggestVictory.margin.toFixed(1)})</span></div></div>` : ''}
+        ${r.narrowestVictory ? `<div class="rstat"><div class="k">Narrowest Victory</div><div class="v"><b>${r.narrowestVictory.name}</b> over ${r.narrowestVictory.opp} <span class="num">(+${r.narrowestVictory.margin.toFixed(1)})</span></div></div>` : ''}
+      </div>
+      <div class="standings-mini">` +
+        r.standings.map(s => {
+          const chgIcon = s.rankChange > 0 ? `<span class="chg-up">▲${s.rankChange}</span>` : s.rankChange < 0 ? `<span class="chg-down">▼${Math.abs(s.rankChange)}</span>` : '';
+          const streakTxt = s.streak > 0 ? `W${s.streak}` : s.streak < 0 ? `L${Math.abs(s.streak)}` : '—';
+          return `<span class="standings-chip"><span class="r">${s.wins}-${s.losses}</span> ${s.name} ${chgIcon} <span style="color:var(--ink-dim)">${streakTxt}</span></span>`;
+        }).join('') +
+      `</div>
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+/* ---------------- SEASON SCAFFOLD ---------------- */
+function buildSeasonPanel(yr) {
+  const el = document.getElementById('season-' + yr);
+  const season = DATA.seasons[yr];
+
+  if (season.notStarted) {
+    el.innerHTML = `<div class="empty-state">
+      <div class="big">${yr} season hasn't kicked off yet</div>
+      <div>Status: ${season.status.replace('_',' ')}. Once the draft happens and games are scored, this tab will fill in automatically from Sleeper.</div>
+      <div class="roster-chips">${season.managers.map(m => `<span>${m}</span>`).join('')}</div>
+    </div>`;
+    return;
+  }
+
+  const verdictEl = document.createElement('div');
+  const mk = (title, sum) => {
+    const entries = Object.entries(sum);
+    const unluckiest = entries.reduce((a,b)=> b[1].total > a[1].total ? b : a);
+    const luckiest = entries.reduce((a,b)=> b[1].total < a[1].total ? b : a);
+    return `<div class="verdict-card">
+      <div class="label">${title}</div>
+      <div class="verdict-line"><span>Unluckiest all season</span><b>${unluckiest[0]}</b><span class="tag tag-unlucky">${fmt(unluckiest[1].total)} pts</span></div>
+      <div class="verdict-line"><span>Luckiest all season</span><b>${luckiest[0]}</b><span class="tag tag-lucky">${fmt(luckiest[1].total)} pts</span></div>
+    </div>`;
+  };
+  const champ = season.standings.find(s => s.playoffResult === 'Champion');
+
+  el.innerHTML = `
+    <div class="verdict">
+      ${champ ? `<div class="verdict-card"><div class="label">${yr} Champion</div>
+        <div class="verdict-line"><span>🏆 Winner</span><b>${champ.name}</b><span class="tag tag-gold">${champ.wins}-${champ.losses}</span></div></div>` : ''}
+      ${mk('Net Luck', season.sum5)}
+    </div>
+    <div class="tabs" data-yr="${yr}">
+      <button class="tab-btn active" data-panel="${yr}-standings">Standings and Schedules</button>
+      <button class="tab-btn" data-panel="${yr}-ui3">Unluckiness Index</button>
+      <button class="tab-btn" data-panel="${yr}-reports">Weekly Reports</button>
+    </div>
+    <div class="panel active" id="${yr}-standings"></div>
+    <div class="panel" id="${yr}-ui3">
+      <div class="subtabs">
+        <button class="subtab-btn active" data-sub="${yr}-sub-schedule">Schedule Luck</button>
+        <button class="subtab-btn" data-sub="${yr}-sub-roster">Roster Luck</button>
+        <button class="subtab-btn" data-sub="${yr}-sub-net">Net Luck</button>
+      </div>
+      <div class="subpanel active" id="${yr}-sub-schedule"></div>
+      <div class="subpanel" id="${yr}-sub-roster"></div>
+      <div class="subpanel" id="${yr}-sub-net"></div>
+    </div>
+    <div class="panel" id="${yr}-reports"></div>
+  `;
+
+  renderStandings(season, yr);
+  renderUnluckyPanel(`${yr}-sub-schedule`, season, 'ui3', 'sum3', "Schedule Luck", "", 'flips3');
+  const projTip = (m, i) => `Projected ${season.projected[m][i].toFixed(1)}, scored ${season.scores[m][i].toFixed(1)} (${fmt(season.scores[m][i] - season.projected[m][i])}; league avg ${fmt(season.projMean[i])})`;
+  renderUnluckyPanel(`${yr}-sub-roster`, season, 'ui4', 'sum4', "Roster Luck", "", 'flips4', (m, i, v) => projTip(m, i));
+  renderUnluckyPanel(`${yr}-sub-net`, season, 'ui5', 'sum5', "Net Luck", "", 'flips5',
+    (m, i, v) => `${projTip(m, i)} · ${season.opponents[m][i]} ${fmt(season.ui3[m][i])} vs their usual`);
+  el.querySelectorAll('.subtab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      el.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
+      el.querySelectorAll('.subpanel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.sub).classList.add('active');
+    });
+  });
+  renderWeeklyReports(`${yr}-reports`, season);
+
+  el.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      el.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      el.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.panel).classList.add('active');
+    });
+  });
+}
+
+function initSeasonTabs() {
+  const buttons = document.querySelectorAll('.season-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('season-' + btn.dataset.season).classList.add('active');
+    });
+  });
+}
+
+renderCareer();
+const SEASON_KEYS = Object.keys(DATA.seasons).sort();
+SEASON_KEYS.forEach(yr => {
+  const btn = document.createElement('button');
+  btn.className = 'season-btn'; btn.dataset.season = yr; btn.textContent = yr;
+  document.getElementById('seasonTabs').appendChild(btn);
+  const panel = document.createElement('div');
+  panel.className = 'season-panel'; panel.id = 'season-' + yr;
+  document.getElementById('seasonPanels').appendChild(panel);
+});
+SEASON_KEYS.forEach(yr => buildSeasonPanel(yr));
+initSeasonTabs();
+
+/* ---------------- custom tooltip (native title is unreliable in the viewer) ---------------- */
+(function initTooltip() {
+  const tip = document.createElement('div');
+  tip.id = 'tip';
+  document.body.appendChild(tip);
+  let current = null;
+  function place(x, y) {
+    const pad = 12;
+    let left = x + pad, top = y + pad;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    if (left + w > window.innerWidth - 8) left = x - w - pad;
+    if (top + h > window.innerHeight - 8) top = y - h - pad;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  document.addEventListener('mouseover', e => {
+    const cell = e.target.closest('[data-tip]');
+    if (!cell) return;
+    current = cell;
+    tip.textContent = cell.dataset.tip;
+    tip.classList.add('show');
+    place(e.clientX, e.clientY);
+  });
+  document.addEventListener('mousemove', e => {
+    if (current) place(e.clientX, e.clientY);
+  });
+  document.addEventListener('mouseout', e => {
+    if (current && !current.contains(e.relatedTarget)) { current = null; tip.classList.remove('show'); }
+  });
+  // touch: tap toggles
+  document.addEventListener('click', e => {
+    const cell = e.target.closest('[data-tip]');
+    if (!cell) { current = null; tip.classList.remove('show'); return; }
+    current = cell;
+    tip.textContent = cell.dataset.tip;
+    tip.classList.add('show');
+    place(e.clientX, e.clientY);
+  });
+})();
+</script>
+"""
+
+html = html.replace("__DATA_JSON__", data_json)
+# The template starts with <title> + <style>; lift those into <head> for a standalone page.
+head_part, body_part = html.split("</style>", 1)
+page = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+        + head_part + "</style>\n</head>\n<body>\n" + body_part + "\n</body>\n</html>\n")
+OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+with open(OUT_PATH, "w") as f:
+    f.write(page)
+print("wrote", OUT_PATH, len(page), "bytes")
