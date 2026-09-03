@@ -9,15 +9,22 @@ League archive and the Unluckiness Index™ for the *Best Ball Butts* Sleeper le
 ```
 Sleeper API ──fetch.py──▶ data/raw/        (immutable snapshots, the "database")
                                 │
-                           compute.py
+                        compute-node.js  ── uses scripts/compute.js
                                 │
                                 ▼
                           data/derived/seasons.json
                                 │
-                            build.py
+                            build.py         (inlines compute.js + the data)
                                 ▼
                           docs/index.html   (GitHub Pages)
+                                │
+   visitor's browser ◀──────────┘  on load / "Refresh live": fetches the current
+                                   season from Sleeper and recomputes with the
+                                   same compute.js — no server involved
 ```
+
+One implementation of the math (`scripts/compute.js`) runs in both places, so the
+archive and the live view can never disagree.
 
 - `data/raw/<season>/` — untouched API responses: `league.json`, `users.json`, `rosters.json`,
   `winners_bracket.json`, `matchups/week_NN.json`, `projections/week_NN.json`.
@@ -49,13 +56,22 @@ archive runs create commits. The page header shows the build time.
 ## Run locally
 
 ```bash
-python scripts/fetch.py      # incremental
-python scripts/compute.py
+python scripts/fetch.py        # incremental
+node scripts/compute-node.js
 python scripts/build.py
+node scripts/smoke.js          # optional: page script parses and runs
 open docs/index.html
 ```
 
-Python 3.10+, standard library only.
+Python 3.10+ (standard library only) and Node 18+.
+
+### Live refresh
+
+The page loads the archive instantly, then (and whenever you press **Refresh live from
+Sleeper**) fetches the current season's matchups from Sleeper directly in the browser and
+recomputes every table. Projections for the live week (~1.5 MB) are fetched once and the
+computed team totals cached in the browser for an hour; settled weeks reuse the archive.
+Sleeper's API is public and allows browser requests, so there is no server, key, or proxy.
 
 ## Unluckiness Index
 

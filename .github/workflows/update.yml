@@ -31,6 +31,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Decide what this run does (NFL schedule gate)
         id: gate
         run: python scripts/gate.py
@@ -42,8 +46,9 @@ jobs:
       - name: Recompute + build site
         if: steps.gate.outputs.run == 'true'
         run: |
-          python scripts/compute.py
+          node scripts/compute-node.js
           python scripts/build.py
+          node scripts/smoke.js
 
       - name: Upload site
         if: steps.gate.outputs.run == 'true'

@@ -69,6 +69,12 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Inter'
 .live-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--surface-2); border: 1px solid var(--border);
   border-radius: 100px; padding: 4px 10px 4px 8px; font-weight: 600; color: var(--ink); }
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lucky); animation: pulse 2s infinite; }
+.refresh-btn { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12.5px; background: var(--accent); color: var(--accent-ink);
+  border: none; border-radius: 100px; padding: 6px 14px; cursor: pointer; }
+.refresh-btn:hover { background: var(--accent-strong); }
+.refresh-btn[disabled] { opacity: 0.6; cursor: wait; }
+#liveStatus { font-size: 12.5px; }
+#liveStatus.err { color: var(--unlucky); }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(47,122,79,0.45); } 70% { box-shadow: 0 0 0 6px rgba(47,122,79,0); } 100% { box-shadow: 0 0 0 0 rgba(47,122,79,0); } }
 
@@ -200,7 +206,9 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> Pulled from Sleeper API &middot; updated __UPDATED__</span>
+    <span class="live-badge"><span class="live-dot"></span> Archive built __UPDATED__</span>
+    <button class="refresh-btn" id="refreshBtn" type="button">Refresh live from Sleeper</button>
+    <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
   </div>
 
@@ -217,6 +225,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 </div>
 
 <script>
+__COMPUTE_JS__
 const DATA = __DATA_JSON__;
 
 function fmt(n, digits=1) {
@@ -521,6 +530,89 @@ SEASON_KEYS.forEach(yr => {
 SEASON_KEYS.forEach(yr => buildSeasonPanel(yr));
 initSeasonTabs();
 
+/* ---------------- live refresh: pull the current season straight from Sleeper and recompute ---------------- */
+(function initLive() {
+  const API = 'https://api.sleeper.app';
+  const btn = document.getElementById('refreshBtn');
+  const status = document.getElementById('liveStatus');
+  if (!btn) return;
+  const say = (msg, err) => { status.textContent = msg; status.classList.toggle('err', !!err); };
+  const getJson = async (url) => { const r = await fetch(url); if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
+  const POS = ['QB','RB','WR','TE','K','DEF'].map(p => 'position[]=' + p).join('&');
+
+  // Cache computed team projection totals per week (tiny). Settled weeks never change; the live week refreshes hourly.
+  function cacheGet(key, maxAgeMs) {
+    try { const v = JSON.parse(localStorage.getItem(key)); if (v && Date.now() - v.t < maxAgeMs) return v.d; } catch (e) {}
+    return null;
+  }
+  function cacheSet(key, d) { try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), d })); } catch (e) {} }
+
+  async function refresh() {
+    btn.disabled = true;
+    try {
+      say('Checking NFL week…');
+      const state = await getJson(`${API}/v1/state/nfl`);
+      const yr = String(state.season);
+      const archived = DATA.seasons[yr];
+      if (!archived || !archived.meta) { say(`No ${yr} league in the archive yet — the next archive run will add it.`); return; }
+      const meta = archived.meta;
+      if (meta.status === 'pre_draft' || meta.status === 'drafting') { say(`${yr} league hasn't drafted yet.`); return; }
+
+      const curWeek = Math.min(Number(state.week || 1), meta.lastRegularWeek);
+      say(`Fetching weeks 1–${curWeek}…`);
+      const [league, users, rosters, bracket, ...matchups] = await Promise.all([
+        getJson(`${API}/v1/league/${meta.leagueId}`), getJson(`${API}/v1/league/${meta.leagueId}/users`),
+        getJson(`${API}/v1/league/${meta.leagueId}/rosters`), getJson(`${API}/v1/league/${meta.leagueId}/winners_bracket`),
+        ...Array.from({ length: curWeek }, (_, i) => getJson(`${API}/v1/league/${meta.leagueId}/matchups/${i + 1}`)),
+      ]);
+      const matchupsByWeek = {}; matchups.forEach((m, i) => matchupsByWeek[i + 1] = m);
+      const weeks = Object.keys(matchupsByWeek).map(Number).filter(w => BBB.weekHasScores(matchupsByWeek[w]));
+      if (!weeks.length) { say(`${yr}: no scored games yet.`); return; }
+
+      // Projections: reuse archived team totals for archived weeks; fetch only what's missing (or the live week).
+      const nameMap = BBB.nameMapFrom(users, rosters);
+      const projected = {};
+      const archivedWeeks = new Set(archived.weeks || []);
+      const rosterIdByName = {}; for (const r in nameMap) rosterIdByName[nameMap[r]] = r;
+      for (const w of weeks) {
+        const idx = archived.weeks ? archived.weeks.indexOf(w) : -1;
+        const isLive = w === curWeek;
+        if (archivedWeeks.has(w) && !isLive && archived.projected) {
+          for (const name in archived.projected) { const v = archived.projected[name][idx]; if (v != null) (projected[rosterIdByName[name]] ??= {})[w] = v; }
+          continue;
+        }
+        const key = `bbb:proj:${yr}:${w}`;
+        let tp = cacheGet(key, isLive ? 60 * 60 * 1000 : 30 * 24 * 60 * 60 * 1000);
+        if (!tp) {
+          say(`Fetching week ${w} projections…`);
+          const proj = await getJson(`${API}/projections/nfl/${yr}/${w}?season_type=regular&${POS}`);
+          tp = BBB.weekTeamProjections(proj, matchupsByWeek[w], league);
+          cacheSet(key, tp);
+        }
+        for (const r in tp) (projected[r] ??= {})[w] = tp[r];
+      }
+
+      say('Recomputing…');
+      const input = BBB.inputFromMatchups(matchupsByWeek, weeks);
+      const season = BBB.applyPlayoffs(BBB.buildSeason({ weeks, nameMap, ...input, projected }), bracket, nameMap);
+      season.meta = { ...meta, status: league.status };
+      DATA.seasons[yr] = season;
+      DATA.career = BBB.career(DATA.seasons);
+      renderCareer();
+      buildSeasonPanel(yr);
+      const t = new Date();
+      say(`Live: ${yr} week ${curWeek} · ${t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`);
+    } catch (e) {
+      say(`Live refresh failed (${e.message}) — showing the archive.`, true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+  btn.addEventListener('click', refresh);
+  // auto-refresh on load when served over http(s) (not in the offline smoke test / file://)
+  if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) refresh();
+})();
+
 /* ---------------- custom tooltip (native title is unreliable in the viewer) ---------------- */
 (function initTooltip() {
   const tip = document.createElement('div');
@@ -566,7 +658,8 @@ initSeasonTabs();
 from datetime import datetime
 from zoneinfo import ZoneInfo
 updated = datetime.now(ZoneInfo("America/New_York")).strftime("%a %b %-d, %-I:%M %p ET")
-html = html.replace("__DATA_JSON__", data_json).replace("__UPDATED__", updated)
+compute_js = (ROOT / "scripts" / "compute.js").read_text()
+html = html.replace("__COMPUTE_JS__", compute_js).replace("__DATA_JSON__", data_json).replace("__UPDATED__", updated)
 # The template starts with <title> + <style>; lift those into <head> for a standalone page.
 head_part, body_part = html.split("</style>", 1)
 page = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"

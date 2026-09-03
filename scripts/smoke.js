@@ -10,7 +10,7 @@ const js = m[1];
 function makeEl() {
   return {
     innerHTML: '', id: '', textContent: '', style: {}, offsetWidth: 0, offsetHeight: 0,
-    classList: { add(){}, remove(){}, contains(){ return false; } },
+    classList: { add(){}, remove(){}, toggle(){}, contains(){ return false; } },
     dataset: {}, querySelectorAll() { return []; }, addEventListener() {},
     appendChild() {}, closest() { return null; }, contains() { return false; },
   };
