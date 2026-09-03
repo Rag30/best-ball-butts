@@ -69,6 +69,8 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Inter'
   border: none; border-radius: 100px; padding: 6px 14px; cursor: pointer; }
 .refresh-btn:hover { background: var(--accent-strong); }
 .refresh-btn[disabled] { opacity: 0.6; cursor: wait; }
+.refresh-btn.secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
+.refresh-btn.secondary:hover { background: var(--surface-2); }
 #liveStatus { font-size: 12.5px; }
 #liveStatus.err { color: var(--unlucky); }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
@@ -205,8 +207,9 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> Archive built Thu Sep 3, 4:16 PM ET</span>
+    <span class="live-badge"><span class="live-dot"></span> Archive built Thu Sep 3, 4:27 PM ET</span>
     <button class="refresh-btn" id="refreshBtn" type="button">Refresh live from Sleeper</button>
+    <button class="refresh-btn secondary" id="rebuildBtn" type="button" title="Triggers the GitHub rebuild so everyone sees the latest (~2 min)">Rebuild for everyone</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
   </div>
@@ -871,6 +874,36 @@ initSeasonTabs();
   btn.addEventListener('click', refresh);
   // auto-refresh on load when served over http(s) (not in the offline smoke test / file://)
   if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) refresh();
+
+  // "Rebuild for everyone": ask the relay to run the GitHub workflow, then reload when it finishes.
+  const RELAY = 'https://bbb-refresh.rrr-projects.com/refresh';
+  const RUNS = 'https://api.github.com/repos/Rag30/best-ball-butts/actions/runs?per_page=1&event=workflow_dispatch';
+  const rebuildBtn = document.getElementById('rebuildBtn');
+  if (rebuildBtn) rebuildBtn.addEventListener('click', async () => {
+    rebuildBtn.disabled = true;
+    const started = Date.now();
+    try {
+      const r = await fetch(RELAY, { method: 'POST' });
+      const body = await r.json().catch(() => ({}));
+      if (r.status === 429) { say(`A rebuild just ran — try again in ${body.retryInSeconds}s.`, true); return; }
+      if (!r.ok || !body.ok) { say('Could not start a rebuild right now.', true); return; }
+      say('Rebuild started — this page will reload when it\'s done (~2 min)…');
+      for (let i = 0; i < 24; i++) {                       // poll up to 6 min
+        await new Promise(res => setTimeout(res, 15000));
+        const runs = await fetch(RUNS).then(x => x.json()).catch(() => null);
+        const run = runs && runs.workflow_runs && runs.workflow_runs[0];
+        if (run && new Date(run.created_at).getTime() >= started - 60000 && run.status === 'completed') {
+          await new Promise(res => setTimeout(res, 20000));  // Pages propagation
+          location.reload(); return;
+        }
+      }
+      say('Rebuild is taking longer than usual — refresh in a minute.', true);
+    } catch (e) {
+      say(`Rebuild request failed (${e.message}).`, true);
+    } finally {
+      rebuildBtn.disabled = false;
+    }
+  });
 })();
 
 /* ---------------- custom tooltip (native title is unreliable in the viewer) ---------------- */

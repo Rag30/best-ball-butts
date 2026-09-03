@@ -1,0 +1,11 @@
+name = "bbb-refresh"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+routes = [
+  { pattern = "bbb-refresh.rrr-projects.com", custom_domain = true }
+]
+
+# Secret (set once, never committed):
+#   npx wrangler secret put GH_TOKEN
+# Fine-grained GitHub PAT: repository = Rag30/best-ball-butts only, permission = Actions: Read and write.
