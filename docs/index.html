@@ -207,9 +207,8 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> Archive built Thu Sep 3, 4:51 PM ET</span>
-    <button class="refresh-btn" id="refreshBtn" type="button">Refresh live from Sleeper</button>
-    <button class="refresh-btn secondary" id="rebuildBtn" type="button" title="Triggers the GitHub rebuild so everyone sees the latest (~2 min)">Rebuild for everyone</button>
+    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Thu Sep 3, 5:07 PM ET">Archive built Thu Sep 3, 5:07 PM ET</span></span>
+    <button class="refresh-btn" id="refreshBtn" type="button" title="Pull the latest from Sleeper and recompute">Refresh</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
   </div>
@@ -800,6 +799,12 @@ initSeasonTabs();
   const status = document.getElementById('liveStatus');
   if (!btn) return;
   const say = (msg, err) => { status.textContent = msg; status.classList.toggle('err', !!err); };
+  const stampEl = document.getElementById('stamp');
+  const stamp = () => {
+    const t = new Date();
+    const time = t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' });
+    if (stampEl) stampEl.textContent = `Updated ${time} ET`;
+  };
   const getJson = async (url) => { const r = await fetch(url); if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
   const POS = ['QB','RB','WR','TE','K','DEF'].map(p => 'position[]=' + p).join('&');
 
@@ -817,9 +822,9 @@ initSeasonTabs();
       const state = await getJson(`${API}/v1/state/nfl`);
       const yr = String(state.season);
       const archived = DATA.seasons[yr];
-      if (!archived || !archived.meta) { say(`No ${yr} league in the archive yet — the next archive run will add it.`); return; }
+      if (!archived || !archived.meta) { stamp(); say(`No ${yr} league in the archive yet — the next archive run will add it.`); return; }
       const meta = archived.meta;
-      if (meta.status === 'pre_draft' || meta.status === 'drafting') { say(`${yr} league hasn't drafted yet.`); return; }
+      if (meta.status === 'pre_draft' || meta.status === 'drafting') { stamp(); say(`${yr} league hasn't drafted yet.`); return; }
 
       const curWeek = Math.min(Number(state.week || 1), meta.lastRegularWeek);
       say(`Fetching weeks 1–${curWeek}…`);
@@ -830,7 +835,7 @@ initSeasonTabs();
       ]);
       const matchupsByWeek = {}; matchups.forEach((m, i) => matchupsByWeek[i + 1] = m);
       const weeks = Object.keys(matchupsByWeek).map(Number).filter(w => BBB.weekHasScores(matchupsByWeek[w]));
-      if (!weeks.length) { say(`${yr}: no scored games yet.`); return; }
+      if (!weeks.length) { stamp(); say(`${yr}: no scored games yet.`); return; }
 
       // Projections: reuse archived team totals for archived weeks; fetch only what's missing (or the live week).
       const nameMap = BBB.nameMapFrom(users, rosters);
@@ -863,8 +868,8 @@ initSeasonTabs();
       DATA.career = BBB.career(DATA.seasons);
       renderCareer();
       buildSeasonPanel(yr);
-      const t = new Date();
-      say(`Live: ${yr} week ${curWeek} · ${t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`);
+      stamp();
+      say(`Live: ${yr} week ${curWeek}`);
     } catch (e) {
       say(`Live refresh failed (${e.message}) — showing the archive.`, true);
     } finally {
@@ -874,37 +879,6 @@ initSeasonTabs();
   btn.addEventListener('click', refresh);
   // auto-refresh on load when served over http(s) (not in the offline smoke test / file://)
   if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) refresh();
-
-  // "Rebuild for everyone": ask the relay to run the GitHub workflow, then reload when it finishes.
-  // same-origin on the league domain; absolute when viewed via github.io
-  const RELAY = (typeof location !== 'undefined' && /rrr-projects\.com$/.test(location.hostname)) ? '/refresh' : 'https://bestballbutts.rrr-projects.com/refresh';
-  const RUNS = 'https://api.github.com/repos/Rag30/best-ball-butts/actions/runs?per_page=1&event=workflow_dispatch';
-  const rebuildBtn = document.getElementById('rebuildBtn');
-  if (rebuildBtn) rebuildBtn.addEventListener('click', async () => {
-    rebuildBtn.disabled = true;
-    const started = Date.now();
-    try {
-      const r = await fetch(RELAY, { method: 'POST' });
-      const body = await r.json().catch(() => ({}));
-      if (r.status === 429) { say(`A rebuild just ran — try again in ${body.retryInSeconds}s.`, true); return; }
-      if (!r.ok || !body.ok) { say('Could not start a rebuild right now.', true); return; }
-      say('Rebuild started — this page will reload when it\'s done (~2 min)…');
-      for (let i = 0; i < 24; i++) {                       // poll up to 6 min
-        await new Promise(res => setTimeout(res, 15000));
-        const runs = await fetch(RUNS).then(x => x.json()).catch(() => null);
-        const run = runs && runs.workflow_runs && runs.workflow_runs[0];
-        if (run && new Date(run.created_at).getTime() >= started - 60000 && run.status === 'completed') {
-          await new Promise(res => setTimeout(res, 20000));  // Pages propagation
-          location.reload(); return;
-        }
-      }
-      say('Rebuild is taking longer than usual — refresh in a minute.', true);
-    } catch (e) {
-      say(`Rebuild request failed (${e.message}).`, true);
-    } finally {
-      rebuildBtn.disabled = false;
-    }
-  });
 })();
 
 /* ---------------- custom tooltip (native title is unreliable in the viewer) ---------------- */
