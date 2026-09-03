@@ -14,6 +14,10 @@ on:
         description: "Ignore freeze rules and re-fetch every week"
         type: boolean
         default: false
+      archive:
+        description: "Also commit data/raw + docs to git"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -40,6 +44,8 @@ jobs:
 
       - name: Decide what this run does (NFL schedule gate)
         id: gate
+        env:
+          ARCHIVE_INPUT: ${{ inputs.archive }}
         run: python scripts/gate.py
 
       - name: Fetch from Sleeper
@@ -74,5 +80,6 @@ jobs:
           else
             changed=$(python -c "import json;print(', '.join(json.load(open('data/raw/last_fetch.json'))['changed']) or 'derived only')")
             git commit -m "Archive: ${changed}"
+            git pull --rebase origin main
             git push
           fi

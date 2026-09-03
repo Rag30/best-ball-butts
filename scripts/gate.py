@@ -10,7 +10,8 @@ The workflow fires every 5 minutes. This script looks at today's NFL games
 Rules (all in America/New_York):
   * Game day  (any NFL game today)      -> run every 5 minutes
   * Other day                           -> run once an hour (the :00-:04 slot)
-  * Tue & Fri 09:00 ET slot, or manual  -> also commit to git (the archive run)
+  * Tue & Fri 09:00 ET slot             -> also commit to git (the archive run)
+  * Manual / button runs                -> rebuild only, unless the `archive` input is true
   * Off-season (no games this week and none next week) -> hourly still runs
     (cheap: fetch.py exits fast when the league is complete/pre-draft)
 If ESPN is unreachable we assume it's a game day (better a few extra runs than
@@ -53,7 +54,8 @@ def main():
     archive_slot = now.weekday() in (1, 4) and now.hour == 9 and hourly_slot  # Tue/Fri 09:00 ET
 
     if event == "workflow_dispatch":
-        run, mode, archive = True, "manual", True
+        # Manual/button runs rebuild the page but only commit the archive if explicitly asked
+        run, mode, archive = True, "manual", os.environ.get("ARCHIVE_INPUT", "false").lower() == "true"
     elif archive_slot:
         run, mode, archive = True, "archive", True
     elif game_day:
