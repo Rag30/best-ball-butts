@@ -20,6 +20,11 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+    if (request.method === "GET") {
+      return new Response(
+        "bbb-refresh relay is up.\n\nThis endpoint is used by the \"Rebuild for everyone\" button on\nhttps://rag30.github.io/best-ball-butts/ — nothing to see here.\n",
+        { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+    }
     if (url.pathname !== "/refresh") return json({ error: "not found" }, 404);
     if (request.method !== "POST") return json({ error: "POST only" }, 405);
     if (request.headers.get("Origin") !== ALLOWED_ORIGIN) return json({ error: "forbidden" }, 403);
