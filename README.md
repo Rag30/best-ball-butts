@@ -48,10 +48,17 @@ checks the real NFL schedule (ESPN public scoreboard) and decides what each slot
 |---|---|
 | NFL game day | fetch → compute → deploy every **5 min** (page lags Sleeper by ~5–15 min) |
 | Any other day | same, once an **hour** |
-| Tue & Fri 09:00 ET, or manual run | also **commits** `data/raw` + `docs` to git (the archive) |
+| Tue & Fri 09:00 ET | also **commits** `data/raw` + `docs` to git (the archive) |
+| Manual run / **Rebuild for everyone** button | rebuild + deploy only (tick `archive` on a manual run to commit) |
+| Push to `main` (code, not data) | rebuild + deploy |
 
 Deploys go straight to GitHub Pages from the runner (`actions/deploy-pages`), so only the
 archive runs create commits. The page header shows the build time.
+
+The page's **Rebuild for everyone** button posts to a tiny Cloudflare Worker (`worker/`,
+deployed at `bbb-refresh.rrr-projects.com`) that holds the only credential — a fine-grained
+GitHub token scoped to this repo's Actions — and triggers the workflow. It refuses if a manual
+run started in the last 2 minutes. Deploy it with `cd worker && npx wrangler@4 deploy`.
 
 ## Run locally
 
