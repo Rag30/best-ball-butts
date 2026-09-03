@@ -1,6 +1,9 @@
 name: Update league data
 
 on:
+  push:
+    branches: [main]
+    paths-ignore: ["data/**", "docs/**"]   # code changes deploy immediately; bot archive commits don't loop
   schedule:
     # Fires every 5 min Sept-Jan; scripts/gate.py decides whether this slot actually runs:
     #   game day -> every 5 min | other days -> hourly | Tue/Fri 09:00 ET -> also commit archive
