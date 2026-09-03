@@ -7,6 +7,17 @@ routes = [
   { pattern = "bbb-refresh.rrr-projects.com", custom_domain = true }   # legacy hostname, keeps serving
 ]
 
-# Secret (set once, never committed):
-#   npx wrangler@4 secret put GH_TOKEN
-# Fine-grained GitHub PAT: repository = Rag30/best-ball-butts only, permission = Actions: Read and write.
+# The page itself (built by scripts/build.py into worker/public/)
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# The live "database": computed seasons + snapshot the page reads
+[[kv_namespaces]]
+binding = "DATA"
+id = "163b167b2bfc439dbc53c3a643208cf3"
+
+# Self-refresh from Sleeper: fires every 5 min Sept-Jan; the Worker only does work
+# on NFL game days (every 5 min) or at the top of the hour otherwise.
+[triggers]
+crons = ["*/5 * * 9-12,1 *"]

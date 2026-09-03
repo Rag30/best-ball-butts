@@ -1,4 +1,6 @@
 __pycache__/
 *.pyc
 .DS_Store
-scripts/extracted.js
+node_modules/
+worker/public/        # built by scripts/build.py right before `wrangler deploy`
+.wrangler/

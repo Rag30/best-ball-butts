@@ -1,13 +1,9 @@
-import json
-
-"""Render data/derived/seasons.json -> docs/index.html (served by GitHub Pages)."""
-from pathlib import Path
-ROOT = Path(__file__).resolve().parent.parent
-data = json.load(open(ROOT / "data" / "derived" / "seasons.json"))
-data_json = json.dumps(data)
-OUT_PATH = ROOT / "worker" / "public" / "index.html"
-
-html = """<title>Best Ball Butts</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Best Ball Butts</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
@@ -199,6 +195,9 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 .foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--ink-dim); font-size: 12px;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 </style>
+</head>
+<body>
+
 
 <div class="wrap">
   <div class="masthead">
@@ -208,7 +207,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built __UPDATED__">Archive built __UPDATED__</span></span>
+    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Thu Sep 3, 5:15 PM ET">Archive built Thu Sep 3, 5:15 PM ET</span></span>
     <button class="refresh-btn" id="refreshBtn" type="button" title="Pull the latest from Sleeper and recompute">Refresh</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
@@ -613,18 +612,6 @@ function renderAll() {
   });
 })();
 </script>
-"""
 
-from datetime import datetime
-from zoneinfo import ZoneInfo
-updated = datetime.now(ZoneInfo("America/New_York")).strftime("%a %b %-d, %-I:%M %p ET")
-html = html.replace("__UPDATED__", updated)
-# The template starts with <title> + <style>; lift those into <head> for a standalone page.
-head_part, body_part = html.split("</style>", 1)
-page = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
-        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-        + head_part + "</style>\n</head>\n<body>\n" + body_part + "\n</body>\n</html>\n")
-OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-with open(OUT_PATH, "w") as f:
-    f.write(page)
-print("wrote", OUT_PATH, len(page), "bytes")
+</body>
+</html>

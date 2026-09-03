@@ -1,80 +1,48 @@
-name: Update league data
+name: Archive league data
+
+# The live site (bestballbutts.rrr-projects.com) refreshes itself from Sleeper into Cloudflare KV.
+# This job only keeps the git archive of raw Sleeper responses current.
 
 on:
-  push:
-    branches: [main]
-    paths-ignore: ["data/**", "docs/**"]   # code changes deploy immediately; bot archive commits don't loop
   schedule:
-    # Fires every 5 min Sept-Jan; scripts/gate.py decides whether this slot actually runs:
-    #   game day -> every 5 min | other days -> hourly | Tue/Fri 09:00 ET -> also commit archive
-    - cron: "*/5 * * 9-12,1 *"
+    - cron: "0 13 * 9-12,1 2,5"     # Tue & Fri 09:00 ET, Sept-Jan
   workflow_dispatch:
     inputs:
       refetch_all:
         description: "Ignore freeze rules and re-fetch every week"
         type: boolean
         default: false
-      archive:
-        description: "Also commit data/raw + docs to git"
-        type: boolean
-        default: false
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
-  group: update
+  group: archive
   cancel-in-progress: false
 
 jobs:
-  update:
+  archive:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
 
-      - name: Decide what this run does (NFL schedule gate)
-        id: gate
-        env:
-          ARCHIVE_INPUT: ${{ inputs.archive }}
-        run: python scripts/gate.py
-
-      - name: Fetch from Sleeper
-        if: steps.gate.outputs.run == 'true'
+      - name: Fetch new / corrected weeks from Sleeper
         run: python scripts/fetch.py ${{ inputs.refetch_all && '--all' || '' }}
 
-      - name: Recompute + build site
-        if: steps.gate.outputs.run == 'true'
-        run: |
-          node scripts/compute-node.js
-          python scripts/build.py
-          node scripts/smoke.js
+      - name: Recompute derived tables (reference copy)
+        run: node scripts/compute-node.js
 
-      - name: Upload site
-        if: steps.gate.outputs.run == 'true'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-      - name: Deploy to GitHub Pages
-        if: steps.gate.outputs.run == 'true'
-        uses: actions/deploy-pages@v4
-
-      - name: Commit archive (Tue/Fri or manual)
-        if: steps.gate.outputs.run == 'true' && steps.gate.outputs.archive == 'true'
+      - name: Commit
         run: |
           git config user.name "league-bot"
           git config user.email "league-bot@users.noreply.github.com"
-          git add data docs
+          git add data
           if git diff --cached --quiet; then
             echo "no changes"
           else
