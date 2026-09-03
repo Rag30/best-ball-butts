@@ -7104,16 +7104,28 @@
    "name": "Henry"
   },
   {
-   "seasons": 2,
-   "wins": 10,
-   "losses": 18,
-   "pf": 4054.88,
-   "medianWins": 18,
-   "medianLosses": 38,
+   "seasons": 1,
+   "wins": 7,
+   "losses": 7,
+   "pf": 2199.92,
+   "medianWins": 12,
+   "medianLosses": 16,
    "championships": 0,
    "runnerUps": 0,
    "thirds": 1,
    "name": "Avery"
+  },
+  {
+   "seasons": 1,
+   "wins": 3,
+   "losses": 11,
+   "pf": 1854.96,
+   "medianWins": 6,
+   "medianLosses": 22,
+   "championships": 0,
+   "runnerUps": 0,
+   "thirds": 0,
+   "name": "Steve"
   }
  ],
  "generatedFrom": {
@@ -7151,5 +7163,5 @@
   ],
   "2026": []
  },
- "generatedAt": "2026-09-03T21:19:53.611Z"
+ "generatedAt": "2026-09-03T21:20:24.418Z"
 }

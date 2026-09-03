@@ -13,8 +13,8 @@ const BBB = (() => {
     "1babyjesus": "Steve", averymc03: "Avery", mac003: "Avery",
     dragonslayyyer69: "Ben", NoLsHere: "Noelle", TheDragon96: "Henry",
   };
-  // Seat 5 changed hands; career stats are combined under the current owner.
-  const CAREER_ALIAS = { Steve: "Avery" };
+  // Career stats are per person. Seat 5 was Steve (2024) then Avery (2025+): different people, kept separate.
+  const CAREER_ALIAS = {};
   const FLEX = new Set(["RB", "WR", "TE"]);
   const NON_FLIP_WEIGHT = 0.35;
 
