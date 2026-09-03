@@ -469,13 +469,13 @@ function buildSeasonPanel(yr) {
     <div class="panel active" id="${yr}-standings"></div>
     <div class="panel" id="${yr}-ui3">
       <div class="subtabs">
-        <button class="subtab-btn active" data-sub="${yr}-sub-schedule">Schedule Luck</button>
+        <button class="subtab-btn active" data-sub="${yr}-sub-net">Net Luck</button>
+        <button class="subtab-btn" data-sub="${yr}-sub-schedule">Schedule Luck</button>
         <button class="subtab-btn" data-sub="${yr}-sub-roster">Roster Luck</button>
-        <button class="subtab-btn" data-sub="${yr}-sub-net">Net Luck</button>
       </div>
-      <div class="subpanel active" id="${yr}-sub-schedule"></div>
+      <div class="subpanel active" id="${yr}-sub-net"></div>
+      <div class="subpanel" id="${yr}-sub-schedule"></div>
       <div class="subpanel" id="${yr}-sub-roster"></div>
-      <div class="subpanel" id="${yr}-sub-net"></div>
     </div>
     <div class="panel" id="${yr}-reports"></div>
   `;
