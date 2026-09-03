@@ -207,7 +207,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Thu Sep 3, 5:29 PM ET">Archive built Thu Sep 3, 5:29 PM ET</span></span>
+    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Thu Sep 3, 5:37 PM ET">Archive built Thu Sep 3, 5:37 PM ET</span></span>
     <button class="refresh-btn" id="refreshBtn" type="button" title="Pull the latest from Sleeper and recompute">Refresh</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
@@ -245,12 +245,13 @@ function renderCareer() {
   let html = `<div class="section-title">All-Time Standings</div>
   <div class="table-scroll"><table><thead><tr>
     <th>#</th><th style="text-align:left">Manager</th><th>Seasons</th><th>W</th><th>L</th><th>Points For</th>
-    <th>Median W</th><th>Median L</th><th>Titles</th>
+    <th>Median W</th><th>Median L</th><th data-tip="Career strength of schedule, in wins (sum across seasons). Positive = harder draws.">SOS</th><th>Titles</th>
   </tr></thead><tbody>`;
   list.forEach((c,i) => {
+    const sosCell = c.sos == null ? '—' : `<span style="color:var(--${c.sos > 0 ? 'unlucky' : 'lucky'})">${fmt(c.sos, 2)}</span>`;
     html += `<tr><td>${i+1}</td><td style="text-align:left">${c.name}</td><td>${c.seasons}</td>
       <td><span class="pill pill-w">${c.wins}W</span></td><td><span class="pill pill-l">${c.losses}L</span></td>
-      <td>${fmt0(c.pf)}</td><td>${c.medianWins}</td><td>${c.medianLosses}</td>
+      <td>${fmt0(c.pf)}</td><td>${c.medianWins}</td><td>${c.medianLosses}</td><td>${sosCell}</td>
       <td>${c.championships > 0 ? `<span class="pill pill-gold">${'🏆'.repeat(c.championships)}</span>` : '—'}</td></tr>`;
   });
   html += `</tbody></table></div>`;
@@ -274,14 +275,15 @@ function renderStandings(season, prefix) {
   let html = `<div class="section-title">Head-to-Head Standings</div>
   <div class="section-desc">Regular-season record, points, and how the playoffs actually shook out.</div>
   <div class="table-scroll"><table><thead><tr>
-    <th>#</th><th style="text-align:left">Manager</th><th>W</th><th>L</th><th>Points For</th><th>Points Against</th><th>Avg / Wk</th><th>Std Dev</th><th style="text-align:left">Playoffs</th>
+    <th>#</th><th style="text-align:left">Manager</th><th>W</th><th>L</th><th>Points For</th><th>Points Against</th><th>Avg / Wk</th><th>Std Dev</th><th data-tip="Strength of schedule, in wins: how many more games a league-average schedule would have won you. Positive = harder draw.">SOS</th><th style="text-align:left">Playoffs</th>
   </tr></thead><tbody>`;
   season.standings.forEach((s, i) => {
     const badge = s.playoffResult === 'Champion' ? '<span class="pill pill-gold">🏆 Champion</span>'
       : s.playoffResult && s.playoffResult !== '—' ? `<span class="pill">${s.playoffResult}</span>` : '—';
+    const sosCell = s.sos == null ? '—' : `<span style="color:var(--${s.sos > 0 ? 'unlucky' : 'lucky'})">${fmt(s.sos, 2)}</span>`;
     html += `<tr><td>${i+1}</td><td style="text-align:left">${s.name}</td>
       <td><span class="pill pill-w">${s.wins}W</span></td><td><span class="pill pill-l">${s.losses}L</span></td>
-      <td>${fmt0(s.pf)}</td><td>${fmt0(s.pa)}</td><td>${fmt0(s.avg)}</td><td>${fmt0(s.sd)}</td><td style="text-align:left">${badge}</td></tr>`;
+      <td>${fmt0(s.pf)}</td><td>${fmt0(s.pa)}</td><td>${fmt0(s.avg)}</td><td>${fmt0(s.sd)}</td><td>${sosCell}</td><td style="text-align:left">${badge}</td></tr>`;
   });
   html += `</tbody></table></div>`;
 
@@ -397,6 +399,29 @@ function renderUnluckyPanel(elId, season, uiKey, sumKey, title, desc, flipsKey, 
     ${summaryTable}`;
 }
 
+/* ---------------- STRENGTH OF SCHEDULE ---------------- */
+function renderSOS(elId, season) {
+  const el = document.getElementById(elId);
+  const sos = season.sos || {};
+  const rows = Object.entries(sos).sort((a, b) => b[1].sos - a[1].sos);
+  const hasRemaining = rows.some(([, s]) => s.remaining != null);
+  const winsOf = name => (season.standings.find(s => s.name === name) || {}).wins ?? '—';
+  const col = v => v == null ? '—' : `<span style="color:var(--${v > 0 ? 'unlucky' : 'lucky'})">${fmt(v, 2)}</span>`;
+  let html = `<div class="section-title">Strength of Schedule</div>
+  <div class="section-desc">For every game, your win probability against that opponent from both teams' scoring averages and consistency. <b>SOS</b> is how many more wins a league-average schedule would have given you — positive means a harder draw. <b>Record luck</b> is your actual wins minus the wins your real schedule should have produced. Hover a row for the week-by-week win chances.</div>
+  <div class="table-scroll"><table><thead><tr>
+    <th style="text-align:left">Manager</th><th>W</th><th>Exp. W (your schedule)</th><th>Exp. W (neutral)</th><th>SOS (wins)</th><th>Record luck</th>${hasRemaining ? '<th>SOS remaining</th>' : ''}<th>Avg</th><th>Std Dev</th>
+  </tr></thead><tbody>`;
+  rows.forEach(([name, s]) => {
+    const tip = s.weekly.map(w => `Wk ${w.week} vs ${w.opp}: ${Math.round(w.p * 100)}%`).join(' · ')
+      + (s.remainingWeeks && s.remainingWeeks.length ? ' | Remaining: ' + s.remainingWeeks.map(w => `Wk ${w.week} vs ${w.opp}: ${Math.round(w.p * 100)}%`).join(' · ') : '');
+    html += `<tr data-tip="${tip}"><td>${name}</td><td>${winsOf(name)}</td><td>${s.expActual.toFixed(1)}</td><td>${s.expNeutral.toFixed(1)}</td>
+      <td style="font-weight:700">${col(s.sos)}</td><td>${col(s.recordLuck)}</td>${hasRemaining ? `<td>${col(s.remaining)}</td>` : ''}<td>${s.mu.toFixed(1)}</td><td>${s.sd.toFixed(1)}</td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  el.innerHTML = html;
+}
+
 /* ---------------- WEEKLY REPORTS (Sleeper-style recap, archived) ---------------- */
 function renderWeeklyReports(elId, season) {
   const el = document.getElementById(elId);
@@ -471,10 +496,12 @@ function buildSeasonPanel(yr) {
         <button class="subtab-btn active" data-sub="${yr}-sub-net">Net Luck</button>
         <button class="subtab-btn" data-sub="${yr}-sub-schedule">Schedule Luck</button>
         <button class="subtab-btn" data-sub="${yr}-sub-roster">Roster Luck</button>
+        <button class="subtab-btn" data-sub="${yr}-sub-sos">Strength of Schedule</button>
       </div>
       <div class="subpanel active" id="${yr}-sub-net"></div>
       <div class="subpanel" id="${yr}-sub-schedule"></div>
       <div class="subpanel" id="${yr}-sub-roster"></div>
+      <div class="subpanel" id="${yr}-sub-sos"></div>
     </div>
     <div class="panel" id="${yr}-reports"></div>
   `;
@@ -485,6 +512,7 @@ function buildSeasonPanel(yr) {
   renderUnluckyPanel(`${yr}-sub-roster`, season, 'ui4', 'sum4', "Roster Luck", "", 'flips4', (m, i, v) => projTip(m, i));
   renderUnluckyPanel(`${yr}-sub-net`, season, 'ui5', 'sum5', "Net Luck", "", 'flips5',
     (m, i, v) => `${projTip(m, i)} · ${season.opponents[m][i]} ${fmt(season.ui3[m][i])} vs their usual`);
+  renderSOS(`${yr}-sub-sos`, season);
   el.querySelectorAll('.subtab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       el.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));

@@ -23,6 +23,13 @@ const BBB = (() => {
   const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
   const pstdev = a => { const m = mean(a); return Math.sqrt(mean(a.map(v => (v - m) ** 2))); };
   const median = a => { const s = [...a].sort((x, y) => x - y); const n = s.length; return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2; };
+  // Standard normal CDF (Abramowitz–Stegun 7.1.26, |err| < 1.5e-7)
+  const Phi = z => {
+    const t = 1 / (1 + 0.2316419 * Math.abs(z));
+    const d = 0.3989423 * Math.exp(-z * z / 2);
+    const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z >= 0 ? 1 - p : p;
+  };
   const argmax = (obj, keys) => keys.reduce((b, k) => (b === null || obj[k] > obj[b] ? k : b), null);
   const argmin = (obj, keys) => keys.reduce((b, k) => (b === null || obj[k] < obj[b] ? k : b), null);
 
@@ -84,6 +91,18 @@ const BBB = (() => {
     return { scores, opponent, result };
   }
 
+  /** Opponents for regular-season weeks that exist on the schedule but have no scores yet: {rid: {w: rid}}. */
+  function futureOpponents(matchupsByWeek, scoredWeeks, lastReg) {
+    const done = new Set(scoredWeeks), out = {};
+    for (let w = 1; w <= lastReg; w++) {
+      if (done.has(w) || !Array.isArray(matchupsByWeek[w])) continue;
+      const byMid = {};
+      for (const e of matchupsByWeek[w]) if (e.matchup_id != null) (byMid[e.matchup_id] ??= []).push(e.roster_id);
+      for (const pair of Object.values(byMid)) if (pair.length === 2) { (out[pair[0]] ??= {})[w] = pair[1]; (out[pair[1]] ??= {})[w] = pair[0]; }
+    }
+    return out;
+  }
+
   // ---------- the season ----------
   /**
    * @param weeks     ascending list of scored regular-season weeks
@@ -91,7 +110,7 @@ const BBB = (() => {
    * @param scores    {rid: {w: pts}}   opponent {rid: {w: rid}}   result {rid: {w: 'W'|'L'|'T'}}
    * @param projected {rid: {w: pts}} optional (missing weeks -> roster/net luck blank)
    */
-  function buildSeason({ weeks, nameMap, scores, opponent, result, projected = {} }) {
+  function buildSeason({ weeks, nameMap, scores, opponent, result, projected = {}, futureOpponent = {} }) {
     const rids = Object.keys(nameMap).map(k => (isNaN(k) ? k : Number(k))).sort((a, b) => (a > b) - (a < b));
     const nm = r => nameMap[r];
     const seasonAvg = {}; for (const r of rids) seasonAvg[r] = mean(weeks.map(w => scores[r][w]));
@@ -151,6 +170,31 @@ const BBB = (() => {
       standings.push({ name: nm(r), wins, losses, pf, pa, avg: r2(mean(sc)), sd: r2(pstdev(sc)) });
       medianStandings.push({ name: nm(r), wins: wins + mres.filter(v => v === "W").length, losses: losses + mres.filter(v => v === "L").length, pf });
     }
+    // ---- Strength of schedule: expected wins vs. your actual opponents minus vs. a league-average opponent ----
+    const allScores = rids.flatMap(r => weeks.map(w => scores[r][w]));
+    const leagueMu = mean(allScores), leagueSd = pstdev(allScores) || 1;
+    const mu = {}, sd = {};
+    for (const r of rids) { const sc = weeks.map(w => scores[r][w]); mu[r] = mean(sc); sd[r] = sc.length >= 4 ? (pstdev(sc) || leagueSd) : leagueSd; }
+    const pWin = (a, b) => Phi((mu[a] - mu[b]) / Math.sqrt(sd[a] ** 2 + sd[b] ** 2));
+    const pWinNeutral = a => Phi((mu[a] - leagueMu) / Math.sqrt(sd[a] ** 2 + leagueSd ** 2));
+    const sos = {};
+    for (const r of rids) {
+      const weekly = weeks.map(w => ({ week: w, opp: nm(opponent[r][w]), p: r2(pWin(r, opponent[r][w])) }));
+      const expActual = weekly.reduce((s, x) => s + x.p, 0);
+      const expNeutral = weeks.length * pWinNeutral(r);
+      const wins = weeks.filter(w => result[r][w] === "W").length;
+      const fut = Object.entries(futureOpponent[r] || {}).map(([w, o]) => ({ week: Number(w), opp: nm(o), p: r2(pWin(r, o)) })).sort((a, b) => a.week - b.week);
+      const remActual = fut.reduce((s, x) => s + x.p, 0);
+      const remNeutral = fut.length * pWinNeutral(r);
+      sos[nm(r)] = {
+        expActual: r2(expActual), expNeutral: r2(expNeutral), sos: r2(expNeutral - expActual),
+        recordLuck: r2(wins - expActual), weekly,
+        remaining: fut.length ? r2(remNeutral - remActual) : null, remainingWeeks: fut,
+        mu: r2(mu[r]), sd: r2(sd[r]),
+      };
+    }
+    for (const row of standings) row.sos = sos[row.name].sos;
+
     const byRecord = (a, b) => b.wins - a.wins || b.pf - a.pf;
     standings.sort(byRecord); medianStandings.sort(byRecord);
 
@@ -198,7 +242,7 @@ const BBB = (() => {
       ui4: perWeek(ui4), flips4: perWeek(flips4), sum4: summarize(ui4),
       ui5: perWeek(ui5), flips5: perWeek(flips5), sum5: summarize(ui5),
       projected: perWeek(projinfo), projMean: weeks.map(w => projMean[w]),
-      standings, medianStandings, weeklyReports,
+      standings, medianStandings, weeklyReports, sos,
     };
   }
 
@@ -218,19 +262,19 @@ const BBB = (() => {
 
   function career(seasons) {
     const stats = {};
-    const ensure = k => stats[k] ??= { seasons: 0, wins: 0, losses: 0, pf: 0, medianWins: 0, medianLosses: 0, championships: 0, runnerUps: 0, thirds: 0 };
+    const ensure = k => stats[k] ??= { seasons: 0, wins: 0, losses: 0, pf: 0, medianWins: 0, medianLosses: 0, championships: 0, runnerUps: 0, thirds: 0, sos: 0 };
     for (const yr of Object.keys(seasons).sort()) {
       const s = seasons[yr]; if (!s || !s.standings) continue;
       for (const row of s.standings) {
         const c = ensure(CAREER_ALIAS[row.name] || row.name);
-        c.seasons++; c.wins += row.wins; c.losses += row.losses; c.pf += row.pf;
+        c.seasons++; c.wins += row.wins; c.losses += row.losses; c.pf += row.pf; c.sos += row.sos || 0;
         if (row.playoffResult === "Champion") c.championships++;
         else if (row.playoffResult === "Runner-up") c.runnerUps++;
         else if (row.playoffResult === "3rd Place") c.thirds++;
       }
       for (const row of s.medianStandings) { const c = ensure(CAREER_ALIAS[row.name] || row.name); c.medianWins += row.wins; c.medianLosses += row.losses; }
     }
-    return Object.entries(stats).map(([name, v]) => ({ ...v, name, pf: r2(v.pf) }))
+    return Object.entries(stats).map(([name, v]) => ({ ...v, name, pf: r2(v.pf), sos: r2(v.sos) }))
       .sort((a, b) => b.championships - a.championships || b.wins - a.wins || b.pf - a.pf);
   }
 
@@ -250,12 +294,12 @@ const BBB = (() => {
       const tp = weekTeamProjections(projectionsByWeek[w], matchupsByWeek[w], league);
       for (const r in tp) (projected[r] ??= {})[w] = tp[r];
     }
-    const season = applyPlayoffs(buildSeason({ weeks, nameMap, ...input, projected }), bracket, nameMap);
+    const season = applyPlayoffs(buildSeason({ weeks, nameMap, ...input, projected, futureOpponent: futureOpponents(matchupsByWeek, weeks, meta.lastRegularWeek) }), bracket, nameMap);
     season.meta = meta;
     return season;
   }
 
   return { MANAGERS, r2, playerPts, optimalLineup, weekTeamProjections, nameMapFrom, lastRegularWeek, weekHasScores,
-           inputFromMatchups, buildSeason, playoffFinish, applyPlayoffs, career, seasonFromRaw };
+           inputFromMatchups, futureOpponents, buildSeason, playoffFinish, applyPlayoffs, career, seasonFromRaw };
 })();
 if (typeof module !== "undefined") module.exports = BBB;

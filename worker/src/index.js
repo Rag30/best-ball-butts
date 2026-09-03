@@ -53,9 +53,9 @@ async function computeSeason(env, yr, leagueId, currentWeek) {
     getJson(`${API}/v1/league/${leagueId}/rosters`), getJson(`${API}/v1/league/${leagueId}/winners_bracket`),
   ]);
   const lastReg = BBB.lastRegularWeek(league);
-  const upTo = currentWeek == null ? lastReg : Math.min(lastReg, currentWeek);
+  // All regular-season weeks: scored ones feed the tables, unscored ones give the remaining schedule (SOS).
   const matchupsByWeek = {};
-  const fetched = await Promise.all(Array.from({ length: upTo }, (_, i) => getJson(`${API}/v1/league/${leagueId}/matchups/${i + 1}`)));
+  const fetched = await Promise.all(Array.from({ length: lastReg }, (_, i) => getJson(`${API}/v1/league/${leagueId}/matchups/${i + 1}`)));
   fetched.forEach((m, i) => matchupsByWeek[i + 1] = m);
 
   // Team projection totals per week: cached; only the live (latest scored) week is refetched.
@@ -80,7 +80,8 @@ async function computeSeason(env, yr, leagueId, currentWeek) {
     return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta };
   }
   const input = BBB.inputFromMatchups(matchupsByWeek, scored);
-  const season = BBB.applyPlayoffs(BBB.buildSeason({ weeks: scored, nameMap, ...input, projected }), bracket, nameMap);
+  const futureOpponent = BBB.futureOpponents(matchupsByWeek, scored, lastReg);
+  const season = BBB.applyPlayoffs(BBB.buildSeason({ weeks: scored, nameMap, ...input, projected, futureOpponent }), bracket, nameMap);
   season.meta = meta;
   return season;
 }

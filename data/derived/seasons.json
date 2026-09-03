@@ -1918,6 +1918,7 @@
      "pa": 1837.26,
      "avg": 145.88,
      "sd": 19.82,
+     "sos": 0,
      "playoffResult": "Runner-up"
     },
     {
@@ -1928,6 +1929,7 @@
      "pa": 1903.4,
      "avg": 152.89,
      "sd": 20.67,
+     "sos": -0.26,
      "playoffResult": "Champion"
     },
     {
@@ -1938,6 +1940,7 @@
      "pa": 2018.98,
      "avg": 148.88,
      "sd": 26.09,
+     "sos": -0.13,
      "playoffResult": "—"
     },
     {
@@ -1948,6 +1951,7 @@
      "pa": 1915.3,
      "avg": 130.31,
      "sd": 31.42,
+     "sos": 0.29,
      "playoffResult": "4th Place"
     },
     {
@@ -1958,6 +1962,7 @@
      "pa": 2101.96,
      "avg": 144.88,
      "sd": 18.03,
+     "sos": -0.02,
      "playoffResult": "—"
     },
     {
@@ -1968,6 +1973,7 @@
      "pa": 2037.64,
      "avg": 144.23,
      "sd": 20.92,
+     "sos": 0.02,
      "playoffResult": "3rd Place"
     },
     {
@@ -1978,6 +1984,7 @@
      "pa": 2023.24,
      "avg": 139.65,
      "sd": 24.85,
+     "sos": 0.14,
      "playoffResult": "—"
     },
     {
@@ -1988,6 +1995,7 @@
      "pa": 2111.16,
      "avg": 132.5,
      "sd": 20.64,
+     "sos": 0.35,
      "playoffResult": "—"
     }
    ],
@@ -3373,6 +3381,664 @@
      ]
     }
    ],
+   "sos": {
+    "Conrad": {
+     "expActual": 9.06,
+     "expNeutral": 8.8,
+     "sos": -0.26,
+     "recordLuck": -0.06,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Lauren",
+       "p": 0.6
+      },
+      {
+       "week": 2,
+       "opp": "Emma",
+       "p": 0.62
+      },
+      {
+       "week": 3,
+       "opp": "Henry",
+       "p": 0.66
+      },
+      {
+       "week": 4,
+       "opp": "Raghav",
+       "p": 0.61
+      },
+      {
+       "week": 5,
+       "opp": "Noelle",
+       "p": 0.73
+      },
+      {
+       "week": 6,
+       "opp": "Steve",
+       "p": 0.76
+      },
+      {
+       "week": 7,
+       "opp": "Ben",
+       "p": 0.55
+      },
+      {
+       "week": 8,
+       "opp": "Raghav",
+       "p": 0.61
+      },
+      {
+       "week": 9,
+       "opp": "Steve",
+       "p": 0.76
+      },
+      {
+       "week": 10,
+       "opp": "Emma",
+       "p": 0.62
+      },
+      {
+       "week": 11,
+       "opp": "Noelle",
+       "p": 0.73
+      },
+      {
+       "week": 12,
+       "opp": "Lauren",
+       "p": 0.6
+      },
+      {
+       "week": 13,
+       "opp": "Ben",
+       "p": 0.55
+      },
+      {
+       "week": 14,
+       "opp": "Henry",
+       "p": 0.66
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 152.89,
+     "sd": 20.67
+    },
+    "Lauren": {
+     "expActual": 7.62,
+     "expNeutral": 7.62,
+     "sos": 0,
+     "recordLuck": 2.38,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Conrad",
+       "p": 0.4
+      },
+      {
+       "week": 2,
+       "opp": "Raghav",
+       "p": 0.51
+      },
+      {
+       "week": 3,
+       "opp": "Steve",
+       "p": 0.68
+      },
+      {
+       "week": 4,
+       "opp": "Henry",
+       "p": 0.58
+      },
+      {
+       "week": 5,
+       "opp": "Ben",
+       "p": 0.46
+      },
+      {
+       "week": 6,
+       "opp": "Emma",
+       "p": 0.52
+      },
+      {
+       "week": 7,
+       "opp": "Noelle",
+       "p": 0.66
+      },
+      {
+       "week": 8,
+       "opp": "Henry",
+       "p": 0.58
+      },
+      {
+       "week": 9,
+       "opp": "Raghav",
+       "p": 0.51
+      },
+      {
+       "week": 10,
+       "opp": "Ben",
+       "p": 0.46
+      },
+      {
+       "week": 11,
+       "opp": "Emma",
+       "p": 0.52
+      },
+      {
+       "week": 12,
+       "opp": "Conrad",
+       "p": 0.4
+      },
+      {
+       "week": 13,
+       "opp": "Noelle",
+       "p": 0.66
+      },
+      {
+       "week": 14,
+       "opp": "Steve",
+       "p": 0.68
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 145.88,
+     "sd": 19.82
+    },
+    "Emma": {
+     "expActual": 7.3,
+     "expNeutral": 7.32,
+     "sos": 0.02,
+     "recordLuck": -1.3,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Raghav",
+       "p": 0.49
+      },
+      {
+       "week": 2,
+       "opp": "Conrad",
+       "p": 0.38
+      },
+      {
+       "week": 3,
+       "opp": "Ben",
+       "p": 0.44
+      },
+      {
+       "week": 4,
+       "opp": "Steve",
+       "p": 0.66
+      },
+      {
+       "week": 5,
+       "opp": "Raghav",
+       "p": 0.49
+      },
+      {
+       "week": 6,
+       "opp": "Lauren",
+       "p": 0.48
+      },
+      {
+       "week": 7,
+       "opp": "Henry",
+       "p": 0.56
+      },
+      {
+       "week": 8,
+       "opp": "Steve",
+       "p": 0.66
+      },
+      {
+       "week": 9,
+       "opp": "Noelle",
+       "p": 0.64
+      },
+      {
+       "week": 10,
+       "opp": "Conrad",
+       "p": 0.38
+      },
+      {
+       "week": 11,
+       "opp": "Lauren",
+       "p": 0.48
+      },
+      {
+       "week": 12,
+       "opp": "Noelle",
+       "p": 0.64
+      },
+      {
+       "week": 13,
+       "opp": "Henry",
+       "p": 0.56
+      },
+      {
+       "week": 14,
+       "opp": "Ben",
+       "p": 0.44
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 144.23,
+     "sd": 20.92
+    },
+    "Raghav": {
+     "expActual": 7.48,
+     "expNeutral": 7.46,
+     "sos": -0.02,
+     "recordLuck": -1.48,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Emma",
+       "p": 0.51
+      },
+      {
+       "week": 2,
+       "opp": "Lauren",
+       "p": 0.49
+      },
+      {
+       "week": 3,
+       "opp": "Noelle",
+       "p": 0.66
+      },
+      {
+       "week": 4,
+       "opp": "Conrad",
+       "p": 0.39
+      },
+      {
+       "week": 5,
+       "opp": "Emma",
+       "p": 0.51
+      },
+      {
+       "week": 6,
+       "opp": "Ben",
+       "p": 0.45
+      },
+      {
+       "week": 7,
+       "opp": "Steve",
+       "p": 0.67
+      },
+      {
+       "week": 8,
+       "opp": "Conrad",
+       "p": 0.39
+      },
+      {
+       "week": 9,
+       "opp": "Lauren",
+       "p": 0.49
+      },
+      {
+       "week": 10,
+       "opp": "Henry",
+       "p": 0.57
+      },
+      {
+       "week": 11,
+       "opp": "Ben",
+       "p": 0.45
+      },
+      {
+       "week": 12,
+       "opp": "Henry",
+       "p": 0.57
+      },
+      {
+       "week": 13,
+       "opp": "Steve",
+       "p": 0.67
+      },
+      {
+       "week": 14,
+       "opp": "Noelle",
+       "p": 0.66
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 144.88,
+     "sd": 18.03
+    },
+    "Steve": {
+     "expActual": 4.94,
+     "expNeutral": 5.29,
+     "sos": 0.35,
+     "recordLuck": -1.94,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Ben",
+       "p": 0.31
+      },
+      {
+       "week": 2,
+       "opp": "Noelle",
+       "p": 0.52
+      },
+      {
+       "week": 3,
+       "opp": "Lauren",
+       "p": 0.32
+      },
+      {
+       "week": 4,
+       "opp": "Emma",
+       "p": 0.34
+      },
+      {
+       "week": 5,
+       "opp": "Henry",
+       "p": 0.41
+      },
+      {
+       "week": 6,
+       "opp": "Conrad",
+       "p": 0.24
+      },
+      {
+       "week": 7,
+       "opp": "Raghav",
+       "p": 0.33
+      },
+      {
+       "week": 8,
+       "opp": "Emma",
+       "p": 0.34
+      },
+      {
+       "week": 9,
+       "opp": "Conrad",
+       "p": 0.24
+      },
+      {
+       "week": 10,
+       "opp": "Noelle",
+       "p": 0.52
+      },
+      {
+       "week": 11,
+       "opp": "Henry",
+       "p": 0.41
+      },
+      {
+       "week": 12,
+       "opp": "Ben",
+       "p": 0.31
+      },
+      {
+       "week": 13,
+       "opp": "Raghav",
+       "p": 0.33
+      },
+      {
+       "week": 14,
+       "opp": "Lauren",
+       "p": 0.32
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 132.5,
+     "sd": 20.64
+    },
+    "Ben": {
+     "expActual": 8.14,
+     "expNeutral": 8.01,
+     "sos": -0.13,
+     "recordLuck": 0.86,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Steve",
+       "p": 0.69
+      },
+      {
+       "week": 2,
+       "opp": "Henry",
+       "p": 0.6
+      },
+      {
+       "week": 3,
+       "opp": "Emma",
+       "p": 0.56
+      },
+      {
+       "week": 4,
+       "opp": "Noelle",
+       "p": 0.68
+      },
+      {
+       "week": 5,
+       "opp": "Lauren",
+       "p": 0.54
+      },
+      {
+       "week": 6,
+       "opp": "Raghav",
+       "p": 0.55
+      },
+      {
+       "week": 7,
+       "opp": "Conrad",
+       "p": 0.45
+      },
+      {
+       "week": 8,
+       "opp": "Noelle",
+       "p": 0.68
+      },
+      {
+       "week": 9,
+       "opp": "Henry",
+       "p": 0.6
+      },
+      {
+       "week": 10,
+       "opp": "Lauren",
+       "p": 0.54
+      },
+      {
+       "week": 11,
+       "opp": "Raghav",
+       "p": 0.55
+      },
+      {
+       "week": 12,
+       "opp": "Steve",
+       "p": 0.69
+      },
+      {
+       "week": 13,
+       "opp": "Conrad",
+       "p": 0.45
+      },
+      {
+       "week": 14,
+       "opp": "Emma",
+       "p": 0.56
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 148.88,
+     "sd": 26.09
+    },
+    "Noelle": {
+     "expActual": 5.04,
+     "expNeutral": 5.33,
+     "sos": 0.29,
+     "recordLuck": 1.96,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Henry",
+       "p": 0.41
+      },
+      {
+       "week": 2,
+       "opp": "Steve",
+       "p": 0.48
+      },
+      {
+       "week": 3,
+       "opp": "Raghav",
+       "p": 0.34
+      },
+      {
+       "week": 4,
+       "opp": "Ben",
+       "p": 0.32
+      },
+      {
+       "week": 5,
+       "opp": "Conrad",
+       "p": 0.27
+      },
+      {
+       "week": 6,
+       "opp": "Henry",
+       "p": 0.41
+      },
+      {
+       "week": 7,
+       "opp": "Lauren",
+       "p": 0.34
+      },
+      {
+       "week": 8,
+       "opp": "Ben",
+       "p": 0.32
+      },
+      {
+       "week": 9,
+       "opp": "Emma",
+       "p": 0.36
+      },
+      {
+       "week": 10,
+       "opp": "Steve",
+       "p": 0.48
+      },
+      {
+       "week": 11,
+       "opp": "Conrad",
+       "p": 0.27
+      },
+      {
+       "week": 12,
+       "opp": "Emma",
+       "p": 0.36
+      },
+      {
+       "week": 13,
+       "opp": "Lauren",
+       "p": 0.34
+      },
+      {
+       "week": 14,
+       "opp": "Raghav",
+       "p": 0.34
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 130.31,
+     "sd": 31.42
+    },
+    "Henry": {
+     "expActual": 6.42,
+     "expNeutral": 6.56,
+     "sos": 0.14,
+     "recordLuck": -0.42,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Noelle",
+       "p": 0.59
+      },
+      {
+       "week": 2,
+       "opp": "Ben",
+       "p": 0.4
+      },
+      {
+       "week": 3,
+       "opp": "Conrad",
+       "p": 0.34
+      },
+      {
+       "week": 4,
+       "opp": "Lauren",
+       "p": 0.42
+      },
+      {
+       "week": 5,
+       "opp": "Steve",
+       "p": 0.59
+      },
+      {
+       "week": 6,
+       "opp": "Noelle",
+       "p": 0.59
+      },
+      {
+       "week": 7,
+       "opp": "Emma",
+       "p": 0.44
+      },
+      {
+       "week": 8,
+       "opp": "Lauren",
+       "p": 0.42
+      },
+      {
+       "week": 9,
+       "opp": "Ben",
+       "p": 0.4
+      },
+      {
+       "week": 10,
+       "opp": "Raghav",
+       "p": 0.43
+      },
+      {
+       "week": 11,
+       "opp": "Steve",
+       "p": 0.59
+      },
+      {
+       "week": 12,
+       "opp": "Raghav",
+       "p": 0.43
+      },
+      {
+       "week": 13,
+       "opp": "Emma",
+       "p": 0.44
+      },
+      {
+       "week": 14,
+       "opp": "Conrad",
+       "p": 0.34
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 139.65,
+     "sd": 24.85
+    }
+   },
    "meta": {
     "leagueId": "1129142032766861312",
     "status": "complete",
@@ -5373,6 +6039,7 @@
      "pa": 2320.82,
      "avg": 172.1,
      "sd": 22.97,
+     "sos": -0.29,
      "playoffResult": "4th Place"
     },
     {
@@ -5383,6 +6050,7 @@
      "pa": 2264.06,
      "avg": 171.63,
      "sd": 36.59,
+     "sos": -0.18,
      "playoffResult": "Runner-up"
     },
     {
@@ -5393,6 +6061,7 @@
      "pa": 2282.02,
      "avg": 172.37,
      "sd": 23.57,
+     "sos": -0.28,
      "playoffResult": "—"
     },
     {
@@ -5403,6 +6072,7 @@
      "pa": 2307.76,
      "avg": 168.86,
      "sd": 38.67,
+     "sos": -0.11,
      "playoffResult": "Champion"
     },
     {
@@ -5413,6 +6083,7 @@
      "pa": 2225.44,
      "avg": 168.07,
      "sd": 16.94,
+     "sos": -0.2,
      "playoffResult": "—"
     },
     {
@@ -5423,6 +6094,7 @@
      "pa": 2381.14,
      "avg": 157.14,
      "sd": 20.54,
+     "sos": 0.17,
      "playoffResult": "3rd Place"
     },
     {
@@ -5433,6 +6105,7 @@
      "pa": 2338.26,
      "avg": 154.75,
      "sd": 23.03,
+     "sos": 0.16,
      "playoffResult": "—"
     },
     {
@@ -5443,6 +6116,7 @@
      "pa": 2270.42,
      "avg": 148.66,
      "sd": 22.25,
+     "sos": 0.37,
      "playoffResult": "—"
     }
    ],
@@ -6828,6 +7502,664 @@
      ]
     }
    ],
+   "sos": {
+    "Conrad": {
+     "expActual": 8.5,
+     "expNeutral": 8.21,
+     "sos": -0.29,
+     "recordLuck": 1.5,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Lauren",
+       "p": 0.56
+      },
+      {
+       "week": 2,
+       "opp": "Henry",
+       "p": 0.77
+      },
+      {
+       "week": 3,
+       "opp": "Raghav",
+       "p": 0.5
+      },
+      {
+       "week": 4,
+       "opp": "Noelle",
+       "p": 0.53
+      },
+      {
+       "week": 5,
+       "opp": "Ben",
+       "p": 0.5
+      },
+      {
+       "week": 6,
+       "opp": "Avery",
+       "p": 0.69
+      },
+      {
+       "week": 7,
+       "opp": "Emma",
+       "p": 0.7
+      },
+      {
+       "week": 8,
+       "opp": "Ben",
+       "p": 0.5
+      },
+      {
+       "week": 9,
+       "opp": "Emma",
+       "p": 0.7
+      },
+      {
+       "week": 10,
+       "opp": "Henry",
+       "p": 0.77
+      },
+      {
+       "week": 11,
+       "opp": "Raghav",
+       "p": 0.5
+      },
+      {
+       "week": 12,
+       "opp": "Avery",
+       "p": 0.69
+      },
+      {
+       "week": 13,
+       "opp": "Noelle",
+       "p": 0.53
+      },
+      {
+       "week": 14,
+       "opp": "Lauren",
+       "p": 0.56
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 172.1,
+     "sd": 22.97
+    },
+    "Lauren": {
+     "expActual": 7.86,
+     "expNeutral": 7.66,
+     "sos": -0.2,
+     "recordLuck": -0.86,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Conrad",
+       "p": 0.44
+      },
+      {
+       "week": 2,
+       "opp": "Emma",
+       "p": 0.68
+      },
+      {
+       "week": 3,
+       "opp": "Avery",
+       "p": 0.66
+      },
+      {
+       "week": 4,
+       "opp": "Ben",
+       "p": 0.44
+      },
+      {
+       "week": 5,
+       "opp": "Noelle",
+       "p": 0.49
+      },
+      {
+       "week": 6,
+       "opp": "Raghav",
+       "p": 0.46
+      },
+      {
+       "week": 7,
+       "opp": "Henry",
+       "p": 0.76
+      },
+      {
+       "week": 8,
+       "opp": "Noelle",
+       "p": 0.49
+      },
+      {
+       "week": 9,
+       "opp": "Raghav",
+       "p": 0.46
+      },
+      {
+       "week": 10,
+       "opp": "Avery",
+       "p": 0.66
+      },
+      {
+       "week": 11,
+       "opp": "Emma",
+       "p": 0.68
+      },
+      {
+       "week": 12,
+       "opp": "Ben",
+       "p": 0.44
+      },
+      {
+       "week": 13,
+       "opp": "Henry",
+       "p": 0.76
+      },
+      {
+       "week": 14,
+       "opp": "Conrad",
+       "p": 0.44
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 168.07,
+     "sd": 16.94
+    },
+    "Emma": {
+     "expActual": 5.4,
+     "expNeutral": 5.56,
+     "sos": 0.16,
+     "recordLuck": -0.4,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Henry",
+       "p": 0.58
+      },
+      {
+       "week": 2,
+       "opp": "Lauren",
+       "p": 0.32
+      },
+      {
+       "week": 3,
+       "opp": "Noelle",
+       "p": 0.38
+      },
+      {
+       "week": 4,
+       "opp": "Raghav",
+       "p": 0.35
+      },
+      {
+       "week": 5,
+       "opp": "Avery",
+       "p": 0.47
+      },
+      {
+       "week": 6,
+       "opp": "Ben",
+       "p": 0.3
+      },
+      {
+       "week": 7,
+       "opp": "Conrad",
+       "p": 0.3
+      },
+      {
+       "week": 8,
+       "opp": "Raghav",
+       "p": 0.35
+      },
+      {
+       "week": 9,
+       "opp": "Conrad",
+       "p": 0.3
+      },
+      {
+       "week": 10,
+       "opp": "Ben",
+       "p": 0.3
+      },
+      {
+       "week": 11,
+       "opp": "Lauren",
+       "p": 0.32
+      },
+      {
+       "week": 12,
+       "opp": "Noelle",
+       "p": 0.38
+      },
+      {
+       "week": 13,
+       "opp": "Avery",
+       "p": 0.47
+      },
+      {
+       "week": 14,
+       "opp": "Henry",
+       "p": 0.58
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 154.75,
+     "sd": 23.03
+    },
+    "Raghav": {
+     "expActual": 8.08,
+     "expNeutral": 7.9,
+     "sos": -0.18,
+     "recordLuck": -0.08,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Avery",
+       "p": 0.64
+      },
+      {
+       "week": 2,
+       "opp": "Ben",
+       "p": 0.49
+      },
+      {
+       "week": 3,
+       "opp": "Conrad",
+       "p": 0.5
+      },
+      {
+       "week": 4,
+       "opp": "Emma",
+       "p": 0.65
+      },
+      {
+       "week": 5,
+       "opp": "Henry",
+       "p": 0.7
+      },
+      {
+       "week": 6,
+       "opp": "Lauren",
+       "p": 0.54
+      },
+      {
+       "week": 7,
+       "opp": "Noelle",
+       "p": 0.52
+      },
+      {
+       "week": 8,
+       "opp": "Emma",
+       "p": 0.65
+      },
+      {
+       "week": 9,
+       "opp": "Lauren",
+       "p": 0.54
+      },
+      {
+       "week": 10,
+       "opp": "Noelle",
+       "p": 0.52
+      },
+      {
+       "week": 11,
+       "opp": "Conrad",
+       "p": 0.5
+      },
+      {
+       "week": 12,
+       "opp": "Henry",
+       "p": 0.7
+      },
+      {
+       "week": 13,
+       "opp": "Ben",
+       "p": 0.49
+      },
+      {
+       "week": 14,
+       "opp": "Avery",
+       "p": 0.64
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 171.63,
+     "sd": 36.59
+    },
+    "Avery": {
+     "expActual": 5.7,
+     "expNeutral": 5.87,
+     "sos": 0.17,
+     "recordLuck": 1.3,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Raghav",
+       "p": 0.36
+      },
+      {
+       "week": 2,
+       "opp": "Noelle",
+       "p": 0.39
+      },
+      {
+       "week": 3,
+       "opp": "Lauren",
+       "p": 0.34
+      },
+      {
+       "week": 4,
+       "opp": "Henry",
+       "p": 0.61
+      },
+      {
+       "week": 5,
+       "opp": "Emma",
+       "p": 0.53
+      },
+      {
+       "week": 6,
+       "opp": "Conrad",
+       "p": 0.31
+      },
+      {
+       "week": 7,
+       "opp": "Ben",
+       "p": 0.31
+      },
+      {
+       "week": 8,
+       "opp": "Henry",
+       "p": 0.61
+      },
+      {
+       "week": 9,
+       "opp": "Noelle",
+       "p": 0.39
+      },
+      {
+       "week": 10,
+       "opp": "Lauren",
+       "p": 0.34
+      },
+      {
+       "week": 11,
+       "opp": "Ben",
+       "p": 0.31
+      },
+      {
+       "week": 12,
+       "opp": "Conrad",
+       "p": 0.31
+      },
+      {
+       "week": 13,
+       "opp": "Emma",
+       "p": 0.53
+      },
+      {
+       "week": 14,
+       "opp": "Raghav",
+       "p": 0.36
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 157.14,
+     "sd": 20.54
+    },
+    "Ben": {
+     "expActual": 8.52,
+     "expNeutral": 8.24,
+     "sos": -0.28,
+     "recordLuck": -1.52,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Noelle",
+       "p": 0.53
+      },
+      {
+       "week": 2,
+       "opp": "Raghav",
+       "p": 0.51
+      },
+      {
+       "week": 3,
+       "opp": "Henry",
+       "p": 0.77
+      },
+      {
+       "week": 4,
+       "opp": "Lauren",
+       "p": 0.56
+      },
+      {
+       "week": 5,
+       "opp": "Conrad",
+       "p": 0.5
+      },
+      {
+       "week": 6,
+       "opp": "Emma",
+       "p": 0.7
+      },
+      {
+       "week": 7,
+       "opp": "Avery",
+       "p": 0.69
+      },
+      {
+       "week": 8,
+       "opp": "Conrad",
+       "p": 0.5
+      },
+      {
+       "week": 9,
+       "opp": "Henry",
+       "p": 0.77
+      },
+      {
+       "week": 10,
+       "opp": "Emma",
+       "p": 0.7
+      },
+      {
+       "week": 11,
+       "opp": "Avery",
+       "p": 0.69
+      },
+      {
+       "week": 12,
+       "opp": "Lauren",
+       "p": 0.56
+      },
+      {
+       "week": 13,
+       "opp": "Raghav",
+       "p": 0.51
+      },
+      {
+       "week": 14,
+       "opp": "Noelle",
+       "p": 0.53
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 172.37,
+     "sd": 23.57
+    },
+    "Noelle": {
+     "expActual": 7.66,
+     "expNeutral": 7.55,
+     "sos": -0.11,
+     "recordLuck": -0.66,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Ben",
+       "p": 0.47
+      },
+      {
+       "week": 2,
+       "opp": "Avery",
+       "p": 0.61
+      },
+      {
+       "week": 3,
+       "opp": "Emma",
+       "p": 0.62
+      },
+      {
+       "week": 4,
+       "opp": "Conrad",
+       "p": 0.47
+      },
+      {
+       "week": 5,
+       "opp": "Lauren",
+       "p": 0.51
+      },
+      {
+       "week": 6,
+       "opp": "Henry",
+       "p": 0.67
+      },
+      {
+       "week": 7,
+       "opp": "Raghav",
+       "p": 0.48
+      },
+      {
+       "week": 8,
+       "opp": "Lauren",
+       "p": 0.51
+      },
+      {
+       "week": 9,
+       "opp": "Avery",
+       "p": 0.61
+      },
+      {
+       "week": 10,
+       "opp": "Raghav",
+       "p": 0.48
+      },
+      {
+       "week": 11,
+       "opp": "Henry",
+       "p": 0.67
+      },
+      {
+       "week": 12,
+       "opp": "Emma",
+       "p": 0.62
+      },
+      {
+       "week": 13,
+       "opp": "Conrad",
+       "p": 0.47
+      },
+      {
+       "week": 14,
+       "opp": "Ben",
+       "p": 0.47
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 168.86,
+     "sd": 38.67
+    },
+    "Henry": {
+     "expActual": 4.28,
+     "expNeutral": 4.65,
+     "sos": 0.37,
+     "recordLuck": 0.72,
+     "weekly": [
+      {
+       "week": 1,
+       "opp": "Emma",
+       "p": 0.42
+      },
+      {
+       "week": 2,
+       "opp": "Conrad",
+       "p": 0.23
+      },
+      {
+       "week": 3,
+       "opp": "Ben",
+       "p": 0.23
+      },
+      {
+       "week": 4,
+       "opp": "Avery",
+       "p": 0.39
+      },
+      {
+       "week": 5,
+       "opp": "Raghav",
+       "p": 0.3
+      },
+      {
+       "week": 6,
+       "opp": "Noelle",
+       "p": 0.33
+      },
+      {
+       "week": 7,
+       "opp": "Lauren",
+       "p": 0.24
+      },
+      {
+       "week": 8,
+       "opp": "Avery",
+       "p": 0.39
+      },
+      {
+       "week": 9,
+       "opp": "Ben",
+       "p": 0.23
+      },
+      {
+       "week": 10,
+       "opp": "Conrad",
+       "p": 0.23
+      },
+      {
+       "week": 11,
+       "opp": "Noelle",
+       "p": 0.33
+      },
+      {
+       "week": 12,
+       "opp": "Raghav",
+       "p": 0.3
+      },
+      {
+       "week": 13,
+       "opp": "Lauren",
+       "p": 0.24
+      },
+      {
+       "week": 14,
+       "opp": "Emma",
+       "p": 0.42
+      }
+     ],
+     "remaining": null,
+     "remainingWeeks": [],
+     "mu": 148.66,
+     "sd": 22.25
+    }
+   },
    "meta": {
     "leagueId": "1180560210753716224",
     "status": "complete",
@@ -7029,6 +8361,7 @@
    "championships": 1,
    "runnerUps": 0,
    "thirds": 0,
+   "sos": -0.55,
    "name": "Conrad"
   },
   {
@@ -7041,6 +8374,7 @@
    "championships": 1,
    "runnerUps": 0,
    "thirds": 0,
+   "sos": 0.18,
    "name": "Noelle"
   },
   {
@@ -7053,6 +8387,7 @@
    "championships": 0,
    "runnerUps": 1,
    "thirds": 0,
+   "sos": -0.2,
    "name": "Lauren"
   },
   {
@@ -7065,6 +8400,7 @@
    "championships": 0,
    "runnerUps": 0,
    "thirds": 0,
+   "sos": -0.41,
    "name": "Ben"
   },
   {
@@ -7077,6 +8413,7 @@
    "championships": 0,
    "runnerUps": 1,
    "thirds": 0,
+   "sos": -0.2,
    "name": "Raghav"
   },
   {
@@ -7089,6 +8426,7 @@
    "championships": 0,
    "runnerUps": 0,
    "thirds": 1,
+   "sos": 0.18,
    "name": "Emma"
   },
   {
@@ -7101,6 +8439,7 @@
    "championships": 0,
    "runnerUps": 0,
    "thirds": 0,
+   "sos": 0.51,
    "name": "Henry"
   },
   {
@@ -7113,6 +8452,7 @@
    "championships": 0,
    "runnerUps": 0,
    "thirds": 1,
+   "sos": 0.17,
    "name": "Avery"
   },
   {
@@ -7125,6 +8465,7 @@
    "championships": 0,
    "runnerUps": 0,
    "thirds": 0,
+   "sos": 0.35,
    "name": "Steve"
   }
  ],
@@ -7163,5 +8504,5 @@
   ],
   "2026": []
  },
- "generatedAt": "2026-09-03T21:20:24.418Z"
+ "generatedAt": "2026-09-03T21:37:04.732Z"
 }
