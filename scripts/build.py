@@ -200,7 +200,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> Pulled from Sleeper API</span>
+    <span class="live-badge"><span class="live-dot"></span> Pulled from Sleeper API &middot; updated __UPDATED__</span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
   </div>
 
@@ -563,7 +563,10 @@ initSeasonTabs();
 </script>
 """
 
-html = html.replace("__DATA_JSON__", data_json)
+from datetime import datetime
+from zoneinfo import ZoneInfo
+updated = datetime.now(ZoneInfo("America/New_York")).strftime("%a %b %-d, %-I:%M %p ET")
+html = html.replace("__DATA_JSON__", data_json).replace("__UPDATED__", updated)
 # The template starts with <title> + <style>; lift those into <head> for a standalone page.
 head_part, body_part = html.split("</style>", 1)
 page = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"

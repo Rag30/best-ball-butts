@@ -34,8 +34,17 @@ Sleeper API ──fetch.py──▶ data/raw/        (immutable snapshots, the "
 
 ### Schedule
 
-`.github/workflows/update.yml` runs Tuesday and Friday mornings (UTC) September–January,
-and can be triggered manually from the Actions tab.
+`.github/workflows/update.yml` fires every 5 minutes September–January. `scripts/gate.py`
+checks the real NFL schedule (ESPN public scoreboard) and decides what each slot does:
+
+| When | What happens |
+|---|---|
+| NFL game day | fetch → compute → deploy every **5 min** (page lags Sleeper by ~5–15 min) |
+| Any other day | same, once an **hour** |
+| Tue & Fri 09:00 ET, or manual run | also **commits** `data/raw` + `docs` to git (the archive) |
+
+Deploys go straight to GitHub Pages from the runner (`actions/deploy-pages`), so only the
+archive runs create commits. The page header shows the build time.
 
 ## Run locally
 
