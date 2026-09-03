@@ -58,4 +58,4 @@ assembled into the optimal projected lineup.
 ## Managers
 
 Sleeper display names → first names live in `scripts/compute.js` (`MANAGERS`). Seat 5 was Steve in
-2024 and Avery from 2025; career stats for that seat are combined under Avery.
+2024 and Avery from 2025 — different people, tracked separately in the career table.
