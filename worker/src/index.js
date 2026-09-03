@@ -1,33 +1,46 @@
-// bbb-refresh: lets the public page trigger a shared rebuild.
-//   POST https://bbb-refresh.rrr-projects.com/refresh  -> dispatches update.yml on GitHub
+// bestballbutts.rrr-projects.com
+//   GET  *         -> proxies the GitHub Pages site (rag30.github.io/best-ball-butts), same content, nicer URL
+//   POST /refresh  -> dispatches update.yml on GitHub (the "Rebuild for everyone" button)
 // Holds the only credential (GH_TOKEN, a fine-grained PAT: this repo, Actions: write).
-// Rate-limited to one dispatch per 2 minutes so a stuck finger can't spam Actions.
 
 const REPO = "Rag30/best-ball-butts";
 const WORKFLOW = "update.yml";
-const ALLOWED_ORIGIN = "https://rag30.github.io";
+const PAGES_ORIGIN = "https://rag30.github.io";
+const PAGES_BASE = "/best-ball-butts";
+const ALLOWED_ORIGINS = new Set(["https://bestballbutts.rrr-projects.com", PAGES_ORIGIN]);
 const COOLDOWN_MS = 2 * 60 * 1000;
 
-const cors = {
-  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+const corsFor = origin => ({
+  "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "null",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
-};
-const json = (obj, status = 200) =>
-  new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", ...cors } });
+  "Vary": "Origin",
+});
+const json = (obj, status, origin) =>
+  new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", ...corsFor(origin) } });
+
+async function proxyPages(request, url) {
+  const path = url.pathname === "/" ? "/" : url.pathname;
+  const upstream = new URL(PAGES_ORIGIN + PAGES_BASE + path + url.search);
+  const resp = await fetch(upstream, { headers: { "User-Agent": "bbb-site-proxy" }, cf: { cacheTtl: 60, cacheEverything: true } });
+  const headers = new Headers(resp.headers);
+  headers.set("Cache-Control", "public, max-age=60");
+  return new Response(resp.body, { status: resp.status, headers });
+}
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-    if (request.method === "GET") {
-      return new Response(
-        "bbb-refresh relay is up.\n\nThis endpoint is used by the \"Rebuild for everyone\" button on\nhttps://rag30.github.io/best-ball-butts/ — nothing to see here.\n",
-        { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+    const origin = request.headers.get("Origin") || "";
+
+    if (url.pathname !== "/refresh") {
+      if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+      return proxyPages(request, url);
     }
-    if (url.pathname !== "/refresh") return json({ error: "not found" }, 404);
-    if (request.method !== "POST") return json({ error: "POST only" }, 405);
-    if (request.headers.get("Origin") !== ALLOWED_ORIGIN) return json({ error: "forbidden" }, 403);
+
+    if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsFor(origin) });
+    if (request.method !== "POST") return json({ error: "POST only" }, 405, origin);
+    if (!ALLOWED_ORIGINS.has(origin)) return json({ error: "forbidden" }, 403, origin);
 
     const ghHeaders = {
       Authorization: `Bearer ${env.GH_TOKEN}`,
@@ -43,7 +56,7 @@ export default {
       if (run) {
         const age = Date.now() - new Date(run.created_at).getTime();
         if (run.status !== "completed" || age < COOLDOWN_MS) {
-          return json({ ok: false, reason: "cooldown", retryInSeconds: Math.max(15, Math.ceil((COOLDOWN_MS - age) / 1000)), runUrl: run.html_url }, 429);
+          return json({ ok: false, reason: "cooldown", retryInSeconds: Math.max(15, Math.ceil((COOLDOWN_MS - age) / 1000)), runUrl: run.html_url }, 429, origin);
         }
       }
     }
@@ -53,7 +66,7 @@ export default {
       headers: { ...ghHeaders, "Content-Type": "application/json" },
       body: JSON.stringify({ ref: "main" }),
     });
-    if (gh.status !== 204) return json({ ok: false, reason: "github", status: gh.status, body: await gh.text() }, 502);
-    return json({ ok: true, expectSeconds: 120 });
+    if (gh.status !== 204) return json({ ok: false, reason: "github", status: gh.status, body: await gh.text() }, 502, origin);
+    return json({ ok: true, expectSeconds: 120 }, 200, origin);
   },
 };

@@ -2,7 +2,7 @@
 
 League archive and the Unluckiness Index™ for the *Best Ball Butts* Sleeper league.
 
-**Live site:** https://rag30.github.io/best-ball-butts/
+**Live site:** https://bestballbutts.rrr-projects.com (also at https://rag30.github.io/best-ball-butts/)
 
 ## How it works
 
@@ -55,10 +55,11 @@ checks the real NFL schedule (ESPN public scoreboard) and decides what each slot
 Deploys go straight to GitHub Pages from the runner (`actions/deploy-pages`), so only the
 archive runs create commits. The page header shows the build time.
 
-The page's **Rebuild for everyone** button posts to a tiny Cloudflare Worker (`worker/`,
-deployed at `bbb-refresh.rrr-projects.com`) that holds the only credential — a fine-grained
-GitHub token scoped to this repo's Actions — and triggers the workflow. It refuses if a manual
-run started in the last 2 minutes. Deploy it with `cd worker && npx wrangler@4 deploy`.
+**https://bestballbutts.rrr-projects.com** is a tiny Cloudflare Worker (`worker/`) that
+proxies the GitHub Pages site under the league's own domain and handles the page's
+**Rebuild for everyone** button (`POST /refresh`). It holds the only credential — a
+fine-grained GitHub token scoped to this repo's Actions — and triggers the workflow, refusing
+if a manual run started in the last 2 minutes. Deploy it with `cd worker && npx wrangler@4 deploy`.
 
 ## Run locally
 

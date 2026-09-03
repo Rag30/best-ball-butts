@@ -3,9 +3,10 @@ main = "src/index.js"
 compatibility_date = "2026-01-01"
 
 routes = [
-  { pattern = "bbb-refresh.rrr-projects.com", custom_domain = true }
+  { pattern = "bestballbutts.rrr-projects.com", custom_domain = true },
+  { pattern = "bbb-refresh.rrr-projects.com", custom_domain = true }   # legacy hostname, keeps serving
 ]
 
 # Secret (set once, never committed):
-#   npx wrangler secret put GH_TOKEN
+#   npx wrangler@4 secret put GH_TOKEN
 # Fine-grained GitHub PAT: repository = Rag30/best-ball-butts only, permission = Actions: Read and write.

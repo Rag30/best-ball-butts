@@ -207,7 +207,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> Archive built Thu Sep 3, 4:37 PM ET</span>
+    <span class="live-badge"><span class="live-dot"></span> Archive built Thu Sep 3, 4:49 PM ET</span>
     <button class="refresh-btn" id="refreshBtn" type="button">Refresh live from Sleeper</button>
     <button class="refresh-btn secondary" id="rebuildBtn" type="button" title="Triggers the GitHub rebuild so everyone sees the latest (~2 min)">Rebuild for everyone</button>
     <span id="liveStatus"></span>
@@ -876,7 +876,8 @@ initSeasonTabs();
   if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) refresh();
 
   // "Rebuild for everyone": ask the relay to run the GitHub workflow, then reload when it finishes.
-  const RELAY = 'https://bbb-refresh.rrr-projects.com/refresh';
+  // same-origin on the league domain; absolute when viewed via github.io
+  const RELAY = /rrr-projects\.com$/.test(location.hostname) ? '/refresh' : 'https://bestballbutts.rrr-projects.com/refresh';
   const RUNS = 'https://api.github.com/repos/Rag30/best-ball-butts/actions/runs?per_page=1&event=workflow_dispatch';
   const rebuildBtn = document.getElementById('rebuildBtn');
   if (rebuildBtn) rebuildBtn.addEventListener('click', async () => {

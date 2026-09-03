@@ -616,7 +616,8 @@ initSeasonTabs();
   if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) refresh();
 
   // "Rebuild for everyone": ask the relay to run the GitHub workflow, then reload when it finishes.
-  const RELAY = 'https://bbb-refresh.rrr-projects.com/refresh';
+  // same-origin on the league domain; absolute when viewed via github.io
+  const RELAY = /rrr-projects\\.com$/.test(location.hostname) ? '/refresh' : 'https://bestballbutts.rrr-projects.com/refresh';
   const RUNS = 'https://api.github.com/repos/Rag30/best-ball-butts/actions/runs?per_page=1&event=workflow_dispatch';
   const rebuildBtn = document.getElementById('rebuildBtn');
   if (rebuildBtn) rebuildBtn.addEventListener('click', async () => {
