@@ -53,7 +53,9 @@ def main():
     hourly_slot = now.minute < 5
     archive_slot = now.weekday() in (1, 4) and now.hour == 9 and hourly_slot  # Tue/Fri 09:00 ET
 
-    if event == "workflow_dispatch":
+    if event == "push":
+        run, mode, archive = True, "push", False      # code change: always rebuild + deploy
+    elif event == "workflow_dispatch":
         # Manual/button runs rebuild the page but only commit the archive if explicitly asked
         run, mode, archive = True, "manual", os.environ.get("ARCHIVE_INPUT", "false").lower() == "true"
     elif archive_slot:
