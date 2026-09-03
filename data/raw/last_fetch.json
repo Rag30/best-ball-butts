@@ -11,10 +11,5 @@
   "league_create_season": "2026",
   "season_has_scores": true
  },
- "changed": [
-  "2026/league.json",
-  "2026/users.json",
-  "2026/rosters.json",
-  "2026/winners_bracket.json"
- ]
+ "changed": []
 }
