@@ -24,29 +24,31 @@ export default {
     if (request.method !== "POST") return json({ error: "POST only" }, 405);
     if (request.headers.get("Origin") !== ALLOWED_ORIGIN) return json({ error: "forbidden" }, 403);
 
-    // Cooldown via the Cache API (per-colo, good enough for a rate limit)
-    const cache = caches.default;
-    const key = new Request("https://bbb-refresh.internal/last-dispatch");
-    const last = await cache.match(key);
-    if (last) {
-      const at = Number(await last.text());
-      const wait = Math.ceil((at + COOLDOWN_MS - Date.now()) / 1000);
-      if (wait > 0) return json({ ok: false, reason: "cooldown", retryInSeconds: wait }, 429);
+    const ghHeaders = {
+      Authorization: `Bearer ${env.GH_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "User-Agent": "bbb-refresh-worker",
+    };
+
+    // Cooldown: GitHub itself is the source of truth — refuse if a manual run started < COOLDOWN ago
+    // (or is still queued/running). No Worker state needed, so it works across colos.
+    const recent = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/runs?event=workflow_dispatch&per_page=1`, { headers: ghHeaders });
+    if (recent.ok) {
+      const run = ((await recent.json()).workflow_runs || [])[0];
+      if (run) {
+        const age = Date.now() - new Date(run.created_at).getTime();
+        if (run.status !== "completed" || age < COOLDOWN_MS) {
+          return json({ ok: false, reason: "cooldown", retryInSeconds: Math.max(15, Math.ceil((COOLDOWN_MS - age) / 1000)), runUrl: run.html_url }, 429);
+        }
+      }
     }
 
     const gh = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.GH_TOKEN}`,
-        Accept: "application/vnd.github+json",
-        "User-Agent": "bbb-refresh-worker",
-        "Content-Type": "application/json",
-      },
+      headers: { ...ghHeaders, "Content-Type": "application/json" },
       body: JSON.stringify({ ref: "main" }),
     });
     if (gh.status !== 204) return json({ ok: false, reason: "github", status: gh.status, body: await gh.text() }, 502);
-
-    await cache.put(key, new Response(String(Date.now()), { headers: { "Cache-Control": `max-age=${COOLDOWN_MS / 1000}` } }));
     return json({ ok: true, expectSeconds: 120 });
   },
 };
