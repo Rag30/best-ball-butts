@@ -409,7 +409,6 @@ function renderSOS(elId, season) {
   const winsOf = name => (season.standings.find(s => s.name === name) || {}).wins ?? '—';
   const col = v => v == null ? '—' : `<span style="color:var(--${v > 0 ? 'unlucky' : 'lucky'})">${fmt(v, 2)}</span>`;
   let html = `<div class="section-title">Strength of Schedule</div>
-  <div class="section-desc">For every game, your win probability against that opponent from both teams' scoring averages and consistency. <b>SOS</b> is how many more wins a league-average schedule would have given you — positive means a harder draw. <b>Record luck</b> is your actual wins minus the wins your real schedule should have produced. Hover a row for the week-by-week win chances.</div>
   <div class="table-scroll"><table><thead><tr>
     <th style="text-align:left">Manager</th><th>W</th><th>Exp. W (your schedule)</th><th>Exp. W (neutral)</th><th>SOS (wins)</th><th>Record luck</th>${hasRemaining ? '<th>SOS remaining</th>' : ''}<th>Avg</th><th>Std Dev</th>
   </tr></thead><tbody>`;
