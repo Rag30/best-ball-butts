@@ -2,8 +2,8 @@
  "nfl_state": {
   "week": 1,
   "leg": 1,
-  "season": "2026",
   "season_type": "regular",
+  "season": "2026",
   "league_season": "2026",
   "previous_season": "2025",
   "season_start_date": "2026-09-09",
@@ -11,5 +11,12 @@
   "league_create_season": "2026",
   "season_has_scores": true
  },
- "changed": []
+ "changed": [
+  "2026/league.json",
+  "2026/users.json",
+  "2026/rosters.json",
+  "2026/winners_bracket.json",
+  "2026/matchups/week_01",
+  "2026/projections/week_01"
+ ]
 }

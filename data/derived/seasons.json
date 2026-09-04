@@ -8250,7 +8250,7 @@
   },
   "2026": {
    "notStarted": true,
-   "status": "pre_draft",
+   "status": "in_season",
    "managers": [
     "Conrad",
     "Lauren",
@@ -8263,7 +8263,7 @@
    ],
    "meta": {
     "leagueId": "1312511085802180608",
-    "status": "pre_draft",
+    "status": "in_season",
     "rosterPositions": [
      "QB",
      "RB",
@@ -8504,5 +8504,5 @@
   ],
   "2026": []
  },
- "generatedAt": "2026-09-03T21:37:04.732Z"
+ "generatedAt": "2026-09-04T14:39:07.990Z"
 }
