@@ -3,7 +3,7 @@
 //   GET  /            static page (worker/public/index.html, uploaded by `wrangler deploy`)
 //   GET  /data        the computed league tables, read from KV            (page loads this)
 //   POST /refresh     Sleeper -> compute.js -> KV, for every non-frozen season (Refresh button)
-//   cron              same as /refresh: every 5 min on NFL game days, hourly otherwise
+//   cron              same as /refresh, once a night at 9 PM ET
 //
 // KV keys:  season:<yr>  computed season (frozen once league status is "complete")
 //           proj:<yr>:<wk>  per-week team projection totals (tiny; the 1.5 MB player file is
@@ -20,7 +20,6 @@ const FIRST_SEASON = 2024;
 const API = "https://api.sleeper.app";
 const POS = ["QB", "RB", "WR", "TE", "K", "DEF"].map(p => "position[]=" + p).join("&");
 const COOLDOWN_MS = 45 * 1000;
-const ESPN = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=";
 
 const json = (obj, status = 200, extra = {}) =>
   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...extra } });
@@ -123,18 +122,11 @@ async function refresh(env, { force = false, reason = "manual" } = {}) {
   return { ok: true, updated, generatedAt };
 }
 
-/** Cron gate: 5-min cadence on NFL game days, hourly otherwise (America/New_York).
- *  If ESPN can't be reached we fall back to hourly — never to "assume game day". */
-async function shouldRunNow() {
+/** Cron gate: once a night at 9 PM Eastern. The cron fires at 01:00 and 02:00 UTC so it lands
+ *  on 9 PM ET in both daylight and standard time; whichever slot isn't 9 PM ET is skipped. */
+function shouldRunNow() {
   const et = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-  const hourly = et.getMinutes() < 5;
-  const ymd = `${et.getFullYear()}${String(et.getMonth() + 1).padStart(2, "0")}${String(et.getDate()).padStart(2, "0")}`;
-  try {
-    const gameDay = ((await getJson(ESPN + ymd)).events || []).length > 0;
-    return gameDay || hourly;
-  } catch (e) {
-    return hourly;
-  }
+  return et.getHours() === 21;
 }
 
 export default {

@@ -17,7 +17,7 @@ binding = "ASSETS"
 binding = "DATA"
 id = "163b167b2bfc439dbc53c3a643208cf3"
 
-# Self-refresh from Sleeper: fires every 5 min Sept-Jan; the Worker only does work
-# on NFL game days (every 5 min) or at the top of the hour otherwise.
+# Self-refresh from Sleeper once a night at 9 PM Eastern (01:00 UTC in EDT, 02:00 UTC in EST;
+# the Worker skips whichever slot is not 9 PM ET). The Refresh button works any time.
 [triggers]
-crons = ["*/5 * * 9-12,1 *"]
+crons = ["0 1,2 * * *"]

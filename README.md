@@ -9,7 +9,7 @@ League archive and the Unluckiness Index™ for the *Best Ball Butts* Sleeper le
 ```
                  ┌──────────────────────── Cloudflare Worker (worker/) ────────────────────────┐
 Sleeper API ───▶ │ POST /refresh  ─▶ compute.js ─▶ KV  season:<yr>, proj:<yr>:<wk>, snapshot   │
-   (public)      │ cron */5 (game days) / hourly ─▶ same                                       │
+   (public)      │ cron 9 PM ET nightly ─▶ same                                               │
                  │ GET /data  ◀── KV snapshot          GET /  ◀── public/index.html (static)   │
                  └───────────────────────────────────────────────────────────────────────────────┘
                                              ▲ page fetches /data on load; Refresh button = POST /refresh
@@ -19,8 +19,8 @@ Sleeper API ──fetch.py──▶ data/raw/ (git)   ◀── GitHub Action, T
 
 - **Cloudflare KV is the live database.** One computed JSON per season plus a `snapshot` the page
   renders. Completed seasons (`status: complete`) are written once and frozen; the current season is
-  recomputed on every refresh. The Worker refreshes itself every 5 minutes on NFL game days and hourly
-  otherwise (it checks ESPN's public scoreboard), and anyone can press **Refresh** on the page.
+  recomputed on every refresh. The Worker refreshes itself once a night at 9 PM ET, and anyone can press **Refresh** on the page.
+
 - **git `data/raw/` is the archive.** Raw Sleeper responses, committed Tue/Fri by the Action. It's the
   source of truth if Sleeper ever changes; `scripts/seed-kv.js` rebuilds KV from it.
 - **One implementation of the math** — `scripts/compute.js` runs in the Worker (live) and in Node
