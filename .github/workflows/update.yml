@@ -5,7 +5,9 @@ name: Archive league data
 
 on:
   schedule:
-    - cron: "0 13 * 9-12,1 2,5"     # Tue & Fri 09:00 ET, Sept-Jan
+    # Nightly at 10 PM Eastern. GitHub cron is UTC-only, so fire at 02:00 and 03:00 UTC
+    # (10 PM EDT / EST) and let the gate step skip whichever slot isn't 10 PM ET.
+    - cron: "0 2,3 * * *"
   workflow_dispatch:
     inputs:
       refetch_all:
@@ -32,13 +34,25 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Is it 10 PM Eastern? (manual runs always proceed)
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          python - >> "$GITHUB_OUTPUT" << 'EOF'
+          from datetime import datetime; from zoneinfo import ZoneInfo
+          print("run=" + str(datetime.now(ZoneInfo("America/New_York")).hour == 22).lower())
+          EOF
+
       - name: Fetch new / corrected weeks from Sleeper
+        if: steps.gate.outputs.run == 'true'
         run: python scripts/fetch.py ${{ inputs.refetch_all && '--all' || '' }}
 
       - name: Recompute derived tables (reference copy)
+        if: steps.gate.outputs.run == 'true'
         run: node scripts/compute-node.js
 
       - name: Commit
+        if: steps.gate.outputs.run == 'true'
         run: |
           git config user.name "league-bot"
           git config user.email "league-bot@users.noreply.github.com"

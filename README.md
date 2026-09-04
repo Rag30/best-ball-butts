@@ -14,14 +14,14 @@ Sleeper API ───▶ │ POST /refresh  ─▶ compute.js ─▶ KV  season:
                  └───────────────────────────────────────────────────────────────────────────────┘
                                              ▲ page fetches /data on load; Refresh button = POST /refresh
 
-Sleeper API ──fetch.py──▶ data/raw/ (git)   ◀── GitHub Action, Tue & Fri: the immutable archive
+Sleeper API ──fetch.py──▶ data/raw/ (git)   ◀── GitHub Action, nightly 10 PM ET: the immutable archive
 ```
 
 - **Cloudflare KV is the live database.** One computed JSON per season plus a `snapshot` the page
   renders. Completed seasons (`status: complete`) are written once and frozen; the current season is
   recomputed on every refresh. The Worker refreshes itself once a night at 9 PM ET, and anyone can press **Refresh** on the page.
 
-- **git `data/raw/` is the archive.** Raw Sleeper responses, committed Tue/Fri by the Action. It's the
+- **git `data/raw/` is the archive.** Raw Sleeper responses, committed nightly at 10 PM ET by the Action. It's the
   source of truth if Sleeper ever changes; `scripts/seed-kv.js` rebuilds KV from it.
 - **One implementation of the math** — `scripts/compute.js` runs in the Worker (live) and in Node
   (`compute-node.js`, archive). No credentials anywhere: Sleeper is public and KV is bound to the Worker.
