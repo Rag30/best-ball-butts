@@ -86,12 +86,16 @@ async function computeSeason(env, yr, leagueId, currentWeek) {
   return season;
 }
 
+// KV free tier allows 1,000 writes/day, so every write below is conditional: we only write
+// when the computed data actually changed. Quiet days cost ~0 writes.
 async function refresh(env, { force = false, reason = "manual" } = {}) {
-  const last = Number(await env.DATA.get("lastRefresh")) || 0;
-  if (!force && Date.now() - last < COOLDOWN_MS) {
-    return { ok: false, reason: "cooldown", retryInSeconds: Math.ceil((COOLDOWN_MS - (Date.now() - last)) / 1000) };
+  if (!force) {
+    const last = Number(await env.DATA.get("lastRefresh")) || 0;
+    if (Date.now() - last < COOLDOWN_MS) {
+      return { ok: false, reason: "cooldown", retryInSeconds: Math.ceil((COOLDOWN_MS - (Date.now() - last)) / 1000) };
+    }
+    await env.DATA.put("lastRefresh", String(Date.now()));   // only manual presses need the cooldown stamp
   }
-  await env.DATA.put("lastRefresh", String(Date.now()));
 
   const state = await getJson(`${API}/v1/state/nfl`);
   const currentSeason = Number(state.season);
@@ -100,26 +104,37 @@ async function refresh(env, { force = false, reason = "manual" } = {}) {
   const seasons = {};
   const updated = [];
   for (const yr of Object.keys(leagues).sort()) {
-    const existing = await env.DATA.get(`season:${yr}`, "json");
+    const existingRaw = await env.DATA.get(`season:${yr}`);
+    const existing = existingRaw ? JSON.parse(existingRaw) : null;
     if (existing && existing.meta && existing.meta.status === "complete") { seasons[yr] = existing; continue; }  // frozen
     const currentWeek = Number(yr) === currentSeason ? Number(state.week || 1) : null;
     const season = await computeSeason(env, yr, leagues[yr], currentWeek);
-    await env.DATA.put(`season:${yr}`, JSON.stringify(season));
-    seasons[yr] = season; updated.push(yr);
+    const raw = JSON.stringify(season);
+    if (raw !== existingRaw) { await env.DATA.put(`season:${yr}`, raw); updated.push(yr); }
+    seasons[yr] = season;
   }
-  const snapshot = { seasons, career: BBB.career(seasons), generatedAt: new Date().toISOString(),
-                     nflWeek: state.week, nflSeason: state.season, reason };
-  await env.DATA.put("snapshot", JSON.stringify(snapshot));
-  return { ok: true, updated, generatedAt: snapshot.generatedAt };
+  let generatedAt = new Date().toISOString();
+  if (updated.length || !(await env.DATA.get("snapshot"))) {
+    const snapshot = { seasons, career: BBB.career(seasons), generatedAt, nflWeek: state.week, nflSeason: state.season, reason };
+    await env.DATA.put("snapshot", JSON.stringify(snapshot));
+  } else {
+    generatedAt = null;   // nothing changed; the stored snapshot stays as-is
+  }
+  return { ok: true, updated, generatedAt };
 }
 
-/** Cron gate: 5-min cadence on NFL game days, hourly otherwise (America/New_York). */
+/** Cron gate: 5-min cadence on NFL game days, hourly otherwise (America/New_York).
+ *  If ESPN can't be reached we fall back to hourly — never to "assume game day". */
 async function shouldRunNow() {
   const et = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+  const hourly = et.getMinutes() < 5;
   const ymd = `${et.getFullYear()}${String(et.getMonth() + 1).padStart(2, "0")}${String(et.getDate()).padStart(2, "0")}`;
-  let gameDay = true;
-  try { gameDay = ((await getJson(ESPN + ymd)).events || []).length > 0; } catch (e) { /* assume game day */ }
-  return gameDay || et.getMinutes() < 5;
+  try {
+    const gameDay = ((await getJson(ESPN + ymd)).events || []).length > 0;
+    return gameDay || hourly;
+  } catch (e) {
+    return hourly;
+  }
 }
 
 export default {
