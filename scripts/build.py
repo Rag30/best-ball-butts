@@ -458,11 +458,27 @@ function buildSeasonPanel(yr) {
   const season = DATA.seasons[yr];
 
   if (season.notStarted) {
-    el.innerHTML = `<div class="empty-state">
+    const drafted = season.status === 'in_season' || season.status === 'post_season';
+    const msg = drafted
+      ? 'Draft is done. Standings and the luck indexes appear automatically once week 1 has been scored.'
+      : `Status: ${season.status.replace('_',' ')}. Once the draft happens and games are scored, this tab fills in automatically.`;
+    let html = `<div class="empty-state">
       <div class="big">${yr} season hasn't kicked off yet</div>
-      <div>Status: ${season.status.replace('_',' ')}. Once the draft happens and games are scored, this tab will fill in automatically from Sleeper.</div>
+      <div>${msg}</div>
       <div class="roster-chips">${season.managers.map(m => `<span>${m}</span>`).join('')}</div>
     </div>`;
+    if (season.schedule && Object.keys(season.schedule).length) {
+      const weeksN = Object.values(season.schedule)[0].length;
+      html += `<div class="section-title" style="margin-top:24px">${yr} Schedule</div>
+      <div class="table-scroll"><table class="compact"><thead><tr><th style="text-align:left">Manager</th>`;
+      for (let w = 1; w <= weeksN; w++) html += `<th style="text-align:left">Wk ${w}</th>`;
+      html += `</tr></thead><tbody>`;
+      season.managers.forEach(m => {
+        html += `<tr><td>${m}</td>` + (season.schedule[m] || []).map(o => `<td style="text-align:left">${o || '—'}</td>`).join('') + `</tr>`;
+      });
+      html += `</tbody></table></div>`;
+    }
+    el.innerHTML = html;
     return;
   }
 
@@ -587,7 +603,7 @@ function renderAll() {
       const body = await r.json().catch(() => ({}));
       if (r.status === 429) { say(`Just refreshed — try again in ${body.retryInSeconds}s.`); }
       else if (!r.ok || !body.ok) { say(`Refresh failed${body.message ? ': ' + body.message : ''}.`, true); }
-      else { say(body.updated && body.updated.length ? `Recomputed ${body.updated.join(', ')}` : 'Everything is frozen — nothing to recompute'); }
+      else { say(body.updated && body.updated.length ? `Recomputed ${body.updated.join(', ')}` : 'Up to date — nothing changed on Sleeper'); }
       await load();
     } catch (e) {
       say(`Refresh failed (${e.message}).`, true);

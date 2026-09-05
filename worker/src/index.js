@@ -76,7 +76,10 @@ async function computeSeason(env, yr, leagueId, currentWeek) {
   const meta = { leagueId: league.league_id, status: league.status, rosterPositions: league.roster_positions,
                  scoring: league.scoring_settings, nameMap, lastRegularWeek: lastReg };
   if (!scored.length) {
-    return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta };
+    const fut = BBB.futureOpponents(matchupsByWeek, [], lastReg);
+    const schedule = {};
+    for (const r of Object.keys(nameMap)) schedule[nameMap[r]] = Array.from({ length: lastReg }, (_, i) => (fut[r] && fut[r][i + 1] != null) ? nameMap[fut[r][i + 1]] : null);
+    return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta, schedule };
   }
   const input = BBB.inputFromMatchups(matchupsByWeek, scored);
   const futureOpponent = BBB.futureOpponents(matchupsByWeek, scored, lastReg);

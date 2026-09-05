@@ -286,7 +286,10 @@ const BBB = (() => {
     const weeks = [];
     for (let w = 1; w <= meta.lastRegularWeek; w++) if (weekHasScores(matchupsByWeek[w])) weeks.push(w);
     if (!weeks.length) {
-      return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta };
+      const fut = futureOpponents(matchupsByWeek, [], meta.lastRegularWeek);
+      const schedule = {};
+      for (const r of Object.keys(nameMap)) schedule[nameMap[r]] = Array.from({ length: meta.lastRegularWeek }, (_, i) => (fut[r] && fut[r][i + 1] != null) ? nameMap[fut[r][i + 1]] : null);
+      return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta, schedule };
     }
     const input = inputFromMatchups(matchupsByWeek, weeks);
     const projected = {};
