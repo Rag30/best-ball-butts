@@ -13,9 +13,9 @@
  },
  "changed": [
   "2026/league.json",
-  "2026/users.json",
   "2026/rosters.json",
-  "2026/winners_bracket.json",
+  "2026/drafts.json",
+  "2026/draft_picks.json",
   "2026/matchups/week_01",
   "2026/projections/week_01"
  ]

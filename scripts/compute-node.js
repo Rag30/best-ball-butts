@@ -26,6 +26,7 @@ for (const season of fs.readdirSync(RAW).filter(d => fs.existsSync(path.join(RAW
   seasons[season] = BBB.seasonFromRaw({
     league, users: readJson(path.join(dir, "users.json")), rosters: readJson(path.join(dir, "rosters.json")),
     bracket: maybe(path.join(dir, "winners_bracket.json")) || [], matchupsByWeek, projectionsByWeek,
+    draftPicks: maybe(path.join(dir, "draft_picks.json")),
   });
   generatedFrom[season] = seasons[season].weeks || [];
 }

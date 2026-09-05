@@ -75,10 +75,16 @@ def main():
             continue
 
         league = get(f"/v1/league/{lid}")
-        for name, obj in [("league.json", league),
-                          ("users.json", get(f"/v1/league/{lid}/users")),
-                          ("rosters.json", get(f"/v1/league/{lid}/rosters")),
-                          ("winners_bracket.json", get(f"/v1/league/{lid}/winners_bracket"))]:
+        drafts = get(f"/v1/league/{lid}/drafts") or []
+        draft = next((x for x in drafts if x.get("status") == "complete"), drafts[0] if drafts else None)
+        files = [("league.json", league),
+                 ("users.json", get(f"/v1/league/{lid}/users")),
+                 ("rosters.json", get(f"/v1/league/{lid}/rosters")),
+                 ("winners_bracket.json", get(f"/v1/league/{lid}/winners_bracket")),
+                 ("drafts.json", drafts)]
+        if draft:
+            files.append(("draft_picks.json", get(f"/v1/draft/{draft['draft_id']}/picks")))
+        for name, obj in files:
             if write_if_changed(d / name, obj):
                 changed.append(f"{season}/{name}")
 

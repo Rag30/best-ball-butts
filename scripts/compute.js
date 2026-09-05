@@ -103,6 +103,18 @@ const BBB = (() => {
     return out;
   }
 
+  /** Draft picks (Sleeper /v1/draft/<id>/picks) -> {managerName: [{pick, round, player, pos, team}]} in draft order. */
+  function draftRosters(picks, nameMap) {
+    const out = {};
+    for (const p of [...(picks || [])].sort((a, b) => a.pick_no - b.pick_no)) {
+      const name = nameMap[p.roster_id]; if (!name) continue;
+      const m = p.metadata || {};
+      (out[name] ??= []).push({ pick: p.pick_no, round: p.round, player: `${m.first_name || ""} ${m.last_name || ""}`.trim() || p.player_id,
+                                 pos: m.position || "", team: m.team || "" });
+    }
+    return out;
+  }
+
   // ---------- the season ----------
   /**
    * @param weeks     ascending list of scored regular-season weeks
@@ -279,7 +291,7 @@ const BBB = (() => {
   }
 
   /** Full pipeline for one season from raw Sleeper payloads. Returns null-ish placeholder if no scored weeks. */
-  function seasonFromRaw({ league, users, rosters, bracket, matchupsByWeek, projectionsByWeek }) {
+  function seasonFromRaw({ league, users, rosters, bracket, matchupsByWeek, projectionsByWeek, draftPicks = null }) {
     const nameMap = nameMapFrom(users, rosters);
     const meta = { leagueId: league.league_id, status: league.status, rosterPositions: league.roster_positions,
                    scoring: league.scoring_settings, nameMap, lastRegularWeek: lastRegularWeek(league) };
@@ -289,7 +301,8 @@ const BBB = (() => {
       const fut = futureOpponents(matchupsByWeek, [], meta.lastRegularWeek);
       const schedule = {};
       for (const r of Object.keys(nameMap)) schedule[nameMap[r]] = Array.from({ length: meta.lastRegularWeek }, (_, i) => (fut[r] && fut[r][i + 1] != null) ? nameMap[fut[r][i + 1]] : null);
-      return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta, schedule };
+      return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta, schedule,
+               rosters: draftPicks ? draftRosters(draftPicks, nameMap) : null };
     }
     const input = inputFromMatchups(matchupsByWeek, weeks);
     const projected = {};
@@ -303,6 +316,6 @@ const BBB = (() => {
   }
 
   return { MANAGERS, r2, playerPts, optimalLineup, weekTeamProjections, nameMapFrom, lastRegularWeek, weekHasScores,
-           inputFromMatchups, futureOpponents, buildSeason, playoffFinish, applyPlayoffs, career, seasonFromRaw };
+           inputFromMatchups, futureOpponents, draftRosters, buildSeason, playoffFinish, applyPlayoffs, career, seasonFromRaw };
 })();
 if (typeof module !== "undefined") module.exports = BBB;

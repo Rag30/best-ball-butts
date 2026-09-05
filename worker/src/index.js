@@ -79,7 +79,14 @@ async function computeSeason(env, yr, leagueId, currentWeek) {
     const fut = BBB.futureOpponents(matchupsByWeek, [], lastReg);
     const schedule = {};
     for (const r of Object.keys(nameMap)) schedule[nameMap[r]] = Array.from({ length: lastReg }, (_, i) => (fut[r] && fut[r][i + 1] != null) ? nameMap[fut[r][i + 1]] : null);
-    return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta, schedule };
+    // Drafted rosters (player names come with the draft picks; no need for the 5 MB players file)
+    let rostersDrafted = null;
+    try {
+      const drafts = await getJson(`${API}/v1/league/${leagueId}/drafts`);
+      const done = (drafts || []).find(d => d.status === "complete") || (drafts || [])[0];
+      if (done) rostersDrafted = BBB.draftRosters(await getJson(`${API}/v1/draft/${done.draft_id}/picks`), nameMap);
+    } catch (e) { /* no draft yet */ }
+    return { notStarted: true, status: league.status, managers: Object.keys(nameMap).sort((a, b) => a - b).map(r => nameMap[r]), meta, schedule, rosters: rostersDrafted };
   }
   const input = BBB.inputFromMatchups(matchupsByWeek, scored);
   const futureOpponent = BBB.futureOpponents(matchupsByWeek, scored, lastReg);
@@ -145,7 +152,13 @@ export default {
       try { const r = await refresh(env); return json(r, r.ok ? 200 : 429); }
       catch (e) { return json({ ok: false, reason: "error", message: String(e.message || e) }, 502); }
     }
-    return env.ASSETS.fetch(request);   // static site
+    // static site — never let browsers cache the HTML, so deploys show up on the next load
+    const asset = await env.ASSETS.fetch(request);
+    if ((asset.headers.get("Content-Type") || "").includes("text/html")) {
+      const h = new Headers(asset.headers); h.set("Cache-Control", "no-cache");
+      return new Response(asset.body, { status: asset.status, headers: h });
+    }
+    return asset;
   },
 
   async scheduled(event, env, ctx) {

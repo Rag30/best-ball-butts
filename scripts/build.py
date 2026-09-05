@@ -147,6 +147,8 @@ td:first-child, th:first-child { font-family: 'Inter', sans-serif; }
 
 .score-margin { font-size: 10.5px; font-weight: 600; margin-left: 3px; opacity: 0.85; }
 .sep { color: var(--ink-dim); opacity: 0.6; margin: 0 1px; }
+.pos { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 1px 4px; border-radius: 4px; margin-right: 4px; background: var(--surface-2); color: var(--ink-dim); }
+.pos-QB { color: #b8791e; } .pos-RB { color: var(--lucky); } .pos-WR { color: #3c6fb0; } .pos-TE { color: var(--unlucky); }
 [data-tip] { cursor: help; }
 table.compact thead th { text-align: left; }
 #tip { position: fixed; z-index: 1000; pointer-events: none; display: none; background: var(--ink); color: var(--bg);
@@ -476,6 +478,21 @@ function buildSeasonPanel(yr) {
       season.managers.forEach(m => {
         html += `<tr><td>${m}</td>` + (season.schedule[m] || []).map(o => `<td style="text-align:left">${o || '—'}</td>`).join('') + `</tr>`;
       });
+      html += `</tbody></table></div>`;
+    }
+    if (season.rosters && Object.keys(season.rosters).length) {
+      const names = season.managers.filter(m => season.rosters[m]);
+      const rounds = Math.max(...names.map(m => season.rosters[m].length));
+      html += `<div class="section-title" style="margin-top:8px">${yr} Draft</div>
+      <div class="table-scroll"><table class="compact"><thead><tr><th style="text-align:left">Rd</th>`;
+      names.forEach(m => html += `<th style="text-align:left">${m}</th>`);
+      html += `</tr></thead><tbody>`;
+      for (let r = 0; r < rounds; r++) {
+        html += `<tr><td>${r + 1}</td>` + names.map(m => {
+          const p = season.rosters[m][r];
+          return p ? `<td style="text-align:left" data-tip="Pick ${p.pick}"><span class="pos pos-${p.pos}">${p.pos}</span> ${p.player}<span class="cell-opp" style="color:var(--ink-dim)">${p.team}</span></td>` : '<td></td>';
+        }).join('') + `</tr>`;
+      }
       html += `</tbody></table></div>`;
     }
     el.innerHTML = html;
