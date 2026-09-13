@@ -152,6 +152,9 @@ function tabsOf(request) {
   return h === null ? null : h.split(",").map(s => s.trim()).filter(Boolean);
 }
 const LUCK_KEYS = ["ui3", "ui4", "ui5", "sum3", "sum4", "sum5", "flips3", "flips4", "flips5", "projected", "projMean"];
+// Sub-tabs of the index, each with the fields only it renders. Net luck
+// (ui5) is the season verdict too, so it goes with the parent.
+const SUB_KEYS = { "luck-schedule": ["ui3", "sum3", "flips3"], "luck-roster": ["ui4", "sum4", "flips4", "projected", "projMean"], "luck-net": ["ui5", "sum5", "flips5"] };
 function trimToTabs(snapshot, tabs) {
   if (tabs === null) return snapshot;
   const may = t => tabs.includes(t);
@@ -159,6 +162,7 @@ function trimToTabs(snapshot, tabs) {
   for (const [yr, season] of Object.entries(snapshot.seasons || {})) {
     const s = { ...season };
     if (!may("luck")) for (const k of LUCK_KEYS) delete s[k];
+    else for (const [sub, keys] of Object.entries(SUB_KEYS)) if (!may(sub)) for (const k of keys) delete s[k];
     if (!may("reports")) delete s.weeklyReports;
     if (!may("standings")) { delete s.standings; delete s.schedule; delete s.scores; delete s.opponents; delete s.rosters; }
     out.seasons[yr] = s;

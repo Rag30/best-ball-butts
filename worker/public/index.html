@@ -209,7 +209,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Sun Sep 13, 4:42 PM ET">Archive built Sun Sep 13, 4:42 PM ET</span></span>
+    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Sun Sep 13, 5:17 PM ET">Archive built Sun Sep 13, 5:17 PM ET</span></span>
     <button class="refresh-btn" id="refreshBtn" type="button" title="Pull the latest from Sleeper and recompute">Refresh</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
@@ -520,7 +520,7 @@ function buildSeasonPanel(yr) {
     <div class="verdict">
       ${champ ? `<div class="verdict-card"><div class="label">${yr} Champion</div>
         <div class="verdict-line"><span>🏆 Winner</span><b>${champ.name}</b><span class="tag tag-gold">${champ.wins}-${champ.losses}</span></div></div>` : ''}
-      ${may('luck') && season.sum5 ? mk('Net Luck', season.sum5) : ''}
+      ${may('luck') && may('luck-net') && season.sum5 ? mk('Net Luck', season.sum5) : ''}
     </div>
     <div class="tabs" data-yr="${yr}">
       ${[['standings', `${yr}-standings`, 'Standings and Schedules'], ['luck', `${yr}-ui3`, 'Unluckiness Index'], ['reports', `${yr}-reports`, 'Weekly Reports']]
@@ -529,27 +529,22 @@ function buildSeasonPanel(yr) {
     <div class="panel${may('standings') ? ' active' : ''}" id="${yr}-standings"></div>
     <div class="panel${!may('standings') && may('luck') ? ' active' : ''}" id="${yr}-ui3">
       <div class="subtabs">
-        <button class="subtab-btn active" data-sub="${yr}-sub-net">Net Luck</button>
-        <button class="subtab-btn" data-sub="${yr}-sub-schedule">Schedule Luck</button>
-        <button class="subtab-btn" data-sub="${yr}-sub-roster">Roster Luck</button>
-        <button class="subtab-btn" data-sub="${yr}-sub-sos">Strength of Schedule</button>
+        ${[['luck-net', `${yr}-sub-net`, 'Net Luck'], ['luck-schedule', `${yr}-sub-schedule`, 'Schedule Luck'], ['luck-roster', `${yr}-sub-roster`, 'Roster Luck'], ['luck-sos', `${yr}-sub-sos`, 'Strength of Schedule']]
+          .filter(([t]) => may(t)).map(([, id, label], i) => `<button class="subtab-btn${i === 0 ? ' active' : ''}" data-sub="${id}">${label}</button>`).join('')}
       </div>
-      <div class="subpanel active" id="${yr}-sub-net"></div>
-      <div class="subpanel" id="${yr}-sub-schedule"></div>
-      <div class="subpanel" id="${yr}-sub-roster"></div>
-      <div class="subpanel" id="${yr}-sub-sos"></div>
+      ${['net', 'schedule', 'roster', 'sos'].map((k, i) => `<div class="subpanel${may('luck-' + k) && ['net','schedule','roster','sos'].filter(x => may('luck-' + x))[0] === k ? ' active' : ''}" id="${yr}-sub-${k}"></div>`).join('')}
     </div>
     <div class="panel${!may('standings') && !may('luck') && may('reports') ? ' active' : ''}" id="${yr}-reports"></div>
   `;
 
   if (may('standings')) renderStandings(season, yr);
   if (!may('luck')) { if (may('reports')) renderWeeklyReports(`${yr}-reports`, season); return wireTabs(el); }
-  renderUnluckyPanel(`${yr}-sub-schedule`, season, 'ui3', 'sum3', "Schedule Luck", "", 'flips3');
+  if (may('luck-schedule')) renderUnluckyPanel(`${yr}-sub-schedule`, season, 'ui3', 'sum3', "Schedule Luck", "", 'flips3');
   const projTip = (m, i) => `Projected ${season.projected[m][i].toFixed(1)}, scored ${season.scores[m][i].toFixed(1)} (${fmt(season.scores[m][i] - season.projected[m][i])}; league avg ${fmt(season.projMean[i])})`;
-  renderUnluckyPanel(`${yr}-sub-roster`, season, 'ui4', 'sum4', "Roster Luck", "", 'flips4', (m, i, v) => projTip(m, i));
-  renderUnluckyPanel(`${yr}-sub-net`, season, 'ui5', 'sum5', "Net Luck", "", 'flips5',
+  if (may('luck-roster')) renderUnluckyPanel(`${yr}-sub-roster`, season, 'ui4', 'sum4', "Roster Luck", "", 'flips4', (m, i, v) => projTip(m, i));
+  if (may('luck-net')) renderUnluckyPanel(`${yr}-sub-net`, season, 'ui5', 'sum5', "Net Luck", "", 'flips5',
     (m, i, v) => `${projTip(m, i)} · ${season.opponents[m][i]} ${fmt(season.ui3[m][i])} vs their usual`);
-  renderSOS(`${yr}-sub-sos`, season);
+  if (may('luck-sos')) renderSOS(`${yr}-sub-sos`, season);
   el.querySelectorAll('.subtab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       el.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
