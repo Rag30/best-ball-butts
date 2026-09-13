@@ -139,13 +139,42 @@ function shouldRunNow() {
   return et.getHours() === 21;
 }
 
+/* ---------------- sharing through the launcher ----------------
+ * The rrr-projects launcher fronts this hostname. While the site is public it
+ * forwards everyone untouched; once it is shared with named people it adds
+ * X-Rrr-Tabs, the tabs that person may use (standings, luck, reports — see the
+ * catalog in rrr-projects-landing). The page hides the others via /.rrr/me,
+ * and this trims /data so the hidden numbers never leave the Worker either.
+ * No header = whole site, which is the public case. Contract: AI Tools repo,
+ * auth&sharing guidelines.md. */
+function tabsOf(request) {
+  const h = request.headers.get("x-rrr-tabs");
+  return h === null ? null : h.split(",").map(s => s.trim()).filter(Boolean);
+}
+const LUCK_KEYS = ["ui3", "ui4", "ui5", "sum3", "sum4", "sum5", "flips3", "flips4", "flips5", "projected", "projMean"];
+function trimToTabs(snapshot, tabs) {
+  if (tabs === null) return snapshot;
+  const may = t => tabs.includes(t);
+  const out = { ...snapshot, seasons: {} };
+  for (const [yr, season] of Object.entries(snapshot.seasons || {})) {
+    const s = { ...season };
+    if (!may("luck")) for (const k of LUCK_KEYS) delete s[k];
+    if (!may("reports")) delete s.weeklyReports;
+    if (!may("standings")) { delete s.standings; delete s.schedule; delete s.scores; delete s.opponents; delete s.rosters; }
+    out.seasons[yr] = s;
+  }
+  if (!may("luck")) out.career = [];
+  out.tabs = tabs;
+  return out;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/data") {
       const snap = await env.DATA.get("snapshot");
-      return snap ? new Response(snap, { headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } })
-                  : json({ error: "no data yet — press Refresh" }, 503);
+      if (!snap) return json({ error: "no data yet — press Refresh" }, 503);
+      return new Response(JSON.stringify(trimToTabs(JSON.parse(snap), tabsOf(request))), { headers: { "Content-Type": "application/json", "Cache-Control": "no-store", Vary: "X-Rrr-Tabs" } });
     }
     if (url.pathname === "/refresh") {
       if (request.method !== "POST") return json({ error: "POST only" }, 405);

@@ -230,6 +230,11 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 
 <script>
 let DATA = { seasons: {}, career: [] };   // filled from GET /data (Cloudflare KV)
+// Tabs this person may use, from the launcher's door (GET /.rrr/me): an array of
+// 'standings' | 'luck' | 'reports', or null for everything (the public case, and
+// any time the answer is not a clean one). The Worker trims /data the same way.
+let TABS = null;
+const may = t => TABS === null || TABS.includes(t);
 
 function fmt(n, digits=1) {
   if (n === null || n === undefined) return '—';
@@ -516,15 +521,14 @@ function buildSeasonPanel(yr) {
     <div class="verdict">
       ${champ ? `<div class="verdict-card"><div class="label">${yr} Champion</div>
         <div class="verdict-line"><span>🏆 Winner</span><b>${champ.name}</b><span class="tag tag-gold">${champ.wins}-${champ.losses}</span></div></div>` : ''}
-      ${mk('Net Luck', season.sum5)}
+      ${may('luck') && season.sum5 ? mk('Net Luck', season.sum5) : ''}
     </div>
     <div class="tabs" data-yr="${yr}">
-      <button class="tab-btn active" data-panel="${yr}-standings">Standings and Schedules</button>
-      <button class="tab-btn" data-panel="${yr}-ui3">Unluckiness Index</button>
-      <button class="tab-btn" data-panel="${yr}-reports">Weekly Reports</button>
+      ${[['standings', `${yr}-standings`, 'Standings and Schedules'], ['luck', `${yr}-ui3`, 'Unluckiness Index'], ['reports', `${yr}-reports`, 'Weekly Reports']]
+        .filter(([t]) => may(t)).map(([, id, label], i) => `<button class="tab-btn${i === 0 ? ' active' : ''}" data-panel="${id}">${label}</button>`).join('')}
     </div>
-    <div class="panel active" id="${yr}-standings"></div>
-    <div class="panel" id="${yr}-ui3">
+    <div class="panel${may('standings') ? ' active' : ''}" id="${yr}-standings"></div>
+    <div class="panel${!may('standings') && may('luck') ? ' active' : ''}" id="${yr}-ui3">
       <div class="subtabs">
         <button class="subtab-btn active" data-sub="${yr}-sub-net">Net Luck</button>
         <button class="subtab-btn" data-sub="${yr}-sub-schedule">Schedule Luck</button>
@@ -536,10 +540,11 @@ function buildSeasonPanel(yr) {
       <div class="subpanel" id="${yr}-sub-roster"></div>
       <div class="subpanel" id="${yr}-sub-sos"></div>
     </div>
-    <div class="panel" id="${yr}-reports"></div>
+    <div class="panel${!may('standings') && !may('luck') && may('reports') ? ' active' : ''}" id="${yr}-reports"></div>
   `;
 
-  renderStandings(season, yr);
+  if (may('standings')) renderStandings(season, yr);
+  if (!may('luck')) { if (may('reports')) renderWeeklyReports(`${yr}-reports`, season); return wireTabs(el); }
   renderUnluckyPanel(`${yr}-sub-schedule`, season, 'ui3', 'sum3', "Schedule Luck", "", 'flips3');
   const projTip = (m, i) => `Projected ${season.projected[m][i].toFixed(1)}, scored ${season.scores[m][i].toFixed(1)} (${fmt(season.scores[m][i] - season.projected[m][i])}; league avg ${fmt(season.projMean[i])})`;
   renderUnluckyPanel(`${yr}-sub-roster`, season, 'ui4', 'sum4', "Roster Luck", "", 'flips4', (m, i, v) => projTip(m, i));
@@ -554,7 +559,11 @@ function buildSeasonPanel(yr) {
       document.getElementById(btn.dataset.sub).classList.add('active');
     });
   });
-  renderWeeklyReports(`${yr}-reports`, season);
+  if (may('reports')) renderWeeklyReports(`${yr}-reports`, season);
+  wireTabs(el);
+}
+
+function wireTabs(el) {
 
   el.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -605,6 +614,12 @@ function renderAll() {
   const fmtTime = iso => new Date(iso).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' });
 
   async function load() {
+    // Who is here, per the launcher. A public visitor, a dev server, or an
+    // outage all answer "everything".
+    try {
+      const m = await fetch('/.rrr/me', { cache: 'no-store' });
+      if (m.ok) { const j = await m.json(); TABS = Array.isArray(j.tabs) ? j.tabs.map(String) : null; }
+    } catch {}
     const r = await fetch('/data', { cache: 'no-store' });
     if (!r.ok) throw new Error(r.status === 503 ? 'no data yet' : `HTTP ${r.status}`);
     DATA = await r.json();
