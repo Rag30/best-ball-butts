@@ -1,5 +1,8 @@
 name = "bbb-refresh"
 main = "src/index.js"
+# No *.workers.dev hostname: every hostname this Worker answers on must be one
+# the launcher fronts (auth&sharing guidelines §3), and that one is not.
+workers_dev = false
 compatibility_date = "2026-01-01"
 
 routes = [
