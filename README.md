@@ -19,7 +19,7 @@ Sleeper API ──fetch.py──▶ data/raw/ (git)   ◀── GitHub Action, n
 
 - **Cloudflare KV is the live database.** One computed JSON per season plus a `snapshot` the page
   renders. Completed seasons (`status: complete`) are written once and frozen; the current season is
-  recomputed on every refresh. The Worker refreshes itself once a night at 9 PM ET, and anyone can press **Refresh** on the page.
+  recomputed on every refresh. The Worker refreshes itself once a night at 9 PM ET; the **Refresh** button on the page is for the owner (the launcher's `write` role — `POST /refresh` refuses anyone else).
 
 - **git `data/raw/` is the archive.** Raw Sleeper responses, committed nightly at 10 PM ET by the Action. It's the
   source of truth if Sleeper ever changes; `scripts/seed-kv.js` rebuilds KV from it.
@@ -29,6 +29,9 @@ Sleeper API ──fetch.py──▶ data/raw/ (git)   ◀── GitHub Action, n
 ## Deploy / operate
 
 ```bash
+# worker tests (the launcher assertion, tab trimming, refresh role):
+cd worker && npm test
+
 # page or worker code changed:
 python3 scripts/build.py && cd worker && npx wrangler@4 deploy
 

@@ -1,9 +1,10 @@
 // bestballbutts.rrr-projects.com — the whole site in one Worker.
 //
 //   GET  /            static page (worker/public/index.html, uploaded by `wrangler deploy`)
-//   GET  /data        the computed league tables, read from KV            (page loads this)
-//   POST /refresh     Sleeper -> compute.js -> KV, for every non-frozen season (Refresh button)
+//   GET  /data        the computed league tables, read from KV, trimmed to the launcher's tabs (page loads this)
+//   POST /refresh     Sleeper -> compute.js -> KV, for every non-frozen season (Refresh button; needs role write)
 //   cron              same as /refresh, once a night at 9 PM ET
+//   GET  /.rrr/manifest  the tab list, for the launcher's Sharing page
 //
 // KV keys:  season:<yr>  computed season (frozen once league status is "complete")
 //           proj:<yr>:<wk>  per-week team projection totals (tiny; the 1.5 MB player file is
@@ -13,6 +14,7 @@
 // No credentials anywhere: Sleeper is public, KV is bound to this Worker.
 
 import BBB from "../../scripts/compute.js";
+import { launcherIdentity } from "./launcher-identity.js";
 
 const USERNAME = "raghavr7";
 const LEAGUE_NAME = "Best Ball Butts";
@@ -140,22 +142,57 @@ function shouldRunNow() {
 }
 
 /* ---------------- sharing through the launcher ----------------
- * The rrr-projects launcher fronts this hostname. While the site is public it
- * forwards everyone untouched; once it is shared with named people it adds
- * X-Rrr-Tabs, the tabs that person may use (standings, luck, reports — see the
- * catalog in rrr-projects-landing). The page hides the others via /.rrr/me,
- * and this trims /data so the hidden numbers never leave the Worker either.
- * No header = whole site, which is the public case. Contract: AI Tools repo,
- * auth&sharing guidelines.md. */
-function tabsOf(request) {
-  const h = request.headers.get("x-rrr-tabs");
-  return h === null ? null : h.split(",").map(s => s.trim()).filter(Boolean);
+ * The rrr-projects launcher fronts every hostname of this app (both
+ * bestballbutts.rrr-projects.com and the legacy bbb-refresh.rrr-projects.com are
+ * in its catalog, so nothing reaches this Worker around the gate). An admitted
+ * request carries X-Rrr-Assertion, a signed statement of who this is, their
+ * role and the tabs they may use (standings, luck + its sub-tabs, reports).
+ * launcher-identity.js verifies it; the tabs come from the verified claim and
+ * from nowhere else — X-Rrr-Tabs is only a mirror, never authority.
+ *
+ * Three cases on GET /data:
+ *   - valid assertion   -> the feed trimmed to its tabs (null tabs = whole app)
+ *   - assertion, but it fails to verify -> 403; a forged header is a stranger
+ *   - no assertion      -> while the app is Public the gate forwards everyone
+ *                          with no identity at all, so this can only be a
+ *                          public viewer: the whole feed. Once the owner sets
+ *                          the app to Shared the gate stops forwarding anyone
+ *                          without an assertion, so the case disappears.
+ * POST /refresh writes KV, so it needs a verified assertion with role "write"
+ * (the owner). The page hides the others via /.rrr/me and this trims /data so
+ * the hidden numbers never leave the Worker either. Contract: AI Tools repo,
+ * auth&sharing guidelines.md §5–§7. */
+function identityOpts(env) {
+  return {
+    issuer: env.LAUNCHER_ISSUER || undefined,                       // default https://id.rrr-projects.com
+    aud: env.LAUNCHER_AUD || undefined,                             // default bestballbutts (the catalog id)
+    fetchJwks: typeof env.LAUNCHER_JWKS_FETCH === "function" ? env.LAUNCHER_JWKS_FETCH : undefined,   // tests only
+  };
 }
-const LUCK_KEYS = ["ui3", "ui4", "ui5", "sum3", "sum4", "sum5", "flips3", "flips4", "flips5", "projected", "projMean"];
+/** { who, refused }: who is the verified identity or null; refused is true when a header was present but bad. */
+async function whoIs(request, env) {
+  if (!request.headers.get("x-rrr-assertion")) return { who: null, refused: false };
+  const who = await launcherIdentity(request, identityOpts(env));
+  return { who, refused: !who };
+}
+
+// Every key a season carries that the page renders, by the tab that renders it
+// (scripts/compute.js buildSeason() is the full list; managers, weeks and meta
+// are shared plumbing and stay). Add a key to compute.js -> add it here.
+const LUCK_KEYS = ["ui3", "ui4", "ui5", "sum3", "sum4", "sum5", "flips3", "flips4", "flips5", "projected", "projMean", "sos"];
 // Sub-tabs of the index, each with the fields only it renders. Net luck
 // (ui5) is the season verdict too, so it goes with the parent.
-const SUB_KEYS = { "luck-schedule": ["ui3", "sum3", "flips3"], "luck-roster": ["ui4", "sum4", "flips4", "projected", "projMean"], "luck-net": ["ui5", "sum5", "flips5"] };
-function trimToTabs(snapshot, tabs) {
+const SUB_KEYS = {
+  "luck-schedule": ["ui3", "sum3", "flips3"],
+  "luck-roster": ["ui4", "sum4", "flips4", "projected", "projMean"],
+  "luck-net": ["ui5", "sum5", "flips5"],
+  "luck-sos": ["sos"],
+};
+const STANDINGS_KEYS = ["standings", "medianStandings", "oppScores", "results", "medianResults", "weeklyMedian", "margin", "seasonAvg", "schedule", "rosters"];
+// Per-week scores and opponents are the standings grid, but the luck tooltips
+// also say "scored X vs Y", so they stay while either tab is granted.
+const SHARED_KEYS = ["scores", "opponents"];
+export function trimToTabs(snapshot, tabs) {   // exported for scripts/smoke.js, which renders the page over a trimmed feed
   if (tabs === null) return snapshot;
   const may = t => tabs.includes(t);
   const out = { ...snapshot, seasons: {} };
@@ -164,7 +201,8 @@ function trimToTabs(snapshot, tabs) {
     if (!may("luck")) for (const k of LUCK_KEYS) delete s[k];
     else for (const [sub, keys] of Object.entries(SUB_KEYS)) if (!may(sub)) for (const k of keys) delete s[k];
     if (!may("reports")) delete s.weeklyReports;
-    if (!may("standings")) { delete s.standings; delete s.schedule; delete s.scores; delete s.opponents; delete s.rosters; }
+    if (!may("standings")) for (const k of STANDINGS_KEYS) delete s[k];
+    if (!may("standings") && !may("luck")) for (const k of SHARED_KEYS) delete s[k];
     out.seasons[yr] = s;
   }
   if (!may("luck")) out.career = [];
@@ -196,12 +234,19 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/.rrr/manifest") return json(MANIFEST);
     if (url.pathname === "/data") {
+      const { who, refused } = await whoIs(request, env);
+      if (refused) return json({ error: "bad assertion" }, 403);
       const snap = await env.DATA.get("snapshot");
       if (!snap) return json({ error: "no data yet — press Refresh" }, 503);
-      return new Response(JSON.stringify(trimToTabs(JSON.parse(snap), tabsOf(request))), { headers: { "Content-Type": "application/json", "Cache-Control": "no-store", Vary: "X-Rrr-Tabs" } });
+      const tabs = who ? who.tabs : null;   // no assertion = public viewer (see above); null tabs = whole app
+      return new Response(JSON.stringify(trimToTabs(JSON.parse(snap), tabs)), { headers: { "Content-Type": "application/json", "Cache-Control": "no-store", Vary: "X-Rrr-Assertion" } });
     }
     if (url.pathname === "/refresh") {
       if (request.method !== "POST") return json({ error: "POST only" }, 405);
+      // A write to KV: only someone the launcher vouches for as a writer (the owner).
+      // Readers and public viewers get the nightly cron instead.
+      const { who } = await whoIs(request, env);
+      if (!who || who.role !== "write") return json({ error: "read only" }, 403);
       try { const r = await refresh(env); return json(r, r.ok ? 200 : 429); }
       catch (e) { return json({ ok: false, reason: "error", message: String(e.message || e) }, 502); }
     }

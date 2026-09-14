@@ -1,0 +1,9 @@
+{
+  "name": "bbb-worker",
+  "private": true,
+  "type": "module",
+  "description": "bestballbutts.rrr-projects.com — the Worker. No dependencies; `wrangler` runs via npx.",
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  }
+}

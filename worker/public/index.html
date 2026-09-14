@@ -71,6 +71,9 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Inter'
 .refresh-btn[disabled] { opacity: 0.6; cursor: wait; }
 .refresh-btn.secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
 .refresh-btn.secondary:hover { background: var(--surface-2); }
+[hidden] { display: none !important; }
+.no-access { color: var(--ink-dim); font-size: 14px; line-height: 1.5; margin: 8px 0 24px; }
+.no-access a { color: var(--accent-strong); font-weight: 600; }
 #liveStatus { font-size: 12.5px; }
 #liveStatus.err { color: var(--unlucky); }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
@@ -209,8 +212,8 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Sun Sep 13, 5:17 PM ET">Archive built Sun Sep 13, 5:17 PM ET</span></span>
-    <button class="refresh-btn" id="refreshBtn" type="button" title="Pull the latest from Sleeper and recompute">Refresh</button>
+    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Sun Sep 13, 10:25 PM ET">Archive built Sun Sep 13, 10:25 PM ET</span></span>
+    <button class="refresh-btn" id="refreshBtn" type="button" hidden title="Pull the latest from Sleeper and recompute">Refresh</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
   </div>
@@ -229,9 +232,13 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 
 <script>
 let DATA = { seasons: {}, career: [] };   // filled from GET /data (Cloudflare KV)
-// Tabs this person may use, from the launcher's door (GET /.rrr/me): an array of
-// 'standings' | 'luck' | 'reports', or null for everything (the public case, and
-// any time the answer is not a clean one). The Worker trims /data the same way.
+// Who the launcher's door says is here (GET /.rrr/me): { email, name, role, tabs }
+// for a signed-in person, { public: true } while the site is public, or null when
+// there was no clean answer (a dev server, an outage). This is for what the page
+// shows; the Worker decides from the signed assertion and trims /data to match.
+let ME = null;
+// Tabs this person may use: an array of 'standings' | 'luck' (+ 'luck-net',
+// 'luck-schedule', 'luck-roster', 'luck-sos') | 'reports', or null for everything.
 let TABS = null;
 const may = t => TABS === null || TABS.includes(t);
 
@@ -348,7 +355,7 @@ function buildBarCell(val, maxAbs, flipped, tipText) {
 }
 
 function renderUnluckyPanel(elId, season, uiKey, sumKey, title, desc, flipsKey, tipFn) {
-  tipFn = tipFn || ((m, i, v) => `vs ${season.opponents[m][i]}: ${fmt(v)}`);
+  tipFn = tipFn || ((m, i, v) => season.opponents ? `vs ${season.opponents[m][i]}: ${fmt(v)}` : fmt(v));
   const el = document.getElementById(elId);
   const ui = season[uiKey];
   const summary = season[sumKey];
@@ -412,7 +419,7 @@ function renderSOS(elId, season) {
   const sos = season.sos || {};
   const rows = Object.entries(sos).sort((a, b) => b[1].sos - a[1].sos);
   const hasRemaining = rows.some(([, s]) => s.remaining != null);
-  const winsOf = name => (season.standings.find(s => s.name === name) || {}).wins ?? '—';
+  const winsOf = name => ((season.standings || []).find(s => s.name === name) || {}).wins ?? '—';   // standings may be trimmed away
   const col = v => v == null ? '—' : `<span style="color:var(--${v > 0 ? 'unlucky' : 'lucky'})">${fmt(v, 2)}</span>`;
   let html = `<div class="section-title">Strength of Schedule</div>
   <div class="table-scroll"><table><thead><tr>
@@ -514,7 +521,7 @@ function buildSeasonPanel(yr) {
       <div class="verdict-line"><span>Luckiest all season</span><b>${luckiest[0]}</b><span class="tag tag-lucky">${fmt(luckiest[1].total)} pts</span></div>
     </div>`;
   };
-  const champ = season.standings.find(s => s.playoffResult === 'Champion');
+  const champ = season.standings ? season.standings.find(s => s.playoffResult === 'Champion') : null;   // standings may be trimmed away
 
   el.innerHTML = `
     <div class="verdict">
@@ -540,10 +547,12 @@ function buildSeasonPanel(yr) {
   if (may('standings')) renderStandings(season, yr);
   if (!may('luck')) { if (may('reports')) renderWeeklyReports(`${yr}-reports`, season); return wireTabs(el); }
   if (may('luck-schedule')) renderUnluckyPanel(`${yr}-sub-schedule`, season, 'ui3', 'sum3', "Schedule Luck", "", 'flips3');
-  const projTip = (m, i) => `Projected ${season.projected[m][i].toFixed(1)}, scored ${season.scores[m][i].toFixed(1)} (${fmt(season.scores[m][i] - season.projected[m][i])}; league avg ${fmt(season.projMean[i])})`;
+  // Each tooltip only names what this person's feed carries (the Worker trims by tab).
+  const projTip = (m, i) => season.projected && season.scores
+    ? `Projected ${season.projected[m][i].toFixed(1)}, scored ${season.scores[m][i].toFixed(1)} (${fmt(season.scores[m][i] - season.projected[m][i])}; league avg ${fmt(season.projMean[i])})` : '';
   if (may('luck-roster')) renderUnluckyPanel(`${yr}-sub-roster`, season, 'ui4', 'sum4', "Roster Luck", "", 'flips4', (m, i, v) => projTip(m, i));
   if (may('luck-net')) renderUnluckyPanel(`${yr}-sub-net`, season, 'ui5', 'sum5', "Net Luck", "", 'flips5',
-    (m, i, v) => `${projTip(m, i)} · ${season.opponents[m][i]} ${fmt(season.ui3[m][i])} vs their usual`);
+    (m, i, v) => [projTip(m, i), season.opponents && season.ui3 ? `${season.opponents[m][i]} ${fmt(season.ui3[m][i])} vs their usual` : ''].filter(Boolean).join(' · ') || fmt(v));
   if (may('luck-sos')) renderSOS(`${yr}-sub-sos`, season);
   el.querySelectorAll('.subtab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -607,13 +616,32 @@ function renderAll() {
   const say = (msg, err) => { if (status) { status.textContent = msg; status.classList.toggle('err', !!err); } };
   const fmtTime = iso => new Date(iso).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' });
 
+  // Signed in, but no tab of this app is shared with them yet: say who they are,
+  // point at the owner, and link back to the launcher — never at a login.
+  function renderNoAccess() {
+    const tabs = document.getElementById('seasonTabs'), panels = document.getElementById('seasonPanels'), career = document.getElementById('season-career');
+    if (tabs) tabs.hidden = true;
+    if (panels) panels.hidden = true;
+    const p = document.createElement('p'); p.className = 'no-access';
+    const msg = document.createElement('span');
+    msg.textContent = (ME && ME.email ? `Signed in as ${ME.email}. ` : '') + 'Nothing here is shared with you yet — ask the owner, or go back to ';
+    const a = document.createElement('a'); a.href = 'https://rrr-projects.com/'; a.textContent = 'rrr-projects.com';
+    const dot = document.createElement('span'); dot.textContent = '.';
+    p.appendChild(msg); p.appendChild(a); p.appendChild(dot);
+    if (career) { career.innerHTML = ''; career.appendChild(p); }
+  }
+
   async function load() {
     // Who is here, per the launcher. A public visitor, a dev server, or an
     // outage all answer "everything".
     try {
       const m = await fetch('/.rrr/me', { cache: 'no-store' });
-      if (m.ok) { const j = await m.json(); TABS = Array.isArray(j.tabs) ? j.tabs.map(String) : null; }
+      if (m.ok) { ME = await m.json(); TABS = Array.isArray(ME.tabs) ? ME.tabs.map(String) : null; }
     } catch {}
+    // Refresh writes KV and the Worker refuses it without a write assertion, so
+    // only a writer (the owner) sees the button; the nightly cron covers everyone else.
+    if (btn) btn.hidden = !(ME && ME.role === 'write');
+    if (TABS && TABS.length === 0) return renderNoAccess();
     const r = await fetch('/data', { cache: 'no-store' });
     if (!r.ok) throw new Error(r.status === 503 ? 'no data yet' : `HTTP ${r.status}`);
     DATA = await r.json();
@@ -628,6 +656,7 @@ function renderAll() {
       const r = await fetch('/refresh', { method: 'POST' });
       const body = await r.json().catch(() => ({}));
       if (r.status === 429) { say(`Just refreshed — try again in ${body.retryInSeconds}s.`); }
+      else if (r.status === 403) { say('Refresh is for the owner; the site refreshes itself nightly.', true); }
       else if (!r.ok || !body.ok) { say(`Refresh failed${body.message ? ': ' + body.message : ''}.`, true); }
       else { say(body.updated && body.updated.length ? `Recomputed ${body.updated.join(', ')}` : 'Up to date — nothing changed on Sleeper'); }
       await load();
