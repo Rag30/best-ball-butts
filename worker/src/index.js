@@ -172,9 +172,29 @@ function trimToTabs(snapshot, tabs) {
   return out;
 }
 
+// The tabs this page has, published to the launcher at GET /.rrr/manifest.
+// Rename or add one here and the launcher's Sharing page shows it on its next
+// open; a new tab is off for everyone until the owner ticks it. One page and
+// one /data feed, so there are no paths: the page hides tabs via /.rrr/me and
+// trimToTabs() above cuts the data to match.
+const MANIFEST = {
+  app: "bestballbutts",
+  tabs: [
+    { id: "standings", label: "Standings and Schedules" },
+    { id: "luck", label: "Unluckiness Index", children: [
+      { id: "luck-net", label: "Net Luck" },
+      { id: "luck-schedule", label: "Schedule Luck" },
+      { id: "luck-roster", label: "Roster Luck" },
+      { id: "luck-sos", label: "Strength of Schedule" },
+    ] },
+    { id: "reports", label: "Weekly Reports" },
+  ],
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === "/.rrr/manifest") return json(MANIFEST);
     if (url.pathname === "/data") {
       const snap = await env.DATA.get("snapshot");
       if (!snap) return json({ error: "no data yet — press Refresh" }, 503);
