@@ -1,0 +1,636 @@
+{
+ "12508": {
+  "name": "Jaxson Dart",
+  "manager": "Lauren",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Torn MCL + meniscus and PCL sprain in Wk2 vs LAR; knee surgery ends his 2026 season (6-9 month recovery). Jameis Winston starts. Sleeper still projects ~20/wk from Wk4 (stale).",
+  "confidence": "high",
+  "source": "CBS/Yahoo/NBC Sports 2026-09-23 (season-ending surgery)"
+ },
+ "5850": {
+  "name": "Josh Jacobs",
+  "manager": "Lauren",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Still on the commissioner's exempt list (since Aug 30); pleaded no contest to misdemeanor battery/property damage, and the NFL's personal-conduct review (possible suspension) has no announced end. Cannot practice or play. Sleeper assumes a Wk8 return; a reinstatement or time-served suspension could bring him back midseason.",
+  "confidence": "medium",
+  "source": "NBC Sports/PFT exempt-list update; Sleeper tag NA/Personal"
+ },
+ "10222": {
+  "name": "Jayden Reed",
+  "manager": "Henry",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   12
+  ],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "reason": "Neck injury on a hard hit in Wk2 at NYJ, carted off on a spine board, hospitalized overnight (movement in all extremities). LaFleur says it is 'way too early' to know whether he plays again this season. Taken as out through Wk12 with a diminished role if he returns; he was already WR6 on the depth chart.",
+  "confidence": "low",
+  "source": "NBC Sports 2026-09-22 'Packers unsure if Reed plays this season'; ESPN"
+ },
+ "11566": {
+  "name": "Jayden Daniels",
+  "manager": "Noelle",
+  "weeks_out": [
+   3,
+   4,
+   5
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   6,
+   8,
+   9
+  ],
+  "reason": "Dislocated left elbow (no fracture) late in the first half of Wk2 at DAL; seeing specialists, no timeline yet. Mariota starts Wk3. Same elbow he dislocated last season, when he missed 3 games; a repeat dislocation raises instability/surgery risk. Expect a brace and fewer designed runs on return.",
+  "confidence": "low",
+  "source": "ESPN/NFL.com/NBC Sports 2026-09-21..23 (Mariota to start Wk3, awaiting specialist opinions)"
+ },
+ "8142": {
+  "name": "Alec Pierce",
+  "manager": "Noelle",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9,
+   10,
+   11
+  ],
+  "reason": "Aggravated the heel he had surgically repaired this offseason (carted off in Wk2 vs KC). Placed on IR (minimum 4 games, Wk3-6); rehabbing rather than repeat surgery, 'several weeks' with hope of a midseason return. Surgery still possible.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-09-23 (IR); ESPN 'out weeks, hoping to return midseason'; CBS"
+ },
+ "11583": {
+  "name": "Jonathon Brooks",
+  "manager": "Emma",
+  "weeks_out": [
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   9,
+   10
+  ],
+  "reason": "Core-muscle (groin/abdomen) surgery Sept 23 after a Wk2 injury; placed on IR, expected to miss ~6 weeks (CAR bye Wk5), so Wk9 is the realistic return. Was RB3 behind Hubbard anyway.",
+  "confidence": "medium",
+  "source": "AP via US News 2026-09-23 (6 weeks); ESPN; CBS"
+ },
+ "5859": {
+  "name": "A.J. Brown",
+  "manager": "Henry",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   8,
+   9
+  ],
+  "reason": "High-ankle sprain in Wk1 vs SEA; IR since Sept 11, reported ~6-week absence. IR-eligible Wk6, realistic return Wk7-8; Wk7 included as out. Sleeper agrees (0 through Wk7).",
+  "confidence": "high",
+  "source": "NFL.com (6 weeks), NBC Sports Boston (IR, min Wk6)"
+ },
+ "4033": {
+  "name": "David Njoku",
+  "manager": "Henry",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   8,
+   9,
+   10
+  ],
+  "reason": "Fibula injury, carted off in Wk2 vs LV; placed on IR Sept 21 (minimum 4 games, Wk3-6), LAC bye Wk7. Unclear if more serious than the IR minimum. Was TE3 on the depth chart (16% of snaps in Wk2 before the injury).",
+  "confidence": "high",
+  "source": "Chargers.com / NBC Sports 2026-09-21 (IR, fibula)"
+ },
+ "13281": {
+  "name": "Jordyn Tyson",
+  "manager": "Lauren",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9,
+   10,
+   11
+  ],
+  "reason": "Rookie hamstring strain (Aug 13); IR-designated-to-return, reported ~2 months out. Wk7 international game + Wk8 bye make Wk9 the likeliest debut (Sleeper has Wk6-7 trickle).",
+  "confidence": "medium",
+  "source": "NFL.com (2 months), NBC Sports (IR)"
+ },
+ "9753": {
+  "name": "Zach Charbonnet",
+  "manager": "Noelle",
+  "weeks_out": [
+   3,
+   4,
+   5
+  ],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   6,
+   7,
+   8,
+   9
+  ],
+  "reason": "Reserve/PUP after Feb ACL surgery: must miss through Wk4 (eligible Wk5). SEA did NOT open his 21-day practice window this week, though Macdonald says a start date is 'coming soon', so Wk5 is optimistic; Wk6 assumed. Must re-win work from Price (and Holani/Wilson). Sleeper zeroes the whole season (PUP artifact).",
+  "confidence": "medium",
+  "source": "FantasyPros/CBS 2026-09-23 (window not opened this week); Field Gulls (Macdonald quote)"
+ },
+ "5022": {
+  "name": "Dallas Goedert",
+  "manager": "Henry",
+  "weeks_out": [
+   3,
+   4,
+   5
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   6,
+   7
+  ],
+  "reason": "MCL sprain in Wk2 vs TEN; expected to 'miss a few weeks' and back this season; IR still possible (would mean at least Wk3-6). PHI signed Zach Ertz to the practice squad. Sleeper zeroes Wk3-4 only.",
+  "confidence": "medium",
+  "source": "ESPN/NBC Sports Philadelphia/PFT 2026-09-21..22 ('a few weeks')"
+ },
+ "12469": {
+  "name": "Dylan Sampson",
+  "manager": "Lauren",
+  "weeks_out": [
+   3,
+   4,
+   5
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   6,
+   7
+  ],
+  "reason": "Knee injury on a Wk1 kickoff return; IR, minimum 4 games, eligible Wk6 vs BAL. RB6 on the depth chart, so negligible impact; Sleeper zeroes his entire season.",
+  "confidence": "high",
+  "source": "ESPN / news5cleveland (IR, eligible Wk6)"
+ },
+ "13293": {
+  "name": "Ja'Kobi Lane",
+  "manager": "Lauren",
+  "weeks_out": [
+   3,
+   4,
+   5
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   6,
+   7
+  ],
+  "reason": "Fractured wrist in Wk1, surgery, IR (minimum 4 games); eligible Wk6 at CLE. WR10 on the depth chart.",
+  "confidence": "high",
+  "source": "Bleacher Report / ESPN (IR, eligible Wk6)"
+ },
+ "13417": {
+  "name": "De'Zhaun Stribling",
+  "manager": "Conrad",
+  "weeks_out": [
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9,
+   10
+  ],
+  "reason": "Moved from Out to IR with ankle surgery noted (Sleeper, Sept 19). No dedicated reporting found; an IR stint started before Wk2 covers at least Wk2-5, and Sleeper zeroes him until Wk16. Out through the Wk8 bye assumed. WR10, negligible impact.",
+  "confidence": "low",
+  "source": "Sleeper tag only (IR/Ankle, Surgery)"
+ },
+ "7569": {
+  "name": "Nico Collins",
+  "manager": "Henry",
+  "weeks_out": [
+   3
+  ],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   4,
+   5
+  ],
+  "reason": "Grade 1 hamstring strain from Wk2 practice; missed Wk2 and absent from Wednesday's Wk3 practice. Source expectation: out Wk3 vs IND (two games total); timeline 'fluid' but no long-term issue.",
+  "confidence": "medium",
+  "source": "SI Texans / Bleacher Report 2026-09-23"
+ },
+ "9493": {
+  "name": "Puka Nacua",
+  "manager": "Conrad",
+  "weeks_out": [
+   3
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   4,
+   5
+  ],
+  "reason": "Groin soreness; inactive in Wk2, DNP again Wednesday; McVay 'not sure' he plays Wk3 vs DEN (one doctor floated sports-hernia risk). Coin flip - taken as out. Sleeper still projects 17.2 in Wk3.",
+  "confidence": "low",
+  "source": "NBC Sports 2026-09-22 (McVay 'not sure'); ClutchPoints (DNP Wed)"
+ },
+ "4199": {
+  "name": "Aaron Jones",
+  "manager": "Raghav",
+  "weeks_out": [
+   3
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   4
+  ],
+  "reason": "Knee injury in Wk2 (finished in a brace after 23 carries/81% snaps); DNP Wednesday, O'Connell calls him uncertain for Wk3 at TB. Coin flip - taken as out. Role was clearly RB1 with Jordan Mason on IR.",
+  "confidence": "low",
+  "source": "ESPN / PFT 2026-09-23 (knee, DNP, uncertain)"
+ },
+ "4943": {
+  "name": "Sam Darnold",
+  "manager": "Noelle",
+  "weeks_out": [
+   3
+  ],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   4
+  ],
+  "reason": "'Unique' short-term glute soft-tissue injury from Wk1; missed Wk2. Ramping up in practice this week with 'at least a chance' to play Wk3 at WAS; decision by Friday. Coin flip - sided with Sleeper (0 in Wk3). Original estimate was ~4 weeks.",
+  "confidence": "low",
+  "source": "Seattle Sports / Seahawks.com 2026-09-23"
+ },
+ "8210": {
+  "name": "Chig Okonkwo",
+  "manager": "Avery",
+  "weeks_out": [
+   3
+  ],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   4
+  ],
+  "reason": "Hamstring from Wk1; missed Wk2, DNP Wednesday and 'in rehab mode' per Quinn.",
+  "confidence": "medium",
+  "source": "CBS/RotoWire 2026-09-23"
+ },
+ "13296": {
+  "name": "Caleb Douglas",
+  "manager": "Henry",
+  "weeks_out": [
+   3
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   4
+  ],
+  "reason": "Ankle injury late in Wk2 (in a boot postgame); DNP Wednesday, Hafley non-committal for Wk3 vs KC.",
+  "confidence": "low",
+  "source": "NBC Sports / RotoWire 2026-09-23"
+ },
+ "11604": {
+  "name": "Brock Bowers",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   3,
+   4
+  ],
+  "reason": "Meniscus trim before the season; missed Wks1-2. Practicing and expected to debut Wk3 vs NO (Rapoport). Expect a managed snap share for his first couple of games.",
+  "confidence": "medium",
+  "source": "Newsweek/CBS/NFL.com 2026-09-22..23"
+ },
+ "9997": {
+  "name": "Zay Flowers",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   3,
+   4
+  ],
+  "reason": "Aggravated hamstring (Wk1 after 150 yds in a half), missed Wk2, DNP Wednesday again; Minter says he has a 'good shot' to play Wk3 vs DAL (Rio). Re-aggravation risk.",
+  "confidence": "low",
+  "source": "RotoWire / Yahoo 2026-09-23"
+ },
+ "4983": {
+  "name": "DJ Moore",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Left AC-joint sprain in Wk2 (TNF); not considered serious, 'has a chance to play' Wk3 vs LAC with 10 days of rest, but not a lock.",
+  "confidence": "low",
+  "source": "NFL.com / CBS 2026-09-18..20"
+ },
+ "11632": {
+  "name": "Malik Nabers",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   3,
+   4,
+   5
+  ],
+  "reason": "Right shoulder popped out and he popped it back in during Wk2; returned to the game and was limited Wednesday. Expected to play; recurrence risk.",
+  "confidence": "medium",
+  "source": "Giants.com injury report; CBS 2026-09-23"
+ },
+ "4866": {
+  "name": "Saquon Barkley",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Stinger on his first Wk2 carry (only 12 of 76 snaps); MRI described as precautionary, 'not more than a stinger'. Expected to play Wk3.",
+  "confidence": "medium",
+  "source": "NBC Sports / Gridiron Experts (Rapoport) 2026-09-20..22"
+ },
+ "12489": {
+  "name": "RJ Harvey",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Hamstring; inactive in Wk2, limited Wednesday and 'continues to make progress'. With Dobbins (hip) limited and Coleman (ankle) DNP, he could reclaim a lead share if active.",
+  "confidence": "low",
+  "source": "Denver Gazette / Bleacher Report 2026-09-23"
+ },
+ "6806": {
+  "name": "J.K. Dobbins",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Hip/hamstring (tag says hamstring, Gazette says hip) after exiting Wk2; limited Wednesday; Payton 'we're going to be alright'. Only 34% of snaps in Wk2.",
+  "confidence": "low",
+  "source": "Denver Gazette 2026-09-23"
+ },
+ "13345": {
+  "name": "Jonah Coleman",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Rookie ankle injury; DNP Wednesday. His Wk2 production (25 snaps, TD) came with Harvey inactive and Dobbins hurt - if Harvey returns he falls back to RB3. Availability and role both in doubt for Wk3.",
+  "confidence": "low",
+  "source": "Denver Gazette / SI Broncos 2026-09-23"
+ },
+ "7021": {
+  "name": "Rico Dowdle",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "reason": "Toe injury, DNP Wednesday in a walking boot, but Rapoport calls it day-to-day and not serious. Role concern too: Warren took 71% of snaps in Wk2 vs Dowdle's 26% (reversal of Wk1's 58/37).",
+  "confidence": "low",
+  "source": "Behind the Steel Curtain / RotoWire 2026-09-23; snap data Wks1-2"
+ },
+ "8228": {
+  "name": "Jaylen Warren",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Shoulder (Sleeper: undisclosed); limited Wednesday. Won the PIT backfield in Wk2 (71% of snaps), and Dowdle's toe could add volume.",
+  "confidence": "medium",
+  "source": "Steelers.com Wk3 injury report 2026-09-23"
+ },
+ "6819": {
+  "name": "Michael Pittman",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Foot injury (different from his camp injury) kept him out of Wk2; back at practice limited Wednesday. Needs a full session by Friday to avoid a tag.",
+  "confidence": "medium",
+  "source": "CBS/RotoWire/Yahoo 2026-09-23"
+ },
+ "7543": {
+  "name": "Travis Etienne",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   3,
+   4
+  ],
+  "reason": "Hamstring, limited Wednesday (first appearance on the report). Also sharing more with the returning Alvin Kamara (54% of snaps, 8 carries in Wk2).",
+  "confidence": "medium",
+  "source": "Saints Wk3 injury report via Audacy/RotoBaller 2026-09-23"
+ },
+ "12534": {
+  "name": "Kyle Monangai",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Hamstring (Sleeper: undisclosed); missing/limited at practice ahead of CHI's Monday game. Could see extra volume if Caleb Williams and Bagent are out.",
+  "confidence": "low",
+  "source": "SI Bears / ChiCitySports 2026-09-23"
+ },
+ "2216": {
+  "name": "Mike Evans",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Hip injury in Wk2 (left in the second half of a blowout); Shanahan says it will be 'managed', not considered serious.",
+  "confidence": "medium",
+  "source": "PFT/RotoWire 2026-09-21"
+ },
+ "5967": {
+  "name": "Tony Pollard",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Ankle soreness (Sleeper: undisclosed); DNP Wednesday but Saleh did not indicate he is at real risk of sitting out.",
+  "confidence": "medium",
+  "source": "RotoWire / Yahoo 2026-09-23"
+ },
+ "13286": {
+  "name": "Jadarian Price",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Left Wk2 with what SEA now calls a shoulder issue ('intact, nothing serious'); X-rays negative, limited Wednesday. Could lose share when Charbonnet returns (handled separately).",
+  "confidence": "medium",
+  "source": "Seahawks.com / Field Gulls 2026-09-23"
+ },
+ "12048": {
+  "name": "George Holani",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   3
+  ],
+  "reason": "Knee; limited Wednesday. RB3 with a 26% snap share in Wk2 - minor impact.",
+  "confidence": "medium",
+  "source": "FantasyPros/CBS 2026-09-23"
+ },
+ "11646": {
+  "name": "Jalen Coker",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Ankle; limited Wednesday again (played through the same issue in Wk2 with 76% of snaps). Availability not in question.",
+  "confidence": "high",
+  "source": "NBC Sports / Panthers.com 2026-09-23"
+ },
+ "5947": {
+  "name": "Jakobi Meyers",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Thumb; no reporting suggesting risk of missing time. Played 90% of snaps in Wk2 (1 target).",
+  "confidence": "low",
+  "source": "Sleeper tag only; snap data"
+ },
+ "7611": {
+  "name": "Rhamondre Stevenson",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "reason": "Role loss: fumbled early in Wk2 and was out-snapped 33-20 (60% vs 36%) by TreVeyon Henderson in Henderson's season debut; Henderson got 16 carries to his 6. Wk1's 85% share came with Henderson (ankle) inactive. Sleeper still projects ~12/wk.",
+  "confidence": "medium",
+  "source": "CBS 'outplayed by Henderson', 98.5 snap counts 2026-09-21; s26_w1/w2 snap data"
+ }
+}

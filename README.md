@@ -62,3 +62,7 @@ assembled into the optimal projected lineup.
 
 Sleeper display names → first names live in `scripts/compute.js` (`MANAGERS`). Seat 5 was Steve in
 2024 and Avery from 2025 — different people, tracked separately in the career table.
+
+## Weekly prediction brief (`prediction/`)
+
+Multi-engine season simulation → a league-neutral 2-page PDF saved to Drive every Tuesday night. Data comes through the owner's gateway MCP (`sleeper-draft__export_league_snapshot`). See [`prediction/RUNBOOK.md`](prediction/RUNBOOK.md).
