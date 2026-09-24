@@ -1,0 +1,8 @@
+# Each run dir holds ~150 MB of intermediates; only the small outputs the next run and the reader need are tracked.
+*/*
+!*/agg.json
+!*/injury_adjustments.json
+!*/brief.md
+!*/week.json
+!*/dst_check.json
+!*/*.pdf
