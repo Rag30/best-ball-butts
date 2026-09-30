@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 ../../pipeline/gateway_files.py *)"
+      "Bash(python3 /home/user/best-ball-butts/prediction/pipeline/gateway_files.py *)"
     ]
   }
 }

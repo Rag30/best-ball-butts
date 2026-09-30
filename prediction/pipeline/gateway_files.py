@@ -1,13 +1,14 @@
 """Move the weekly run's files through the gateway's /files lane, and nothing else.
 
-.claude/settings.json allows exactly `python3 ../../pipeline/gateway_files.py *`, so a
-cloud session can run this without an auto-mode permission check. Because the rule
-skips that check, this script is the guard: the host is fixed, and it only downloads
-a league snapshot into the current run dir or uploads a brief PDF from a run dir.
+.claude/settings.json allows exactly `python3 /home/user/best-ball-butts/prediction/pipeline/gateway_files.py *`
+(the cloud checkout path, pinned so no other script can match), so a cloud session can
+run this without an auto-mode permission check. Because the rule skips that check, this
+script is the guard: the host is fixed, and it only downloads a league snapshot into the
+current run dir or uploads a brief PDF from a run dir.
 
 Run from the run dir (prediction/runs/<date>/):
-  python3 ../../pipeline/gateway_files.py get <token> bbb_snapshot_w<N>.json
-  python3 ../../pipeline/gateway_files.py put <token> "<brief>.pdf" bbb_week<N>_brief.pdf
+  python3 <wrapper> get <token> bbb_snapshot_w<N>.json
+  python3 <wrapper> put <token> "<brief>.pdf" bbb_week<N>_brief.pdf
 
 get writes ./snapshot.json and prints its sha256. put prints the gateway's reply and
 exits 1 if the gateway's sha256 differs from the local file's.
