@@ -24,14 +24,14 @@ It runs from the MacBook, or from any Claude cloud session whose environment has
    - Create the run dir: `R="$P/runs/$(date +%F)"; mkdir -p "$R"; cd "$R"`.
    - Call `sleeper-draft__export_league_snapshot` with no arguments. It writes about 55 MB into the gateway workspace and returns `{filename, sha256, last_completed_week}`.
    - Call `gateway__upload_direct_lane` to get the `/files` URL and the scoped bearer token.
-   - Download: `curl -sS -o snapshot.json -H "Authorization: Bearer <token>" https://mcp.rrr-projects.com/files/<filename>`.
+   - Download, with this exact command shape (an allow rule in `.claude/settings.json` matches it, so a cloud session runs it without a permission check): `curl -sS -o snapshot.json -H "Authorization: Bearer <token>" https://mcp.rrr-projects.com/files/<filename>`.
    - Check the file with `shasum -a 256 snapshot.json` (or `sha256sum`); it must match the returned sha256. **Never write the token to a file.**
    - Run `python3 "$P/pipeline/fetch_data.py" --snapshot snapshot.json`.
    - Delete the workspace copy with `gateway__delete_file`.
 
    This builds the rosters, byes and Sleeper projections. It also checks each D/ST score against a recount from raw stats and writes the result to `dst_check.json`.
 
-   - **Fallback, only if the gateway is unreachable:** run `python3 "$P/pipeline/fetch_data.py"` with no flag, which calls the public Sleeper API directly. Say so in the brief's Data checks section.
+   - **Fallback, if the gateway is unreachable or the download command is denied:** run `python3 "$P/pipeline/fetch_data.py"` with no flag, which calls the public Sleeper API directly. Say so in the brief's Data checks section, and quote the denial reason if there was one. A denied command is a permission decision, not a network fault: don't reword it, split it, or route the token through a file or variable to get it past the check.
    - **If `start` equals the previous run's `start`, no new week has finished.** Produce the brief anyway and say so.
    - If the D/ST check reports any mismatch or zero scores, report it in Data checks.
 2. **Injury research.**
@@ -62,7 +62,9 @@ It runs from the MacBook, or from any Claude cloud session whose environment has
    - It finds macOS Chrome or the cloud's Chromium on its own.
 8. **Upload to Drive.** Use body `{"name":"Best Ball Butts 2026 - Week <start> brief.pdf","parents":["1btM-W2ckqrx6la0JdIAnfrkonAQjy-3s"],"mimeType":"application/pdf"}` and params `{"uploadType":"multipart","fields":"id,webViewLink"}`.
    - **Cloud session, or any session using the gateway connector:**
-     - PUT the PDF into the gateway workspace: `curl -sS -T "<pdf>" -H "Authorization: Bearer <token>" "https://mcp.rrr-projects.com/files/bbb_week<start>_brief.pdf"`.
+     - PUT the PDF into the gateway workspace, with this exact command shape (an allow rule matches it): `curl -sS -T "<pdf>" -H "Authorization: Bearer <token>" "https://mcp.rrr-projects.com/files/bbb_week<start>_brief.pdf"`. Don't probe the host first; go straight to the PUT.
+     - The response carries the file's `sha256`. Compare it with `shasum -a 256 "<pdf>"` (or `sha256sum`) before the Drive step.
+     - **If the PUT is denied:** report the denial reason and use `gateway__upload_base64_fallback` with `append: true`, in chunks of at most 1500 characters. Larger chunks were corrupted about 3–5% of the time. The tool returns the sha256 of the whole file after each chunk; the final one must match the local hash, or delete the workspace copy and start the upload again.
      - Call `gws-personal__drive_files_create` with `upload` set to that plain filename. The gateway's gws reads it from its workspace.
      - Delete the workspace copy with `gateway__delete_file`.
    - **MacBook desktop app, using its own local gws-personal connector:** set `upload` to the PDF path relative to `/`, with no leading slash.
