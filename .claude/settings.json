@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sS -o snapshot.json -H \"Authorization: Bearer *\" https://mcp.rrr-projects.com/files/*)",
+      "Bash(curl -sS -T * -H \"Authorization: Bearer *\" \"https://mcp.rrr-projects.com/files/*\")"
+    ]
+  }
+}
