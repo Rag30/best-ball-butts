@@ -1,6 +1,6 @@
-Weekly routine firing: produce this week's Best Ball Butts league prediction brief, save it to Google Drive, and commit the run outputs. Post progress with update_status and finish with one reply in this thread carrying the summary below.
+Produce this week's Best Ball Butts league prediction brief, save it to Google Drive, and commit the run outputs.
 
-Setup: work in a checkout of Rag30/best-ball-butts at /home/user/best-ball-butts. If that folder is missing, clone it (git clone https://github.com/Rag30/best-ball-butts /home/user/best-ball-butts); otherwise git checkout main && git pull origin main so you start from the latest main.
+Setup: you need a checkout of Rag30/best-ball-butts on main. If the session already has one, cd into it and run git checkout main && git pull origin main. Otherwise clone it: git clone https://github.com/Rag30/best-ball-butts and cd into it.
 
 Read prediction/RUNBOOK.md first and follow steps 1-9 exactly, in a new run folder prediction/runs/<today's date>. Use the cloud-session variants: the Raghav-MCP-Server connector gives you gateway__*, sleeper-draft__* and gws-personal__* tools.
 
