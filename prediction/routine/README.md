@@ -1,31 +1,23 @@
 # Weekly brief routine
 
-The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md](../RUNBOOK.md) every week. It writes the league prediction brief, uploads the PDF to Google Drive, and commits the run outputs to `main`.
+The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md](../RUNBOOK.md) every week. It writes the league prediction brief, uploads the PDF to Google Drive, commits the run outputs to `main`, and posts a summary in a Claude project thread.
 
 | | |
 |---|---|
 | Schedule | `2 4 * * 3`, Wednesdays 04:02 UTC (Tuesday evening US time, after Monday Night Football) |
 | Model | Opus 5.5 |
-| Session | a fresh cloud session on each run, not tied to any thread |
-| Repository | `Rag30/best-ball-butts` |
+| Where it runs | the "Weekly routine" thread in the NFL fantasy Claude project (trigger `trig_01B1zqNCwjzq3T1nGP889TGk`) |
 | Connector | Raghav-MCP-Server |
-| Notifications | push and email when a run finishes |
-| Prompt | [prompt.md](prompt.md) |
+| Prompt | [prompt.md](prompt.md), identical to the live routine's prompt |
 | Config | [routine.json](routine.json) |
 
-This folder is the source of truth for the routine. The live routine is the trigger on claude.ai, so editing these files does not change it. After you change the prompt here, update the trigger to match.
+This folder is the source of truth for the routine. The live routine is the trigger on claude.ai, so editing these files does not change it. After you change the prompt here, apply it to the trigger (for example with `update_trigger` from the Weekly routine thread) so the two stay in sync.
 
-## Why fresh-session
+## Keep the thread open
 
-A routine that fires into a Claude project thread is tied to that thread's session. If the session is deleted or cleaned up, the routine is deleted with it. That happened to the copy created on 2026-09-27. A fresh-session routine belongs only to the account and isn't affected. Claude can't create one from inside a private project, so create it on claude.ai.
+The routine is tied to the Weekly routine thread's session. If that thread is resolved, cleaned up, or its session is deleted, the routine is deleted with it. That's what happened to the copy created on 2026-09-27. Don't close or delete that thread.
 
-## Creating it
-
-1. Open [claude.ai/code/routines](https://claude.ai/code/routines) and create a new routine.
-2. Name it "Best Ball Butts weekly brief" and set the schedule to `2 4 * * 3` (UTC), which is weekly on Wednesdays at 04:02.
-3. Pick this repository (`Rag30/best-ball-butts`) and an environment with Full network access.
-4. Attach the Raghav-MCP-Server connector and choose Opus 5.5.
-5. Paste in the contents of `prompt.md`.
+If the routine disappears anyway, recreate it from that thread (or a new project thread) with `create_trigger`, using the cron above and `prompt.md` as the prompt. A fresh-session routine avoids the problem entirely, but it can't be created from inside a private Claude project. It has to be created on claude.ai/code/routines or from a regular Claude Code session.
 
 ## Dependencies
 
