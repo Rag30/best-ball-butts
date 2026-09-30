@@ -1,8 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl -sS -o snapshot.json -H \"Authorization: Bearer *\" https://mcp.rrr-projects.com/files/*)",
-      "Bash(curl -sS -T * -H \"Authorization: Bearer *\" \"https://mcp.rrr-projects.com/files/*\")"
+      "Bash(python3 /home/user/best-ball-butts/prediction/pipeline/gateway_files.py *)"
     ]
   }
 }
