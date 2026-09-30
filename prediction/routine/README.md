@@ -25,7 +25,7 @@ If the routine disappears anyway, recreate it from that thread (or a new project
   - `sleeper-draft` provides `export_league_snapshot`, and all Sleeper data comes through it.
   - `gateway` provides the `/files` lane (`upload_direct_lane`, `delete_file`), which moves the snapshot and the PDF in and out of the session.
   - `gws-personal` provides `drive_files_create` for the "Best Ball Butts Weekly" folder.
-- `.claude/settings.json` in this repository allows the runbook's two gateway `curl` commands, so auto mode doesn't block them.
+- `.claude/settings.json` in this repository allows only `python3 /home/user/best-ball-butts/prediction/pipeline/gateway_files.py`, the guarded wrapper for the gateway `/files` lane, so auto mode doesn't block the snapshot download or the PDF upload. That path is why the prompt keeps the checkout at `/home/user/best-ball-butts`.
 - Web search and fetch, for current injury news.
 
 ## Secrets
