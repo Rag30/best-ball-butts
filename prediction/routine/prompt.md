@@ -2,7 +2,7 @@ Weekly routine firing: produce this week's Best Ball Butts league prediction bri
 
 Setup: work in a checkout of Rag30/best-ball-butts at /home/user/best-ball-butts. If that folder is missing, clone it (git clone https://github.com/Rag30/best-ball-butts /home/user/best-ball-butts); otherwise reset it to the latest remote main with git fetch origin && git checkout -B main origin/main (an earlier run may have left a local commit whose push was rejected; that commit lives on in its PR branch).
 
-Read prediction/RUNBOOK.md first and follow steps 1-9 exactly, in a new run folder prediction/runs/<today's date>. Use the cloud-session variants: the Raghav-MCP-Server connector gives you gateway__*, sleeper-draft__* and gws-personal__* tools.
+Read prediction/RUNBOOK.md first and follow steps 1-9 exactly, in a new run folder prediction/runs/<today's date>. Use the cloud-session variants: the Routines MCP Gateway connector gives you gateway__*, sleeper-draft__* and gws-personal__* tools. Use only that connector's tools; never call the MCP Gateway connector (the admin tier) or any other. If a tool you need is missing from Routines MCP Gateway, stop that step and say which tool in the summary instead of falling back.
 
 Requirements (from the owner, Raghav):
 - Sleeper data MUST come through his MCP: sleeper-draft__export_league_snapshot, download via the gateway /files lane (gateway__upload_direct_lane gives URL + token), verify sha256, fetch_data.py --snapshot, then gateway__delete_file. Only if the gateway is unreachable, use the direct-API fallback and say so in the brief. Never write the upload token to any file or commit.

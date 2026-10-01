@@ -8,12 +8,14 @@
   "prompt_file": "prompt.md",
   "mcp_connections": [
     {
-      "name": "Raghav-MCP-Server",
-      "url": "https://mcp.rrr-projects.com/mcp",
+      "name": "Routines MCP Gateway",
+      "tier": "routines",
+      "note": "the routine is thread-bound, so it inherits the thread session's connectors; the prompt restricts it to this one",
       "tools_used": [
         "sleeper-draft__export_league_snapshot",
         "gateway__upload_direct_lane",
         "gateway__delete_file",
+        "gateway__upload_base64_fallback",
         "gws-personal__drive_files_create"
       ]
     }
