@@ -592,15 +592,18 @@ function wireTabs(el) {
   });
 }
 
+// One delegated listener on the tab row, wired before any fetch: it covers the
+// year buttons renderAll() adds later, and keeps Weekly Brief usable when /data fails.
 function initSeasonTabs() {
-  const buttons = document.querySelectorAll('.season-btn');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('season-' + btn.dataset.season).classList.add('active');
-    });
+  const row = document.getElementById('seasonTabs');
+  if (!row) return;
+  row.addEventListener('click', e => {
+    const btn = e.target && e.target.closest ? e.target.closest('.season-btn') : null;
+    if (!btn) return;
+    document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('season-' + btn.dataset.season).classList.add('active');
   });
 }
 
@@ -666,7 +669,6 @@ async function loadBrief(run) {
 }
 
 /* ---------------- data loading: the page reads /data (Cloudflare KV); Refresh asks the Worker to recompute ---------------- */
-let tabsInitialized = false;
 function renderAll() {
   renderCareer();
   const tabs = document.getElementById('seasonTabs'), panels = document.getElementById('seasonPanels');
@@ -681,10 +683,10 @@ function renderAll() {
     }
     buildSeasonPanel(yr);
   });
-  if (!tabsInitialized) { initSeasonTabs(); tabsInitialized = true; }
 }
 
 (function initData() {
+  initSeasonTabs();
   const btn = document.getElementById('refreshBtn');
   const status = document.getElementById('liveStatus');
   const stampEl = document.getElementById('stamp');

@@ -223,7 +223,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
     </div>
   </div>
   <div class="meta-row">
-    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Fri Oct 2, 6:01 PM ET">Archive built Fri Oct 2, 6:01 PM ET</span></span>
+    <span class="live-badge"><span class="live-dot"></span> <span id="stamp" title="Archive built Fri Oct 2, 6:02 PM ET">Archive built Fri Oct 2, 6:02 PM ET</span></span>
     <button class="refresh-btn" id="refreshBtn" type="button" hidden title="Pull the latest from Sleeper and recompute">Refresh</button>
     <span id="liveStatus"></span>
     <span>2024, 2025 &amp; 2026 seasons &middot; 8 managers &middot; league <code>Best Ball Butts</code></span>
@@ -591,15 +591,18 @@ function wireTabs(el) {
   });
 }
 
+// One delegated listener on the tab row, wired before any fetch: it covers the
+// year buttons renderAll() adds later, and keeps Weekly Brief usable when /data fails.
 function initSeasonTabs() {
-  const buttons = document.querySelectorAll('.season-btn');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('season-' + btn.dataset.season).classList.add('active');
-    });
+  const row = document.getElementById('seasonTabs');
+  if (!row) return;
+  row.addEventListener('click', e => {
+    const btn = e.target && e.target.closest ? e.target.closest('.season-btn') : null;
+    if (!btn) return;
+    document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('season-' + btn.dataset.season).classList.add('active');
   });
 }
 
@@ -665,7 +668,6 @@ async function loadBrief(run) {
 }
 
 /* ---------------- data loading: the page reads /data (Cloudflare KV); Refresh asks the Worker to recompute ---------------- */
-let tabsInitialized = false;
 function renderAll() {
   renderCareer();
   const tabs = document.getElementById('seasonTabs'), panels = document.getElementById('seasonPanels');
@@ -680,10 +682,10 @@ function renderAll() {
     }
     buildSeasonPanel(yr);
   });
-  if (!tabsInitialized) { initSeasonTabs(); tabsInitialized = true; }
 }
 
 (function initData() {
+  initSeasonTabs();
   const btn = document.getElementById('refreshBtn');
   const status = document.getElementById('liveStatus');
   const stampEl = document.getElementById('stamp');
