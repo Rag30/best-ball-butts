@@ -4,6 +4,8 @@
 //   GET  /data        the computed league tables, read from KV, trimmed to the launcher's tabs (page loads this)
 //   POST /refresh     Sleeper -> compute.js -> KV, for every non-frozen season (Refresh button; needs role write)
 //   cron              same as /refresh, once a night at 9 PM ET
+//   GET  /brief       the weekly prediction brief (markdown) + the list of editions, from GitHub main
+//   GET  /brief.pdf   that edition's 2-page PDF, from GitHub main
 //   GET  /.rrr/manifest  the tab list, for the launcher's Sharing page
 //
 // KV keys:  season:<yr>  computed season (frozen once league status is "complete")
@@ -11,7 +13,8 @@
 //                           only fetched for the current week)
 //           snapshot     {seasons, career, generatedAt} — exactly what the page renders
 //           lastRefresh  epoch ms, for the cooldown
-// No credentials anywhere: Sleeper is public, KV is bound to this Worker.
+// No credentials anywhere: Sleeper is public, KV is bound to this Worker, and the brief is read
+// from the public repo (the weekly routine commits it to main; prediction/RUNBOOK.md step 9).
 
 import BBB from "../../scripts/compute.js";
 import { launcherIdentity } from "./launcher-identity.js";
@@ -226,13 +229,59 @@ const MANIFEST = {
       { id: "luck-sos", label: "Strength of Schedule" },
     ] },
     { id: "reports", label: "Weekly Reports" },
+    { id: "brief", label: "Weekly Brief" },
   ],
 };
+
+/* ---------------- the weekly prediction brief ----------------
+ * The weekly routine (prediction/RUNBOOK.md) commits each edition to main as
+ * prediction/runs/<date>/{brief.md, *.pdf} and lists it in prediction/runs/index.json.
+ * This reads them straight from the public repo through Cloudflare's cache, so a
+ * pushed edition shows up within BRIEF_TTL with no deploy, no KV write and no token.
+ * Paths come only from index.json; ?run= just picks one of its entries. */
+const BRIEF_SRC = "https://raw.githubusercontent.com/Rag30/best-ball-butts/main/prediction/runs/";
+const BRIEF_TTL = 300;
+const rawUrl = path => BRIEF_SRC + path.split("/").map(encodeURIComponent).join("/");
+async function fromRepo(path) {
+  const r = await fetch(rawUrl(path), { headers: { "User-Agent": "bbb-worker" }, cf: { cacheTtl: BRIEF_TTL, cacheEverything: true } });
+  if (!r.ok) throw new Error(`${r.status} ${path}`);
+  return r;
+}
+/** The index entry for ?run= (or the newest), and the whole list. */
+async function pickEdition(url) {
+  const { editions = [] } = await (await fromRepo("index.json")).json();
+  const want = url.searchParams.get("run");
+  const ed = want ? editions.find(e => e.run === want) : editions[0];
+  return { ed, editions };
+}
+async function serveBrief(url, pdf) {
+  try {
+    const { ed, editions } = await pickEdition(url);
+    if (!ed) return json({ error: editions.length ? "no such edition" : "no brief yet" }, 404);
+    if (pdf) {
+      if (!ed.pdf) return json({ error: "no PDF for this edition" }, 404);
+      const r = await fromRepo(ed.pdf);
+      return new Response(r.body, { headers: { "Content-Type": "application/pdf", "Cache-Control": "no-store",
+        "Content-Disposition": `inline; filename="${ed.pdf.split("/").pop().replace(/[^\w .-]/g, "")}"` } });
+    }
+    const markdown = await (await fromRepo(ed.brief)).text();
+    return json({ run: ed.run, week: ed.week, title: ed.title, hasPdf: !!ed.pdf, markdown,
+                  editions: editions.map(({ run, week, title }) => ({ run, week, title })) });
+  } catch (e) {
+    return json({ error: "brief unavailable", message: String(e.message || e) }, 502);
+  }
+}
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/.rrr/manifest") return json(MANIFEST);
+    if (url.pathname === "/brief" || url.pathname === "/brief.pdf") {
+      const { who, refused } = await whoIs(request, env);
+      if (refused) return json({ error: "bad assertion" }, 403);
+      if (who && who.tabs !== null && !who.tabs.includes("brief")) return json({ error: "not shared" }, 403);
+      return serveBrief(url, url.pathname === "/brief.pdf");
+    }
     if (url.pathname === "/data") {
       const { who, refused } = await whoIs(request, env);
       if (refused) return json({ error: "bad assertion" }, 403);

@@ -2,7 +2,7 @@
 
 This is a weekly prediction for the whole Best Ball Butts league (Sleeper league `1312511085802180608`, 8 teams, best ball, PPR, 6-pt pass TD).
 
-Output is a **2-page PDF** written for all 8 managers:
+Output is a **2-page PDF** written for all 8 managers, also published on the league site's Weekly Brief tab:
 - Neutral third-person voice. Nothing is framed as "your team", and Raghav doesn't get his own section.
 - Every manager gets one equal line.
 
@@ -69,10 +69,13 @@ It runs from the MacBook, or from any Claude cloud session whose environment has
      - Delete the workspace copy with `gateway__delete_file`.
    - **MacBook desktop app, using its own local gws-personal connector:** set `upload` to the PDF path relative to `/`, with no leading slash.
    - If a file with the same name already exists, upload anyway. Never delete or share anything in Drive.
-9. **Commit the outputs.** Commit the run's small outputs, which `runs/.gitignore` allows: `agg.json`, `injury_adjustments.json`, `brief.md`, `week.json`, `dst_check.json` and the PDF.
+9. **Commit the outputs and publish to the site.**
+   - Run `python3 "$P/pipeline/site_index.py"`. It rewrites `P/runs/index.json`, the list of editions the site's **Weekly Brief** tab shows (https://bestballbutts.rrr-projects.com).
+   - Commit the run's small outputs, which `runs/.gitignore` allows: `agg.json`, `injury_adjustments.json`, `brief.md`, `week.json`, `dst_check.json` and the PDF, plus `runs/index.json`.
+   - The site's Worker reads `runs/index.json`, `brief.md` and the PDF from `main` on GitHub, so the push is the publish step. There is no deploy and no gateway tool involved. The new edition shows on the site within about 5 minutes of the push.
    - Message: `prediction: Week <start> brief`.
    - Push to `main` of `Rag30/best-ball-butts`, the same way the data Action commits its snapshots. Next week's run needs this `agg.json`.
-   - If the push is rejected, open a PR instead and say so.
+   - If the push is rejected, open a PR instead and say so. The site keeps showing the previous edition until that PR is merged.
 
 ## Engines (same as the Week 1 and Week 3 editions)
 

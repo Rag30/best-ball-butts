@@ -9,6 +9,9 @@ const { pathToFileURL } = require('url');
 const html = fs.readFileSync(path.join(__dirname, '..', 'worker', 'public', 'index.html'), 'utf8');
 const m = html.match(/<script>([\s\S]*)<\/script>/);
 if (!m) { console.error('no <script> found'); process.exit(1); }
+const latestRun = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'prediction', 'runs', 'index.json'), 'utf8')).editions[0];
+const brief = { run: latestRun.run, week: latestRun.week, title: latestRun.title, hasPdf: true, editions: [latestRun],
+  markdown: fs.readFileSync(path.join(__dirname, '..', 'prediction', 'runs', latestRun.brief), 'utf8') + '\n<script>alert(1)</script>\n' };
 const snapshot = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'derived', 'seasons.json'), 'utf8'));
 
 function makeEl(id = '') {
@@ -41,6 +44,7 @@ async function run(name, me, data, check) {
   global.fetch = async (url) => {
     const u = String(url); calls.push(u);
     if (u.endsWith('/.rrr/me')) return me === null ? { ok: false, status: 404, json: async () => ({}) } : { ok: true, status: 200, json: async () => me };
+    if (u.endsWith('/brief')) return { ok: true, status: 200, json: async () => brief };
     if (u.endsWith('/data')) return { ok: true, status: 200, json: async () => data };
     return { ok: true, status: 200, json: async () => ({ ok: true }) };
   };
@@ -58,7 +62,7 @@ async function run(name, me, data, check) {
 
 (async () => {
   const { trimToTabs } = await import(pathToFileURL(path.join(__dirname, '..', 'worker', 'src', 'index.js')).href);
-  const owner = { email: 'owner@example.com', name: 'Owner', role: 'write', tabs: ['standings', 'luck', 'luck-net', 'luck-schedule', 'luck-roster', 'luck-sos', 'reports'] };
+  const owner = { email: 'owner@example.com', name: 'Owner', role: 'write', tabs: ['standings', 'luck', 'luck-net', 'luck-schedule', 'luck-roster', 'luck-sos', 'reports', 'brief'] };
   const guest = tabs => ({ email: 'guest@example.com', name: 'Guest', role: 'read', tabs });
   const rendered = ({ byId }) => {
     if (!byId.get('season-career').innerHTML.includes('All-Time Standings')) throw new Error('career panel did not render');
@@ -67,6 +71,10 @@ async function run(name, me, data, check) {
 
   await run('public viewer: everything, no Refresh button', { public: true }, snapshot, s => {
     rendered(s);
+    const b = s.byId.get('season-brief').innerHTML;
+    if (s.byId.get('briefBtn').hidden) throw new Error('Weekly Brief tab should show for a public viewer');
+    for (const want of ['<h1>', '<table>', '<li>', '/brief.pdf?run=' + latestRun.run]) if (!b.includes(want)) throw new Error(`brief panel lacks ${want}`);
+    if (b.includes('<script>')) throw new Error('brief markdown was not escaped');
     if (!s.byId.get('refreshBtn').hidden) throw new Error('Refresh button should be hidden for a public viewer');
   });
   await run('no /.rrr/me at all (dev server): everything', null, snapshot, rendered);
@@ -78,6 +86,8 @@ async function run(name, me, data, check) {
     await run(`guest with ${JSON.stringify(tabs)} renders the trimmed feed`, guest(tabs), trimToTabs(snapshot, tabs), s => {
       if (!s.byId.get('refreshBtn').hidden) throw new Error('Refresh button should be hidden for role read');
       if (!s.byId.has('season-2025')) throw new Error('2025 season panel was not built');
+      if (s.calls.some(u => u.includes('/brief'))) throw new Error('/brief was fetched without the brief tab');
+      if (!s.byId.get('briefBtn').hidden) throw new Error('Weekly Brief tab should be hidden without the brief tab');
     });
   }
   await run('guest with no tabs: the ask-the-owner line, and /data is never asked for', guest([]), snapshot, s => {

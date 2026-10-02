@@ -12,5 +12,5 @@ Requirements (from the owner, Raghav):
 - Every number from the run's files; injury news current and sourced (WebSearch/WebFetch); never fabricate.
 - Upload the PDF to Drive folder 'Best Ball Butts Weekly' (id 1btM-W2ckqrx6la0JdIAnfrkonAQjy-3s): PUT to gateway /files, then gws-personal__drive_files_create with upload = that plain filename, then gateway__delete_file. Never delete or share anything in Drive.
 - If no new NFL week has completed since the last run (week.json start unchanged), still produce and upload the brief and say so in the TL;DR.
-- Step 9: commit only the small tracked outputs (runs/.gitignore handles it) with message 'prediction: Week <start> brief' and push to main; if the push is rejected, open a PR instead.
-- End with a short summary: Drive link, top-3 title odds, whether data came via the MCP, anything that went wrong.
+- Step 9: run prediction/pipeline/site_index.py, then commit only the small tracked outputs (runs/.gitignore handles it) plus prediction/runs/index.json with message 'prediction: Week <start> brief' and push to main; if the push is rejected, open a PR instead. The push is what publishes the brief to the Best Ball Butts site (https://bestballbutts.rrr-projects.com, Weekly Brief tab); it needs no extra tool.
+- End with a short summary: Drive link, whether the push to main went through (so the site shows this edition), top-3 title odds, whether data came via the MCP, anything that went wrong.
