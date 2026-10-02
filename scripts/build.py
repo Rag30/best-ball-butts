@@ -232,7 +232,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 
   <div class="season-tabs" id="seasonTabs">
     <button class="season-btn active" data-season="career">Career</button>
-    <button class="season-btn" data-season="brief" id="briefBtn" hidden>Weekly Brief</button>
+    <button class="season-btn" data-season="brief" id="briefBtn" hidden>Weekly Analysis</button>
   </div>
 
   <div class="season-panel active" id="season-career"></div>
@@ -593,7 +593,7 @@ function wireTabs(el) {
 }
 
 // One delegated listener on the tab row, wired before any fetch: it covers the
-// year buttons renderAll() adds later, and keeps Weekly Brief usable when /data fails.
+// year buttons renderAll() adds later, and keeps Weekly Analysis usable when /data fails.
 function initSeasonTabs() {
   const row = document.getElementById('seasonTabs');
   if (!row) return;
@@ -607,7 +607,7 @@ function initSeasonTabs() {
   });
 }
 
-/* ---------------- WEEKLY BRIEF (the prediction routine's brief.md, served by GET /brief) ---------------- */
+/* ---------------- WEEKLY ANALYSIS (the prediction routine's brief.md, served by GET /brief) ---------------- */
 // A small markdown renderer for what brief_template.md uses: headings, bullets,
 // pipe tables, bold/italic/code. Everything is HTML-escaped first, so the brief
 // can only ever add the tags made here.
@@ -648,23 +648,54 @@ function mdToHtml(md) {
   }
   return out.join('\\n');
 }
-async function loadBrief(run) {
+// One subtab per week: the newest edition of each week (a week re-run the same
+// week replaces the earlier edition), newest week first and open by default.
+function weekTabs(editions) {
+  const seen = new Set(), out = [];
+  for (const e of editions || []) {   // the Worker lists editions newest first
+    const key = e.week != null ? 'w' + e.week : 'r' + e.run;
+    if (seen.has(key)) continue;
+    seen.add(key); out.push(e);
+  }
+  return out;
+}
+async function fetchBrief(run) {
+  const r = await fetch('/brief' + (run ? '?run=' + encodeURIComponent(run) : ''), { cache: 'no-store' });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+function showBrief(b) {
+  const body = document.getElementById('briefBody');
+  if (!body) return;
+  body.innerHTML = `${b.hasPdf ? `<div class="brief-head"><a href="/brief.pdf?run=${encodeURIComponent(b.run)}" target="_blank" rel="noopener">PDF</a><span style="color:var(--ink-dim);font-size:12px">${esc(b.run)}</span></div>` : ''}
+    <div class="brief">${mdToHtml(b.markdown || '')}</div>`;
+}
+async function loadBrief() {
   const el = document.getElementById('season-brief');
   if (!el) return;
   try {
-    const r = await fetch('/brief' + (run ? '?run=' + encodeURIComponent(run) : ''), { cache: 'no-store' });
-    if (r.status === 404) { el.innerHTML = `<div class="empty-state"><div class="big">No brief yet</div>The weekly prediction brief appears here after each Tuesday-night run.</div>`; return; }
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const b = await r.json();
-    const opts = (b.editions || []).map(e => `<option value="${esc(e.run)}"${e.run === b.run ? ' selected' : ''}>${e.week != null ? 'Week ' + esc(e.week) + ' · ' : ''}${esc(e.run)}</option>`).join('');
-    el.innerHTML = `<div class="brief-head"><div class="section-title" style="margin:0">Weekly Brief</div>
-        <select id="briefRun" aria-label="Edition">${opts}</select>
-        ${b.hasPdf ? `<a href="/brief.pdf?run=${encodeURIComponent(b.run)}" target="_blank" rel="noopener">PDF</a>` : ''}</div>
-      <div class="brief">${mdToHtml(b.markdown || '')}</div>`;
-    const sel = document.getElementById('briefRun');
-    if (sel) sel.addEventListener('change', () => loadBrief(sel.value));
+    const latest = await fetchBrief();
+    if (!latest) { el.innerHTML = `<div class="empty-state"><div class="big">No analysis yet</div>The weekly analysis appears here after each Tuesday-night run.</div>`; return; }
+    const tabs = weekTabs(latest.editions);
+    el.innerHTML = `<div class="section-title">Weekly Analysis</div>
+      <div class="subtabs" id="briefWeeks">${tabs.map((e, i) =>
+        `<button class="subtab-btn${i === 0 ? ' active' : ''}" data-run="${esc(e.run)}">${e.week != null ? 'Week ' + esc(e.week) : esc(e.run)}</button>`).join('')}</div>
+      <div id="briefBody"></div>`;
+    const cache = { [latest.run]: latest };
+    showBrief(latest);
+    const row = document.getElementById('briefWeeks');
+    if (row) row.addEventListener('click', async ev => {
+      const btn = ev.target && ev.target.closest ? ev.target.closest('.subtab-btn') : null;
+      if (!btn) return;
+      row.querySelectorAll('.subtab-btn').forEach(x => x.classList.remove('active'));
+      btn.classList.add('active');
+      const run = btn.dataset.run;
+      try { cache[run] = cache[run] || await fetchBrief(run); if (cache[run]) showBrief(cache[run]); }
+      catch (e) { document.getElementById('briefBody').innerHTML = `<p class="no-access">That week's analysis could not be loaded (${esc(e.message)}).</p>`; }
+    });
   } catch (e) {
-    el.innerHTML = `<p class="no-access">The weekly brief could not be loaded (${esc(e.message)}).</p>`;
+    el.innerHTML = `<p class="no-access">The weekly analysis could not be loaded (${esc(e.message)}).</p>`;
   }
 }
 

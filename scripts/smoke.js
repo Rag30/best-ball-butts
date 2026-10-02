@@ -9,8 +9,9 @@ const { pathToFileURL } = require('url');
 const html = fs.readFileSync(path.join(__dirname, '..', 'worker', 'public', 'index.html'), 'utf8');
 const m = html.match(/<script>([\s\S]*)<\/script>/);
 if (!m) { console.error('no <script> found'); process.exit(1); }
-const latestRun = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'prediction', 'runs', 'index.json'), 'utf8')).editions[0];
-const brief = { run: latestRun.run, week: latestRun.week, title: latestRun.title, hasPdf: true, editions: [latestRun],
+const allEditions = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'prediction', 'runs', 'index.json'), 'utf8')).editions;
+const latestRun = allEditions[0];
+const brief = { run: latestRun.run, week: latestRun.week, title: latestRun.title, hasPdf: true, editions: allEditions,
   markdown: fs.readFileSync(path.join(__dirname, '..', 'prediction', 'runs', latestRun.brief), 'utf8') + '\n<script>alert(1)</script>\n' };
 const snapshot = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'derived', 'seasons.json'), 'utf8'));
 
@@ -71,9 +72,12 @@ async function run(name, me, data, check) {
 
   await run('public viewer: everything, no Refresh button', { public: true }, snapshot, s => {
     rendered(s);
-    const b = s.byId.get('season-brief').innerHTML;
-    if (s.byId.get('briefBtn').hidden) throw new Error('Weekly Brief tab should show for a public viewer');
-    for (const want of ['<h1>', '<table>', '<li>', '/brief.pdf?run=' + latestRun.run]) if (!b.includes(want)) throw new Error(`brief panel lacks ${want}`);
+    const tabsHtml = s.byId.get('season-brief').innerHTML, b = s.byId.get('briefBody').innerHTML;
+    if (s.byId.get('briefBtn').hidden) throw new Error('Weekly Analysis tab should show for a public viewer');
+    const weeks = [...tabsHtml.matchAll(/class="subtab-btn[^"]*" data-run="([^"]+)">Week (\d+)</g)].map(m => m[2]);
+    const wantWeeks = [...new Set(allEditions.map(e => String(e.week)))];
+    if (weeks.join() !== wantWeeks.join()) throw new Error(`week subtabs ${weeks} != ${wantWeeks}`);
+    for (const want of ['<h1>', '<table>', '<li>', '/brief.pdf?run=' + latestRun.run]) if (!b.includes(want)) throw new Error(`brief body lacks ${want}`);
     if (b.includes('<script>')) throw new Error('brief markdown was not escaped');
     if (!s.byId.get('refreshBtn').hidden) throw new Error('Refresh button should be hidden for a public viewer');
   });
@@ -87,7 +91,7 @@ async function run(name, me, data, check) {
       if (!s.byId.get('refreshBtn').hidden) throw new Error('Refresh button should be hidden for role read');
       if (!s.byId.has('season-2025')) throw new Error('2025 season panel was not built');
       if (s.calls.some(u => u.includes('/brief'))) throw new Error('/brief was fetched without the brief tab');
-      if (!s.byId.get('briefBtn').hidden) throw new Error('Weekly Brief tab should be hidden without the brief tab');
+      if (!s.byId.get('briefBtn').hidden) throw new Error('Weekly Analysis tab should be hidden without the brief tab');
     });
   }
   await run('guest with no tabs: the ask-the-owner line, and /data is never asked for', guest([]), snapshot, s => {

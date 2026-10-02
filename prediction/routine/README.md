@@ -1,6 +1,6 @@
 # Weekly brief routine
 
-The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md](../RUNBOOK.md) every week. It writes the league prediction brief, uploads the PDF to Google Drive, commits the run outputs to `main` (which publishes the brief on the league site's Weekly Brief tab), and posts a summary in a Claude project thread.
+The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md](../RUNBOOK.md) every week. It writes the league prediction brief, uploads the PDF to Google Drive, commits the run outputs to `main` (which publishes the brief on the league site's Weekly Analysis tab), and posts a summary in a Claude project thread.
 
 | | |
 |---|---|

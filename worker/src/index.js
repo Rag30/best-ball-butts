@@ -229,7 +229,7 @@ const MANIFEST = {
       { id: "luck-sos", label: "Strength of Schedule" },
     ] },
     { id: "reports", label: "Weekly Reports" },
-    { id: "brief", label: "Weekly Brief" },
+    { id: "brief", label: "Weekly Analysis" },
   ],
 };
 

@@ -1,4 +1,4 @@
-"""Write prediction/runs/index.json: the list of editions the site's Weekly Brief tab shows.
+"""Write prediction/runs/index.json: the list of editions the site's Weekly Analysis tab shows (one subtab per week).
 
 The Worker (worker/src/index.js, GET /brief) reads this file and each run's brief.md and PDF
 straight from main on GitHub, so committing them in step 9 is all it takes to publish.
