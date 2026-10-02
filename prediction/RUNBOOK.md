@@ -8,7 +8,7 @@ Output is a **2-page PDF** written for all 8 managers, also published on the lea
 
 It's saved to Google Drive (personal account raghav.ringshia@gmail.com), in the folder **Best Ball Butts Weekly** (id `1btM-W2ckqrx6la0JdIAnfrkonAQjy-3s`).
 
-It runs from the MacBook, or from any Claude cloud session whose environment has Network access **Full** and the **Raghav-MCP-Server** connector (tools named `gateway__*`, `sleeper-draft__*`, `gws-personal__*`).
+It runs from the MacBook, or from any Claude cloud session whose environment has Network access **Full** and the **Routines MCP Gateway** connector (the gateway's `routines` tier; tools named `gateway__*`, `sleeper-draft__*`, `gws-personal__*`).
 
 - `P` = this `prediction/` directory in the `Rag30/best-ball-butts` checkout.
   - `P/pipeline` holds the code, `P/cache` holds the static 2025 inputs, and `P/runs/<YYYY-MM-DD>/` holds one folder per edition.

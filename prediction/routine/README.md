@@ -7,7 +7,7 @@ The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md
 | Schedule | `2 4 * * 3`, Wednesdays 04:02 UTC (Tuesday evening US time, after Monday Night Football) |
 | Model | Opus 5.5 |
 | Where it runs | the "Weekly routine" thread in the NFL fantasy Claude project (trigger `trig_01B1zqNCwjzq3T1nGP889TGk`) |
-| Connector | Raghav-MCP-Server |
+| Connector | Routines MCP Gateway (the gateway's `routines` tier) |
 | Prompt | [prompt.md](prompt.md), identical to the live routine's prompt |
 | Config | [routine.json](routine.json) |
 
@@ -21,9 +21,9 @@ If the routine disappears anyway, recreate it from that thread (or a new project
 
 ## Dependencies
 
-- **Raghav-MCP-Server connector** (the gateway at `mcp.rrr-projects.com/mcp`):
+- **Routines MCP Gateway connector** (the gateway at `mcp.rrr-projects.com`, `routines` tier, shared with the FleetManager routines). A thread-bound routine has no connector list of its own and inherits every connector on the thread's session, including the admin-tier MCP Gateway, so the prompt is what keeps it on this tier. If a tool is missing, tick it in the `routines` tier rather than pointing the routine at admin:
   - `sleeper-draft` provides `export_league_snapshot`, and all Sleeper data comes through it.
-  - `gateway` provides the `/files` lane (`upload_direct_lane`, `delete_file`), which moves the snapshot and the PDF in and out of the session.
+  - `gateway` provides the `/files` lane (`upload_direct_lane`, `delete_file`), which moves the snapshot and the PDF in and out of the session; `upload_base64_fallback` is the runbook's fallback when the lane can't be reached.
   - `gws-personal` provides `drive_files_create` for the "Best Ball Butts Weekly" folder.
 - `.claude/settings.json` in this repository allows only `python3 /home/user/best-ball-butts/prediction/pipeline/gateway_files.py`, the guarded wrapper for the gateway `/files` lane, so auto mode doesn't block the snapshot download or the PDF upload. That path is why the prompt keeps the checkout at `/home/user/best-ball-butts`.
 - Web search and fetch, for current injury news.
