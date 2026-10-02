@@ -1,6 +1,6 @@
 # Weekly brief routine
 
-The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md](../RUNBOOK.md) every week. It writes the league prediction brief, uploads the PDF to Google Drive, commits the run outputs to `main`, and posts a summary in a Claude project thread.
+The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md](../RUNBOOK.md) every week. It writes the league prediction brief, uploads the PDF to Google Drive, commits the run outputs to `main` (which publishes the brief on the league site's Weekly Brief tab), and posts a summary in a Claude project thread.
 
 | | |
 |---|---|
@@ -27,6 +27,7 @@ If the routine disappears anyway, recreate it from that thread (or a new project
   - `gws-personal` provides `drive_files_create` for the "Best Ball Butts Weekly" folder.
 - `.claude/settings.json` in this repository allows only `python3 /home/user/best-ball-butts/prediction/pipeline/gateway_files.py`, the guarded wrapper for the gateway `/files` lane, so auto mode doesn't block the snapshot download or the PDF upload. That path is why the prompt keeps the checkout at `/home/user/best-ball-butts`.
 - Web search and fetch, for current injury news.
+- Push access to `main`, which is also how the brief reaches the league site: the Worker in `worker/` reads `prediction/runs/index.json` and each edition from GitHub (`GET /brief`). No site credential or gateway tool is involved.
 
 ## Secrets
 

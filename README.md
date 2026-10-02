@@ -65,4 +65,4 @@ Sleeper display names → first names live in `scripts/compute.js` (`MANAGERS`).
 
 ## Weekly prediction brief (`prediction/`)
 
-Multi-engine season simulation → a league-neutral 2-page PDF saved to Drive every Tuesday night. Data comes through the owner's gateway MCP (`sleeper-draft__export_league_snapshot`). See [`prediction/RUNBOOK.md`](prediction/RUNBOOK.md).
+Multi-engine season simulation → a league-neutral 2-page PDF saved to Drive every Tuesday night, and shown on the site's **Weekly Brief** tab. The routine commits each edition to `prediction/runs/` and lists it in `prediction/runs/index.json`; the Worker's `GET /brief` and `GET /brief.pdf` read those from `main` on GitHub (cached 5 minutes), so a new edition needs no deploy. Data comes through the owner's gateway MCP (`sleeper-draft__export_league_snapshot`). See [`prediction/RUNBOOK.md`](prediction/RUNBOOK.md).

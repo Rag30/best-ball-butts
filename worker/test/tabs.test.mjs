@@ -213,5 +213,73 @@ test("GET /.rrr/manifest is public and names every tab the trim knows", async ()
   const m = await r.json();
   assert.equal(m.app, AUD);
   const ids = m.tabs.flatMap(t => [t.id, ...(t.children || []).map(c => c.id)]);
-  assert.deepEqual(ids, ["standings", "luck", "luck-net", "luck-schedule", "luck-roster", "luck-sos", "reports"]);
+  assert.deepEqual(ids, ["standings", "luck", "luck-net", "luck-schedule", "luck-roster", "luck-sos", "reports", "brief"]);
+});
+
+// GET /brief and /brief.pdf read prediction/runs/ from GitHub main; stub that fetch.
+const INDEX = { editions: [
+  { run: "2026-09-30", week: 4, title: "Week 4 outlook", brief: "2026-09-30/brief.md", pdf: "2026-09-30/Best Ball Butts 2026 - Week 4 brief.pdf" },
+  { run: "2026-09-24", week: 3, title: "Week 3 outlook", brief: "2026-09-24/brief.md", pdf: null },
+] };
+async function withRepo(fn) {
+  const realFetch = globalThis.fetch, asked = [];
+  globalThis.fetch = async (u) => {
+    const url = String(u); asked.push(url);
+    assert.ok(url.startsWith("https://raw.githubusercontent.com/Rag30/best-ball-butts/main/prediction/runs/"), url);
+    const path = decodeURIComponent(url.split("/prediction/runs/")[1]);
+    if (path === "index.json") return new Response(JSON.stringify(INDEX));
+    if (path.endsWith("brief.md")) return new Response(`# brief for ${path}`);
+    if (path.endsWith(".pdf")) return new Response("%PDF-1.4 stub");
+    return new Response("nope", { status: 404 });
+  };
+  try { return await fn(asked); } finally { globalThis.fetch = realFetch; }
+}
+
+test("GET /brief: newest edition by default, ?run= picks another, unknown run is 404", async () => {
+  await withRepo(async () => {
+    let r = await worker.fetch(req("/brief"), makeEnv());
+    assert.equal(r.status, 200);
+    let b = await r.json();
+    assert.equal(b.run, "2026-09-30");
+    assert.equal(b.markdown, "# brief for 2026-09-30/brief.md");
+    assert.equal(b.hasPdf, true);
+    assert.deepEqual(b.editions.map(e => e.run), ["2026-09-30", "2026-09-24"]);
+    b = await (await worker.fetch(req("/brief?run=2026-09-24"), makeEnv())).json();
+    assert.equal(b.markdown, "# brief for 2026-09-24/brief.md");
+    assert.equal(b.hasPdf, false);
+    r = await worker.fetch(req("/brief?run=../../README.md"), makeEnv());
+    assert.equal(r.status, 404);
+  });
+});
+
+test("GET /brief with no index on main yet is 404 \"no brief yet\", not an error", async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response("404: Not Found", { status: 404 });
+  try {
+    const r = await worker.fetch(req("/brief"), makeEnv());
+    assert.equal(r.status, 404);
+    assert.deepEqual(await r.json(), { error: "no brief yet" });
+  } finally { globalThis.fetch = realFetch; }
+});
+
+test("GET /brief.pdf streams the edition's PDF, encoding the spaces in its name", async () => {
+  await withRepo(async (asked) => {
+    const r = await worker.fetch(req("/brief.pdf?run=2026-09-30"), makeEnv());
+    assert.equal(r.status, 200);
+    assert.equal(r.headers.get("content-type"), "application/pdf");
+    assert.equal(await r.text(), "%PDF-1.4 stub");
+    assert.ok(asked.some(u => u.endsWith("/2026-09-30/Best%20Ball%20Butts%202026%20-%20Week%204%20brief.pdf")));
+    assert.equal((await worker.fetch(req("/brief.pdf?run=2026-09-24"), makeEnv())).status, 404);
+  });
+});
+
+test("GET /brief follows the launcher: needs the brief tab, refuses a bad assertion", async () => {
+  await withRepo(async (asked) => {
+    assert.equal((await worker.fetch(req("/brief", signed(assertion({ tabs: ["standings"] }))), makeEnv())).status, 403);
+    assert.equal((await worker.fetch(req("/brief.pdf", signed(assertion({ tabs: ["standings"] }))), makeEnv())).status, 403);
+    assert.equal((await worker.fetch(req("/brief", signed("garbage")), makeEnv())).status, 403);
+    assert.equal(asked.length, 0, "a refused request must not reach GitHub");
+    assert.equal((await worker.fetch(req("/brief", signed(assertion({ tabs: ["brief"] }))), makeEnv())).status, 200);
+    assert.equal((await worker.fetch(req("/brief", signed(assertion({}))), makeEnv())).status, 200);
+  });
 });

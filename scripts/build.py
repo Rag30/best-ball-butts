@@ -201,6 +201,17 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 .roster-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
 .roster-chips span { background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; padding: 5px 14px; font-size: 13px; font-weight: 600; }
 
+.brief-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.brief-head select { font: inherit; font-size: 13px; padding: 5px 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.brief-head a { color: var(--accent-strong); font-weight: 600; font-size: 13px; }
+.brief { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 18px 22px; line-height: 1.55; font-size: 14px; }
+.brief h1 { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 28px; margin: 0 0 8px; }
+.brief h2 { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 21px; margin: 22px 0 6px; padding-bottom: 3px; border-bottom: 2px solid var(--accent); }
+.brief h3 { font-size: 15px; margin: 16px 0 4px; }
+.brief p { margin: 6px 0; } .brief ul { margin: 6px 0; padding-left: 20px; } .brief li { margin: 4px 0; }
+.brief code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: var(--surface-2); padding: 1px 4px; border-radius: 4px; }
+.brief .table-scroll { margin: 10px 0 14px; box-shadow: none; }
+
 .foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--ink-dim); font-size: 12px;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 </style>
@@ -221,9 +232,11 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 
   <div class="season-tabs" id="seasonTabs">
     <button class="season-btn active" data-season="career">Career</button>
+    <button class="season-btn" data-season="brief" id="briefBtn" hidden>Weekly Brief</button>
   </div>
 
   <div class="season-panel active" id="season-career"></div>
+  <div class="season-panel" id="season-brief"></div>
   <div id="seasonPanels"></div>
 
   <div class="foot">
@@ -239,7 +252,7 @@ let DATA = { seasons: {}, career: [] };   // filled from GET /data (Cloudflare K
 // shows; the Worker decides from the signed assertion and trims /data to match.
 let ME = null;
 // Tabs this person may use: an array of 'standings' | 'luck' (+ 'luck-net',
-// 'luck-schedule', 'luck-roster', 'luck-sos') | 'reports', or null for everything.
+// 'luck-schedule', 'luck-roster', 'luck-sos') | 'reports' | 'brief', or null for everything.
 let TABS = null;
 const may = t => TABS === null || TABS.includes(t);
 
@@ -579,20 +592,83 @@ function wireTabs(el) {
   });
 }
 
+// One delegated listener on the tab row, wired before any fetch: it covers the
+// year buttons renderAll() adds later, and keeps Weekly Brief usable when /data fails.
 function initSeasonTabs() {
-  const buttons = document.querySelectorAll('.season-btn');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('season-' + btn.dataset.season).classList.add('active');
-    });
+  const row = document.getElementById('seasonTabs');
+  if (!row) return;
+  row.addEventListener('click', e => {
+    const btn = e.target && e.target.closest ? e.target.closest('.season-btn') : null;
+    if (!btn) return;
+    document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('season-' + btn.dataset.season).classList.add('active');
   });
 }
 
+/* ---------------- WEEKLY BRIEF (the prediction routine's brief.md, served by GET /brief) ---------------- */
+// A small markdown renderer for what brief_template.md uses: headings, bullets,
+// pipe tables, bold/italic/code. Everything is HTML-escaped first, so the brief
+// can only ever add the tags made here.
+function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function mdInline(t) {
+  return esc(t)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\\*\\*([^*]+)\\*\\*/g, '<b>$1</b>')
+    .replace(/(^|[^*\\w])\\*([^*\\s][^*]*)\\*(?![*\\w])/g, '$1<i>$2</i>')
+    .replace(/\\[([^\\]]+)\\]\\((https?:\\/\\/[^\\s)]+)\\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+function mdToHtml(md) {
+  const lines = md.replace(/\\r/g, '').split('\\n'), out = [];
+  const cells = l => l.trim().replace(/^\\|/, '').replace(/\\|$/, '').split('|').map(c => c.trim());
+  for (let i = 0; i < lines.length;) {
+    const l = lines[i];
+    if (!l.trim()) { i++; continue; }
+    const h = l.match(/^(#{1,3})\\s+(.*)$/);
+    if (h) { out.push(`<h${h[1].length}>${mdInline(h[2])}</h${h[1].length}>`); i++; continue; }
+    if (/^\\s*\\|/.test(l) && i + 1 < lines.length && /^\\s*\\|?\\s*:?-{2,}/.test(lines[i + 1])) {
+      const head = cells(l), align = cells(lines[i + 1]).map(c => c.endsWith(':') ? (c.startsWith(':') ? 'center' : 'right') : 'left');
+      i += 2;
+      let t = '<div class="table-scroll"><table><thead><tr>' + head.map((c, j) => `<th style="text-align:${align[j] || 'left'}">${mdInline(c)}</th>`).join('') + '</tr></thead><tbody>';
+      while (i < lines.length && /^\\s*\\|/.test(lines[i])) {
+        t += '<tr>' + cells(lines[i]).map((c, j) => `<td style="text-align:${align[j] || 'left'}">${mdInline(c)}</td>`).join('') + '</tr>'; i++;
+      }
+      out.push(t + '</tbody></table></div>'); continue;
+    }
+    if (/^\\s*[-*]\\s+/.test(l)) {
+      let u = '<ul>';
+      while (i < lines.length && /^\\s*[-*]\\s+/.test(lines[i])) { u += `<li>${mdInline(lines[i].replace(/^\\s*[-*]\\s+/, ''))}</li>`; i++; }
+      out.push(u + '</ul>'); continue;
+    }
+    const para = [];
+    while (i < lines.length && lines[i].trim() && !/^(#{1,3}\\s|\\s*[-*]\\s+|\\s*\\|)/.test(lines[i])) para.push(lines[i++]);
+    if (!para.length) para.push(lines[i++]);
+    out.push(`<p>${mdInline(para.join(' '))}</p>`);
+  }
+  return out.join('\\n');
+}
+async function loadBrief(run) {
+  const el = document.getElementById('season-brief');
+  if (!el) return;
+  try {
+    const r = await fetch('/brief' + (run ? '?run=' + encodeURIComponent(run) : ''), { cache: 'no-store' });
+    if (r.status === 404) { el.innerHTML = `<div class="empty-state"><div class="big">No brief yet</div>The weekly prediction brief appears here after each Tuesday-night run.</div>`; return; }
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const b = await r.json();
+    const opts = (b.editions || []).map(e => `<option value="${esc(e.run)}"${e.run === b.run ? ' selected' : ''}>${e.week != null ? 'Week ' + esc(e.week) + ' · ' : ''}${esc(e.run)}</option>`).join('');
+    el.innerHTML = `<div class="brief-head"><div class="section-title" style="margin:0">Weekly Brief</div>
+        <select id="briefRun" aria-label="Edition">${opts}</select>
+        ${b.hasPdf ? `<a href="/brief.pdf?run=${encodeURIComponent(b.run)}" target="_blank" rel="noopener">PDF</a>` : ''}</div>
+      <div class="brief">${mdToHtml(b.markdown || '')}</div>`;
+    const sel = document.getElementById('briefRun');
+    if (sel) sel.addEventListener('change', () => loadBrief(sel.value));
+  } catch (e) {
+    el.innerHTML = `<p class="no-access">The weekly brief could not be loaded (${esc(e.message)}).</p>`;
+  }
+}
+
 /* ---------------- data loading: the page reads /data (Cloudflare KV); Refresh asks the Worker to recompute ---------------- */
-let tabsInitialized = false;
 function renderAll() {
   renderCareer();
   const tabs = document.getElementById('seasonTabs'), panels = document.getElementById('seasonPanels');
@@ -607,10 +683,10 @@ function renderAll() {
     }
     buildSeasonPanel(yr);
   });
-  if (!tabsInitialized) { initSeasonTabs(); tabsInitialized = true; }
 }
 
 (function initData() {
+  initSeasonTabs();
   const btn = document.getElementById('refreshBtn');
   const status = document.getElementById('liveStatus');
   const stampEl = document.getElementById('stamp');
@@ -643,6 +719,9 @@ function renderAll() {
     // only a writer (the owner) sees the button; the nightly cron covers everyone else.
     if (btn) btn.hidden = !(ME && ME.role === 'write');
     if (TABS && TABS.length === 0) return renderNoAccess();
+    const briefBtn = document.getElementById('briefBtn');
+    if (briefBtn) briefBtn.hidden = !may('brief');
+    if (may('brief')) loadBrief();
     const r = await fetch('/data', { cache: 'no-store' });
     if (!r.ok) throw new Error(r.status === 503 ? 'no data yet' : `HTTP ${r.status}`);
     DATA = await r.json();
