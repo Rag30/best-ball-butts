@@ -252,6 +252,16 @@ test("GET /brief: newest edition by default, ?run= picks another, unknown run is
   });
 });
 
+test("GET /brief with no index on main yet is 404 \"no brief yet\", not an error", async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response("404: Not Found", { status: 404 });
+  try {
+    const r = await worker.fetch(req("/brief"), makeEnv());
+    assert.equal(r.status, 404);
+    assert.deepEqual(await r.json(), { error: "no brief yet" });
+  } finally { globalThis.fetch = realFetch; }
+});
+
 test("GET /brief.pdf streams the edition's PDF, encoding the spaces in its name", async () => {
   await withRepo(async (asked) => {
     const r = await worker.fetch(req("/brief.pdf?run=2026-09-30"), makeEnv());

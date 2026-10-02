@@ -249,7 +249,11 @@ async function fromRepo(path) {
 }
 /** The index entry for ?run= (or the newest), and the whole list. */
 async function pickEdition(url) {
-  const { editions = [] } = await (await fromRepo("index.json")).json();
+  // No index on main yet (first deploy before the routine's first publish): an empty list, so the tab says "no brief yet".
+  const idx = await fetch(rawUrl("index.json"), { headers: { "User-Agent": "bbb-worker" }, cf: { cacheTtl: BRIEF_TTL, cacheEverything: true } });
+  if (idx.status === 404) return { ed: null, editions: [] };
+  if (!idx.ok) throw new Error(`${idx.status} index.json`);
+  const { editions = [] } = await idx.json();
   const want = url.searchParams.get("run");
   const ed = want ? editions.find(e => e.run === want) : editions[0];
   return { ed, editions };
