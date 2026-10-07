@@ -1,0 +1,345 @@
+[
+ {
+  "week": 1,
+  "def": "LAC",
+  "roster_id": 1,
+  "league": 1,
+  "recount": 1
+ },
+ {
+  "week": 1,
+  "def": "MIN",
+  "roster_id": 2,
+  "league": 10,
+  "recount": 10
+ },
+ {
+  "week": 1,
+  "def": "NE",
+  "roster_id": 2,
+  "league": 6,
+  "recount": 6
+ },
+ {
+  "week": 1,
+  "def": "DET",
+  "roster_id": 3,
+  "league": 11,
+  "recount": 11
+ },
+ {
+  "week": 1,
+  "def": "SEA",
+  "roster_id": 3,
+  "league": 13,
+  "recount": 13
+ },
+ {
+  "week": 1,
+  "def": "HOU",
+  "roster_id": 4,
+  "league": -1,
+  "recount": -1
+ },
+ {
+  "week": 1,
+  "def": "PIT",
+  "roster_id": 4,
+  "league": 20,
+  "recount": 20
+ },
+ {
+  "week": 1,
+  "def": "LAR",
+  "roster_id": 5,
+  "league": 2,
+  "recount": 2
+ },
+ {
+  "week": 1,
+  "def": "PHI",
+  "roster_id": 6,
+  "league": 4,
+  "recount": 4
+ },
+ {
+  "week": 1,
+  "def": "BAL",
+  "roster_id": 7,
+  "league": 7,
+  "recount": 7
+ },
+ {
+  "week": 1,
+  "def": "JAX",
+  "roster_id": 7,
+  "league": 15,
+  "recount": 15
+ },
+ {
+  "week": 1,
+  "def": "DEN",
+  "roster_id": 8,
+  "league": 3,
+  "recount": 3
+ },
+ {
+  "week": 2,
+  "def": "TB",
+  "roster_id": 1,
+  "league": 2,
+  "recount": 2
+ },
+ {
+  "week": 2,
+  "def": "MIN",
+  "roster_id": 2,
+  "league": 18,
+  "recount": 18
+ },
+ {
+  "week": 2,
+  "def": "NE",
+  "roster_id": 2,
+  "league": 23,
+  "recount": 23
+ },
+ {
+  "week": 2,
+  "def": "DET",
+  "roster_id": 3,
+  "league": -1,
+  "recount": -1
+ },
+ {
+  "week": 2,
+  "def": "SEA",
+  "roster_id": 3,
+  "league": 8,
+  "recount": 8
+ },
+ {
+  "week": 2,
+  "def": "HOU",
+  "roster_id": 4,
+  "league": 6,
+  "recount": 6
+ },
+ {
+  "week": 2,
+  "def": "PIT",
+  "roster_id": 4,
+  "league": 10,
+  "recount": 10
+ },
+ {
+  "week": 2,
+  "def": "LAR",
+  "roster_id": 5,
+  "league": 12,
+  "recount": 12
+ },
+ {
+  "week": 2,
+  "def": "PHI",
+  "roster_id": 6,
+  "league": 4,
+  "recount": 4
+ },
+ {
+  "week": 2,
+  "def": "BAL",
+  "roster_id": 7,
+  "league": 3,
+  "recount": 3
+ },
+ {
+  "week": 2,
+  "def": "JAX",
+  "roster_id": 7,
+  "league": 3,
+  "recount": 3
+ },
+ {
+  "week": 2,
+  "def": "DEN",
+  "roster_id": 8,
+  "league": 8,
+  "recount": 8
+ },
+ {
+  "week": 3,
+  "def": "KC",
+  "roster_id": 1,
+  "league": 9,
+  "recount": 9
+ },
+ {
+  "week": 3,
+  "def": "MIN",
+  "roster_id": 2,
+  "league": 17,
+  "recount": 17
+ },
+ {
+  "week": 3,
+  "def": "NE",
+  "roster_id": 2,
+  "league": -1,
+  "recount": -1
+ },
+ {
+  "week": 3,
+  "def": "LV",
+  "roster_id": 3,
+  "league": 16,
+  "recount": 16
+ },
+ {
+  "week": 3,
+  "def": "SEA",
+  "roster_id": 3,
+  "league": 2,
+  "recount": 2
+ },
+ {
+  "week": 3,
+  "def": "HOU",
+  "roster_id": 4,
+  "league": 13,
+  "recount": 13
+ },
+ {
+  "week": 3,
+  "def": "PIT",
+  "roster_id": 4,
+  "league": 5,
+  "recount": 5
+ },
+ {
+  "week": 3,
+  "def": "LAR",
+  "roster_id": 5,
+  "league": 4,
+  "recount": 4
+ },
+ {
+  "week": 3,
+  "def": "PHI",
+  "roster_id": 6,
+  "league": 1,
+  "recount": 1
+ },
+ {
+  "week": 3,
+  "def": "BAL",
+  "roster_id": 7,
+  "league": 6,
+  "recount": 6
+ },
+ {
+  "week": 3,
+  "def": "JAX",
+  "roster_id": 7,
+  "league": 17,
+  "recount": 17
+ },
+ {
+  "week": 3,
+  "def": "DEN",
+  "roster_id": 8,
+  "league": 14,
+  "recount": 14
+ },
+ {
+  "week": 4,
+  "def": "CHI",
+  "roster_id": 1,
+  "league": 7,
+  "recount": 7
+ },
+ {
+  "week": 4,
+  "def": "KC",
+  "roster_id": 1,
+  "league": 4,
+  "recount": 4
+ },
+ {
+  "week": 4,
+  "def": "MIN",
+  "roster_id": 2,
+  "league": 9,
+  "recount": 9
+ },
+ {
+  "week": 4,
+  "def": "NE",
+  "roster_id": 2,
+  "league": 6,
+  "recount": 6
+ },
+ {
+  "week": 4,
+  "def": "LV",
+  "roster_id": 3,
+  "league": 1,
+  "recount": 1
+ },
+ {
+  "week": 4,
+  "def": "SEA",
+  "roster_id": 3,
+  "league": 12,
+  "recount": 12
+ },
+ {
+  "week": 4,
+  "def": "HOU",
+  "roster_id": 4,
+  "league": 4,
+  "recount": 4
+ },
+ {
+  "week": 4,
+  "def": "PIT",
+  "roster_id": 4,
+  "league": 8,
+  "recount": 8
+ },
+ {
+  "week": 4,
+  "def": "LAR",
+  "roster_id": 5,
+  "league": 6,
+  "recount": 6
+ },
+ {
+  "week": 4,
+  "def": "PHI",
+  "roster_id": 6,
+  "league": 5,
+  "recount": 5
+ },
+ {
+  "week": 4,
+  "def": "BAL",
+  "roster_id": 7,
+  "league": 7,
+  "recount": 7
+ },
+ {
+  "week": 4,
+  "def": "JAX",
+  "roster_id": 7,
+  "league": 8,
+  "recount": 8
+ },
+ {
+  "week": 4,
+  "def": "DEN",
+  "roster_id": 8,
+  "league": 3,
+  "recount": 3
+ }
+]
