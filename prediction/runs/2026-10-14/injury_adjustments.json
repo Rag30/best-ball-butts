@@ -1,0 +1,521 @@
+{
+ "11646": {
+  "name": "Jalen Coker",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Quad injury cost him Wk4; CAR had its bye in Wk5. Canales says he is 'on track' to play Wk6 at PHI and he practiced fully uniformed Tuesday. Small discount until the Wednesday report confirms full practice.",
+  "confidence": "medium",
+  "source": "DK Network 2026-10-13 (Canales: on track, TBD); RotoWire/FantasyPros ~2026-10-13 (took part in Tuesday practice, on track for Wk6)"
+ },
+ "5850": {
+  "name": "Josh Jacobs",
+  "manager": "Lauren",
+  "weeks_out": [
+   6,
+   7,
+   8
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9,
+   10
+  ],
+  "reason": "Still on the Commissioner's Exempt List; LaFleur said Oct 12 he has 'no updates' and it's 'out of my hands'. The NFL has requested video evidence. Baseline discipline is 6 games with time served credited, and Rapoport floats 5-8 games, so the conservative window is kept with a return discount for Kaleb Johnson's role.",
+  "confidence": "low",
+  "source": "PackersNews 2026-10-12 (no updates on Jacobs); DK Network 2026-10-13 (Exempt List); Rapoport via Heavy/Acme Packing Co (5-8 games)"
+ },
+ "8142": {
+  "name": "Alec Pierce",
+  "manager": "Noelle",
+  "weeks_out": [
+   6,
+   7,
+   8
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9,
+   10
+  ],
+  "reason": "On IR (placed Sept 26) with an aggravated left heel, eligible Wk7 (Oct 25 at MIN). Rehabbing without surgery but surgery still possible. Steichen has no timetable; Fowler's 4-6+ week estimate points to about Wk8-9.",
+  "confidence": "low",
+  "source": "DK Network 2026-10-13 (IR, heel, no surgery); AOL/Yahoo IR update 2026-10-13 (surgery remains possible); Fowler via ESPN (4-6 weeks, could be longer)"
+ },
+ "13286": {
+  "name": "Jadarian Price",
+  "manager": "Noelle",
+  "weeks_out": [
+   6,
+   7
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "On IR since Oct 3 after re-aggravating a chest injury; must miss Wks 4-7, earliest return Wk8. No new update since. Charbonnet's expected Wk7 return threatens his share.",
+  "confidence": "medium",
+  "source": "DK Network 2026-10-13 (IR, chest); FOX 13 Seattle 2026-10-03 (IR, misses 4 games); Pro Football Rumors 2026-10 (IR)"
+ },
+ "12469": {
+  "name": "Dylan Sampson",
+  "manager": "Lauren",
+  "weeks_out": [
+   6
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   7,
+   8
+  ],
+  "reason": "On IR with a knee injury. Monken said Oct 12 that opening his practice window this week is a 'possibility' but didn't commit, and a Wk6 return vs BAL looks unlikely. CLE's backfield is thin (Sanders to IR, Judkins ankle), so a return in Wk7-8 would come into a real role.",
+  "confidence": "low",
+  "source": "DK Network 2026-10-13 (practice window 'possibility' per Monken); RotoBaller/RotoWire 2026-10-12 (could practice this week, Wk6 unlikely)"
+ },
+ "11583": {
+  "name": "Jonathon Brooks",
+  "manager": "Emma",
+  "weeks_out": [
+   6,
+   7,
+   8,
+   9
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   10,
+   11
+  ],
+  "reason": "On IR after core-muscle surgery (late Sept); Canales said 6-8 weeks and DK still lists it as an 'extended absence'. May not come off IR until November. No new update.",
+  "confidence": "medium",
+  "source": "DK Network 2026-10-13 (IR, core surgery, extended absence); AOL/Yahoo IR update 2026-10-13 (at least six weeks, low-priority stash)"
+ },
+ "9753": {
+  "name": "Zach Charbonnet",
+  "manager": "Noelle",
+  "weeks_out": [
+   6
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   7,
+   8,
+   9
+  ],
+  "reason": "Still on PUP (ACL); Macdonald says 'as of right now, the answer is no' for activation for Thursday's Wk6 game vs DEN. His 21-day window runs to Oct 22, and the target is Wk7 vs KC, followed by a ramp-up sharing with Wilson/Holani.",
+  "confidence": "medium",
+  "source": "DK Network 2026-10-13 (not expected to be activated Thursday per Macdonald); CBS Sports/RotoWire ~2026-10-12 (will sit again Wk6, Oct 25 vs KC target); AOL IR update 2026-10-13 (expected back Wk7)"
+ },
+ "8155": {
+  "name": "Breece Hall",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Right quad injury from Wk3. He has missed the last two games and didn't practice at all last week. He's week-to-week and not on IR; Glenn gave no update Monday. Wk6 is TBD and a genuine coin flip at best until he practices; Braelon Allen leads meanwhile.",
+  "confidence": "low",
+  "source": "DK Network 2026-10-13 (TBD, missed last two games); NBC Sports 2026-10-09 (ruled out Wk5); Glenn no update Monday per ESPN/Sharp search results 2026-10-12"
+ },
+ "7543": {
+  "name": "Travis Etienne",
+  "manager": "Raghav",
+  "weeks_out": [
+   6,
+   7
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "On IR (hamstring) since Oct 1; with the Wk8 bye, the earliest return is Wk9 (Nov 8 vs CLE). Moore: 'It'll take a little while.' Kendre Miller is now cutting into Kamara's work meanwhile.",
+  "confidence": "medium",
+  "source": "DK Network 2026-10-13 (IR, hamstring); AOL/Yahoo IR update 2026-10-13 (Week 9 earliest due to bye); NBC Sports 2026-10-01 (placed on IR)"
+ },
+ "7021": {
+  "name": "Rico Dowdle",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   6,
+   7,
+   8,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "reason": "Dislocated toe; missed three straight games including Wk5. OC Angelichio said Monday he anticipates Dowdle returns Wk6 at TB, likely with a limited workload behind Jaylen Warren, and a one-two committee is expected after that, so the all-season discount is kept.",
+  "confidence": "medium",
+  "source": "DK Network 2026-10-13 (Angelichio anticipates return this week); RotoWire/RotoBaller 2026-10-12 (expected back Wk6, RB3/flex); Yahoo ~2026-10-12 (limited workload behind Warren)"
+ },
+ "5859": {
+  "name": "A.J. Brown",
+  "manager": "Henry",
+  "weeks_out": [
+   6
+  ],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   7,
+   8
+  ],
+  "reason": "High-ankle sprain; on IR but eligible now. Vrabel said Oct 12 there is 'a chance' he plays Wk6 vs NYJ and he may practice this week, but Rapoport's ~6-week timeline and IR analysis point to Wk7 as plausible and Wk8 as possible.",
+  "confidence": "low",
+  "source": "Boston.com 2026-10-12 (Vrabel: 'there is a chance' vs Jets); DK Network 2026-10-13 (chance to practice this week); AOL/Yahoo IR update 2026-10-13 (Wk7 plausible, Wk8 possible)"
+ },
+ "13287": {
+  "name": "Jeremiyah Love",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Came off the Wk5 injury report after an ankle tweak but managed only 12-22 and was phased out early in the Wk5 blowout loss to DET. He says he is still dealing with the camp ankle and LaFleur calls it 'management'. Small workload-risk discount, though he's not on the Wk6 injury list.",
+  "confidence": "low",
+  "source": "NBC Sports 2026-10-11 (Cardinals yank Love early in blowout; still dealing with ankle); NBC Sports 2026-10-09 (off Wk5 injury report)"
+ },
+ "4035": {
+  "name": "Alvin Kamara",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Knee checked out OK, but a back injury left him questionable for Wk5. He played a season-low 12 snaps (3-12 rushing, 2 catches for -6) as Kendre Miller out-carried him by seven. No Wk6 designation yet; back plus role-share discount for Wk6 at NYG.",
+  "confidence": "low",
+  "source": "NBC Sports 2026-10-11 (expected to play with back; rotated with Miller/Donaldson); DraftSharks ~2026-10-12 (role shrinks amid injury); ESPN recap via search 2026-10-11"
+ },
+ "10229": {
+  "name": "Rashee Rice",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Hamstring injury in Wk4; Rapoport calls it 'relatively minor', more of a tweak, and wouldn't be surprised if he plays Wk6 vs LAC after the Wk5 bye. No practice report yet and Silver earlier warned of several weeks, so Wk6 is a lean-play risk.",
+  "confidence": "low",
+  "source": "DK Network 2026-10-13 (TBD, relatively minor per Rapoport); Yahoo 2026-10-06 (could be ready after bye); NBC Sports 2026-10-04 (Silver: could miss several weeks)"
+ },
+ "12534": {
+  "name": "Kyle Monangai",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6,
+   7
+  ],
+  "reason": "Turf toe (the thumb is a non-issue); missed Wk5, in a walking boot and saw a specialist. He's week-to-week and not an IR candidate. Fowler said it's an issue for 1-2 weeks and On SI says the return could be Wk6 or as late as Wk8 (Wk7 is a short week). Coin flip for Wks 6-7.",
+  "confidence": "low",
+  "source": "DK Network 2026-10-13 (toe, walking boot, not an IR candidate, TBD); Bears On SI/Yahoo 2026-10-11 (could return Wk6 or not until Wk8); NBC Sports 2026-10-08 (Fowler: 1-2 weeks)"
+ },
+ "4881": {
+  "name": "Lamar Jackson",
+  "manager": "Emma",
+  "weeks_out": [],
+  "multiplier": 0.65,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Left ankle sprain; missed Wk5. Rapoport says he has a 'real chance' or 'some hope' to play Wk6 vs CLE and was closer than realized to playing Wk5; Minter says he's 'definitely doing better' but wasn't sure he'd practice Wednesday. Game-time risk, with Huntley the fallback.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-10-11 (real chance Wk6); NBC Sports 2026-10-12 (Rap: some hope); DK Network 2026-10-13 (Minter: definitely doing better)"
+ },
+ "11635": {
+  "name": "Ladd McConkey",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Recurring foot injury; didn't practice all last week and was active in Wk5 only as an emergency option, playing zero snaps. Harbaugh says it's 'possible' he works back in this week for Wk6 at KC. Uncertain; LAC bye is Wk7.",
+  "confidence": "low",
+  "source": "NBC Sports 2026-10-13 (Harbaugh: 'possible' McConkey works back in); DK Network 2026-10-13 (zero snaps Wk5, TBD); FantasyPros 2026-10-12 (active, did not play a snap)"
+ },
+ "4866": {
+  "name": "Saquon Barkley",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Hamstring from Wk4 kept him out of Wk5 in London. Garafolo says one if not both of Barkley and DeVonta Smith have a shot to return vs CAR in Wk6, and Sirianni is hopeful, but Barkley was not seen at practice last week, so he trails Smith.",
+  "confidence": "medium",
+  "source": "Sporting News/Yahoo 2026-10-12 (Garafolo: shot to return Wk6, Sirianni hopeful); Bleeding Green Nation 2026-10-12 (Barkley/Smith have a shot vs Panthers)"
+ },
+ "7525": {
+  "name": "DeVonta Smith",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.65,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Hamstring kept him out Wks 4-5 after rehab field work Thu/Fri was not enough. He is reportedly closer than Barkley to returning, and Garafolo/Sirianni are hopeful for Wk6 vs CAR, but practice will decide.",
+  "confidence": "medium",
+  "source": "Sporting News/Yahoo 2026-10-12 (shot to return Wk6); RotoBaller 2026-10-09 (ruled out Wk5, next chance Wk6); SI 2026-10-12 (could return Wk6)"
+ },
+ "9225": {
+  "name": "Tank Bigsby",
+  "manager": "Avery",
+  "weeks_out": [
+   6,
+   7,
+   8
+  ],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Had core-muscle surgery and went on IR (minimum 4 games starting Wk5, so earliest return is Wk9). The hope is six weeks or less. Eagles bye is Wk10. No newer recovery update.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-10-05 (core surgery, heading to IR); Yahoo 2026-10-05 (six weeks or shorter); Sporting News/Yahoo 2026-10-12 (still on IR)"
+ },
+ "4983": {
+  "name": "DJ Moore",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Re-aggravated left-shoulder AC sprain was enough to make him inactive for Monday night Wk5 at LAR after a questionable tag and one limited practice. The hope is that more rest helps. With a short week no Wk6 status has been reported yet, and the bye is Wk7.",
+  "confidence": "low",
+  "source": "Washington Post/AP 2026-10-12 (inactive vs Rams); theScore 2026-10-12 (inactive, shoulder); Fox Sports 2026-10-12 (questionable after limited Sat practice)"
+ },
+ "6801": {
+  "name": "Tee Higgins",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   7
+  ],
+  "reason": "Played through the adductor/groin injury in Wk5 but was eased in, mostly on 'meaningful plays' (2-22, 45 snaps). The Wk6 bye should let him heal, so the concern for Wk7 is small.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-10-11 (active for mostly meaningful plays; 2/22 vs MIA; bye Wk6)"
+ },
+ "11560": {
+  "name": "Caleb Williams",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Grade 2 right hamstring strain from Wk2; he missed Wks 3-5 but logged a limited practice Friday. Rapoport says 'all signs point' to a Wk6 return vs ATL, while Ben Johnson calls it 'close'.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-10-12 (all signs point to Wk6); NBC Sports 2026-10-11 (pushing to play Wk6); Bleacher Nation 2026-10-11"
+ },
+ "13298": {
+  "name": "KC Concepcion",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Concussion from Minkah Fitzpatrick's helmet-to-helmet hit in Wk5 vs NYJ; he entered protocol Monday. He posted that he feels fine, but Wk6 vs BAL (Oct 18) is unclear.",
+  "confidence": "low",
+  "source": "PlayerProfiler 2026-10-12 (entered concussion protocol); Yahoo/AP 2026-10-11 (ruled out after hit); ClutchPoints 2026-10-12 (positive message)"
+ },
+ "13330": {
+  "name": "Kenyon Sadiq",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Concussion confirmed after he left Wk5 vs CLE; he is in protocol. Outlets call him iffy and say it is too early to tell for Wk6 at NE, with Mason Taylor the fill-in TE.",
+  "confidence": "low",
+  "source": "DK Network 2026-10-13 (Sadiq injured, Taylor streamer); RotoWire 2026-10-12 (concussion confirmed); DraftSharks 2026-10-12 (iffy for Wk6)"
+ },
+ "9754": {
+  "name": "Quentin Johnston",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "A chest injury from Wk4 at SEA kept him out of Wk5 vs DEN. Harbaugh says he will 'probably be limited' in practice this week and they will see where he is at week's end. Wk6 at KC is TBD; bye is Wk7.",
+  "confidence": "low",
+  "source": "NBC Sports 2026-10-13 (probably limited this week); DK Network 2026-10-13 (Wk6 TBD); RotoBaller 2026-10-09 (ruled out Wk5)"
+ },
+ "9756": {
+  "name": "Jordan Addison",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   7
+  ],
+  "reason": "Hamstring made him inactive for Wk5 after limited practices. Vikings have a Wk6 bye, and Rapoport expects him back for Wk7 vs IND.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-10-11 (headlines inactives); Yahoo/Heavy 2026-10-12 (Rapoport: should return Wk7)"
+ },
+ "2449": {
+  "name": "Stefon Diggs",
+  "manager": "Emma",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Hamstring from Wk4 vs IND kept him out of Wk5 after he was mostly DNP. No firm timeline; a return could come as early as Wk6 vs SF, but there are no post-Wk5 practice reports yet. Bye is Wk7.",
+  "confidence": "low",
+  "source": "CBS Sports 2026-10-09 (won't play Sunday); ESPN 2026-10-09 (Diggs out vs Giants); FantasySP 2026-10-13 (no firm timeline, possibly Wk6)"
+ },
+ "11630": {
+  "name": "Roman Wilson",
+  "manager": "Raghav",
+  "weeks_out": [
+   6,
+   7
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Dislocated left ring finger in Wk5 vs IND. Fowler/ESPN say he is expected to miss a 'couple of' or 'multiple' weeks, and he is seeking a second opinion. Steelers bye is Wk9.",
+  "confidence": "low",
+  "source": "ESPN 2026-10-12 (expected to miss multiple weeks); Steelers Depot 2026-10-12 (couple of weeks, second opinion)"
+ },
+ "12512": {
+  "name": "Quinshon Judkins",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Ankle 'tweak' (the same ankle he surgically repaired) in Wk5 vs NYJ; he left in a walking boot and is set for further testing. Monken calls him day-to-day and could see him available for Wk6 vs BAL.",
+  "confidence": "low",
+  "source": "CBS Sports 2026-10-12 (day-to-day with ankle tweak); FantasyPros 2026-10-11 (left in walking boot)"
+ },
+ "4199": {
+  "name": "Aaron Jones",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   7
+  ],
+  "reason": "Left-knee injury in Wk5 at NO, possibly the same knee he has managed all season. He returned about 20 minutes later and finished with 25-113-1. The Wk6 bye gives him time, with no diagnosis reported.",
+  "confidence": "medium",
+  "source": "Star Tribune 2026-10-12 (injury concerns, unclear if same knee); CBS Sports 2026-10-11 (exits early, returns)"
+ },
+ "6819": {
+  "name": "Michael Pittman",
+  "manager": "Raghav",
+  "weeks_out": [
+   6,
+   7,
+   8
+  ],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Placed on IR Oct 10 after re-aggravating left-foot plantar fasciitis. The 4-game minimum plus the Wk9 bye means his earliest return is Wk10 vs CIN.",
+  "confidence": "high",
+  "source": "NBC Sports 2026-10-10 (short-term IR); ESPN 2026-10-10 (placed on IR, foot)"
+ },
+ "5872": {
+  "name": "Deebo Samuel",
+  "manager": "Avery",
+  "weeks_out": [
+   6,
+   7
+  ],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Right hamstring strain in Wk5 vs SEA. Shanahan says he will miss 'at least a couple weeks', and an NFL Network report says several weeks. He is expected out Wks 6-7, with a possible return after the Wk8 bye.",
+  "confidence": "medium",
+  "source": "ESPN 2026-10-12 (Shanahan: will miss time); RotoWire 2026-10-12 (out at least a couple weeks); Yahoo 2026-10-12 (several weeks)"
+ },
+ "5892": {
+  "name": "David Montgomery",
+  "manager": "Avery",
+  "weeks_out": [
+   6,
+   7
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Groin injury in Wk5 vs TEN; Ryans calls him week-to-week. He is trending to miss Wk6 in London, and with the Wk8 bye, Houston may hold him out through Wk7.",
+  "confidence": "medium",
+  "source": "RotoWire 2026-10-12 (considered week-to-week); Yahoo 2026-10-12 (week to week); Forbes 2026-10-13 (Wk6 injury report)"
+ },
+ "6786": {
+  "name": "CeeDee Lamb",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Quad bruise from the Wk5 TNF loss to TB, not considered serious per Rapoport. Stephen Jones says he will be ready for Wk6 at GB; practice reports are still pending.",
+  "confidence": "medium",
+  "source": "Newsweek 2026-10-10 (encouraging update); TheSportscast 2026-10-09 (quad bruise); Forbes 2026-10-13 (Wk6 injury report)"
+ },
+ "9488": {
+  "name": "Jaxon Smith-Njigba",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   6
+  ],
+  "reason": "Ankle injury in Wk5 vs SF, though he finished with 5-102-1. Listed limited on the estimated Mon/Tue reports before TNF Wk6 at DEN; CBS expects him to play without restrictions.",
+  "confidence": "medium",
+  "source": "NBC Sports 2026-10-12 (limited Monday); CBS Sports 2026-10-12 (expected to play without restrictions); Seahawks.com 2026-10-13 (Wk6 injury report)"
+ },
+ "12529": {
+  "name": "TreVeyon Henderson",
+  "manager": "Henry",
+  "weeks_out": [
+   6,
+   7
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "High-ankle sprain in Wk5 vs LV; no surgery needed. He is expected to miss multiple weeks: out Wk6 vs NYJ, and Wk7 TNF vs CHI is unlikely.",
+  "confidence": "medium",
+  "source": "ESPN 2026-10-13 (out multiple weeks, high ankle sprain); Yahoo 2026-10-13 (miss multiple weeks)"
+ },
+ "5844": {
+  "name": "T.J. Hockenson",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   7
+  ],
+  "reason": "Concussion in the 1st quarter of Wk5 at NO (his second documented one). He is in protocol, and with the Wk6 bye he is expected back Wk7 vs IND but not yet cleared.",
+  "confidence": "medium",
+  "source": "CBS Sports 2026-10-11 (done for day with concussion); Star Tribune 2026-10-12 (in protocol); Yahoo/Heavy 2026-10-12 (O'Connell update)"
+ }
+}
