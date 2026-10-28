@@ -1,0 +1,426 @@
+{
+ "12474": {
+  "name": "Woody Marks",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.95,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Tweaked his left knee in Wk7 vs NYG but returned to finish the game. No MRI or follow-up has been reported, and the Wk8 bye gives him time to heal. His share could shrink if Montgomery returns.",
+  "confidence": "medium",
+  "source": "https://www.cbssports.com/fantasy/football/news/texans-woody-marks-racks-up-20-touches-in-week-7/"
+ },
+ "12481": {
+  "name": "Cam Skattebo",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Hamstring tweak on an OT run in Wk7. Garafolo says he is expected to be OK with no MRI needed, and he should be ready Wk9 vs PHI after the Wk8 bye.",
+  "confidence": "medium",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-26/skattebo-expected-to-be-okay-after-hammy-injury"
+ },
+ "12501": {
+  "name": "Matthew Golden",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Shoulder injury plus a new foot injury. He was DNP Monday and Tuesday on a short week vs CAR, and LaFleur says they are 'working through' whether he plays.",
+  "confidence": "low",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-27/packers-working-through-if-golden-plays-week-8"
+ },
+ "2216": {
+  "name": "Mike Evans",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Achilles tendinitis (plus ribs) kept him out of Wk7. Shanahan says he has a chance to return Wk9 vs LV after the Wk8 bye, though it is not guaranteed.",
+  "confidence": "medium",
+  "source": "https://www.cbssports.com/fantasy/football/news/49ers-mike-evans-expected-back-after-bye-week/"
+ },
+ "4866": {
+  "name": "Saquon Barkley",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Back from his hamstring injury on Wk7 MNF, but he re-tweaked the hamstring and hurt his back, leaving after 10 snaps on a pitch count. He says neither should keep him out of Wk8 at WAS, but his status is TBD.",
+  "confidence": "low",
+  "source": "https://www.inquirer.com/eagles/live/eagles-score-news-injury-report-saquon-barkley-next-game-schedule-20261027.html"
+ },
+ "5892": {
+  "name": "David Montgomery",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Groin injury, week-to-week. He missed Wk6-7, and the Wk8 bye gives him three weeks before Wk9 at LAC. No return has been confirmed.",
+  "confidence": "low",
+  "source": "https://www.thescore.com/nfl/news/3622165/texans-montgomery-week-to-week-with-groin-injury"
+ },
+ "7525": {
+  "name": "DeVonta Smith",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   8,
+   9
+  ],
+  "reason": "A lingering hamstring kept him from practicing all of last week and he missed Wk7. Sirianni won't rule out IR or a shutdown, and projections range from 50% for Wk8 to a return after the Wk10 bye.",
+  "confidence": "low",
+  "source": "https://sports.yahoo.com/articles/nick-sirianni-addresses-devonta-smith-193313080.html"
+ },
+ "11655": {
+  "name": "Tyrone Tracy Jr.",
+  "manager": "Ben",
+  "weeks_out": [
+   9,
+   10,
+   11,
+   12
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   13
+  ],
+  "reason": "Hamstring injury in Wk7. He was placed on IR Oct 27 and must miss at least four games, making Wk13 his earliest return; it is not season-ending.",
+  "confidence": "high",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-27/tyrone-tracy-hamstring-to-head-to-ir"
+ },
+ "4034": {
+  "name": "Christian McCaffrey",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Mild hamstring strain in Wk7 (Sleeper lists calf). Shanahan and CMC expect no issue Wk9 after the Wk8 bye.",
+  "confidence": "medium",
+  "source": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/christian-mccaffrey-has-mild-hamstring-strain-49ers-optimistic-hell-play-after-bye"
+ },
+ "7526": {
+  "name": "Jaylen Waddle",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Chest injury that had already limited him in practice. He left Wk7 in the 4th quarter and did not return, and there is no diagnosis or Wk8 status yet vs KC.",
+  "confidence": "low",
+  "source": "https://www.cbssports.com/fantasy/football/news/broncos-jaylen-waddle-chest-injury-confirmed/"
+ },
+ "12518": {
+  "name": "Tyler Warren",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Groin injury: inactive Wk6-7 and DNP all of last week. Steichen says he is 'progressing really well', but he is TBD for Wk8 with no practice update yet.",
+  "confidence": "low",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-25/tyler-warren-groin-headlines-colts-inactives"
+ },
+ "13281": {
+  "name": "Jordyn Tyson",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "On IR with a hamstring injury and not yet practicing. Loomis says he is improving but has no timetable; he could debut Wk9 vs CLE only if he starts practicing after the Wk8 bye.",
+  "confidence": "low",
+  "source": "https://www.thebiglead.com/jordyn-tyson-injury-return-timeline-saints-gm-reveals-latest-rookie-hamstring/"
+ },
+ "13287": {
+  "name": "Jeremiyah Love",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Left ankle injury; missed Wk6-7. LaFleur says he will practice Wednesday and is on track to possibly return Wk8 at DAL, but nothing is confirmed.",
+  "confidence": "medium",
+  "source": "https://nbcsports.com/fantasy/football/player-news/2026-10-26/jeremiyah-love-ankle-to-practice-wednesday"
+ },
+ "11583": {
+  "name": "Jonathon Brooks",
+  "manager": "Emma",
+  "weeks_out": [
+   8,
+   9
+  ],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   10,
+   11
+  ],
+  "reason": "Still on IR after core-muscle surgery Sept 23, with Canales giving 6-8 weeks. There is no new update or practice return, so Wk10 is the earliest realistic return.",
+  "confidence": "medium",
+  "source": "https://www.nfl.com/news/panthers-rb-jonathon-brooks-surgery-out-six-weeks"
+ },
+ "4881": {
+  "name": "Lamar Jackson",
+  "manager": "Emma",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "High ankle sprain; missed three games. Rapoport says he is close to 100% and expected to play Wk8 vs BUF, and Minter reportedly told Wolfson he will play.",
+  "confidence": "medium",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-26/jackson-in-a-decent-spot-to-play-vs-bills"
+ },
+ "5927": {
+  "name": "Terry McLaurin",
+  "manager": "Emma",
+  "weeks_out": [
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Torn left patellar tendon, out for the season with surgery.",
+  "confidence": "high",
+  "source": "https://wjla.com/sports/washington-commanders/commanders-terry-mclaurin-to-miss-remainder-of-season-after-injury-will-undergo-surgery"
+ },
+ "8154": {
+  "name": "Brian Robinson Jr.",
+  "manager": "Emma",
+  "weeks_out": [],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Hamstring injury; inactive Wk7 after missing Thu/Fri practice. He is TBD for Wk8 at TB and leans out per rankings, with Herbert filling in.",
+  "confidence": "low",
+  "source": "https://dknetwork.draftkings.com/2026/10/27/nfl-injury-report-week-8/"
+ },
+ "8155": {
+  "name": "Breece Hall",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.65,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Quad strain. He was inactive Wk7, his 4th straight miss, but returned to limited practice late last week; multiple outlets call a Wk8 return vs LV likely, pending practice. Braelon Allen ran well in his place.",
+  "confidence": "medium",
+  "source": "https://dknetwork.draftkings.com/2026/10/27/nfl-injury-report-week-8"
+ },
+ "10229": {
+  "name": "Rashee Rice",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Hamstring/knee. He hasn't practiced since the Wk4 injury and was inactive Wk6-7, still feeling tightness in route work. Wk8 vs DEN is TBD and depends on whether he returns to practice; no timeline has been given.",
+  "confidence": "low",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-25/rashee-rice-inactive-again-in-week-7-vs-seahawks"
+ },
+ "12514": {
+  "name": "Emeka Egbuka",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Concussion plus foot from Wk6. He wasn't cleared and missed Wk7. Bowles calls him questionable for Wk8 vs ATL and will know more after the Wed/Thu practices.",
+  "confidence": "medium",
+  "source": "https://sports.yahoo.com/articles/emeka-egbuka-uncertain-week-8-190328463.html"
+ },
+ "12534": {
+  "name": "Kyle Monangai",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Turf toe plus thumb; he has missed 3 straight. He wasn't seen at Tuesday's practice, and CHI promoted RB Zavier Scott. He is week-to-week and not on IR. Wk8 at SEA (Mon 11/2) looks doubtful; the first injury report comes Thursday.",
+  "confidence": "low",
+  "source": "https://www.si.com/nfl/bears/onsi/kyle-monangai-injury-update-tuesday-bears-roster-move-bad-signs-week-8"
+ },
+ "7547": {
+  "name": "Amon-Ra St. Brown",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Tweaked his ankle in the Wk7 win over GB. Campbell says he 'should be good' for Wk8 vs MIN: rest Wednesday, practice expected Thursday.",
+  "confidence": "medium",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-26/st-brown-ankle-should-be-good-for-week-8"
+ },
+ "9486": {
+  "name": "Dontayvion Wicks",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Ankle from late in Wk6. He missed all practices and was inactive Wk7 MNF vs DAL. Wk8 is TBD and there's no update since; it hinges on this week's practice.",
+  "confidence": "low",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-25/dontayvion-wicks-ankle-will-not-play-vs-cowboys"
+ },
+ "13286": {
+  "name": "Jadarian Price",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Chest, on IR. He is expected to be designated to return and to practice this week, but Macdonald says Wk8 game status is unknown. Likely a split with Wilson and Charbonnet if he's activated.",
+  "confidence": "low",
+  "source": "https://athlonsports.com/nfl/trending/seahawks-mike-macdonald-zach-charbonnet-jadarian-price-bears-injury-update"
+ },
+ "4983": {
+  "name": "DJ Moore",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Left-shoulder AC sprain; inactive Wks 5-6, then the Wk7 bye. Brady says he has a good chance to return Wk8 vs BAL, and Schefter reports it isn't long-term. No Wk8 practice report yet.",
+  "confidence": "medium",
+  "source": "https://dknetwork.draftkings.com/2026/10/27/nfl-injury-report-week-8"
+ },
+ "8121": {
+  "name": "Romeo Doubs",
+  "manager": "Noelle",
+  "weeks_out": [
+   8,
+   9,
+   10
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Right shoulder; on IR since 10/19, so Wk12 is the earliest return (after the Wk11 bye). Fowler says he hopes to come back then, but Vrabel set no timeline and isn't sure how long.",
+  "confidence": "low",
+  "source": "https://www.boston.com/sports/new-england-patriots/2026/10/20/mike-vrabel-issues-concerning-update-about-romeo-doubs-shoulder-injury/"
+ },
+ "8142": {
+  "name": "Alec Pierce",
+  "manager": "Noelle",
+  "weeks_out": [
+   8,
+   9
+  ],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Heel, on IR. Steichen (10/26) says his practice window 'most likely' won't open in Wk8. He's rehabbing without surgery, with no timeline. RotoBaller's Wk10 return guess is speculative.",
+  "confidence": "low",
+  "source": "https://sports.yahoo.com/articles/colts-wr-alec-pierce-most-005528509.html"
+ },
+ "9753": {
+  "name": "Zach Charbonnet",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.4,
+  "multiplier_weeks": [
+   8,
+   9,
+   10
+  ],
+  "reason": "ACL return: activated 10/22 and practicing fully, but inactive Wk7 with no setback. Macdonald won't commit for Wk8 vs CHI ('sticking with our plan'). Expect a slow ramp shared with Wilson and Price.",
+  "confidence": "low",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-10-26/macdonald-mum-on-charbonnet-playing-vs-bears"
+ },
+ "11635": {
+  "name": "Ladd McConkey",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.65,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Concussion from Wk6, then the Wk7 bye. He practiced Monday in a no-contact jersey but still needs independent-neurologist clearance for Wk8 vs LAR. Outlets expect him back.",
+  "confidence": "medium",
+  "source": "https://www.cbssports.com/fantasy/football/news/chargers-ladd-mcconkey-spotted-practicing-monday/"
+ },
+ "4199": {
+  "name": "Aaron Jones Sr.",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.55,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "He re-aggravated his Wk2 left MCL sprain in Wk7 and exited. O'Connell calls him day-to-day; Schefter reports it isn't significant, but Jordan Mason is back and could take more work at DET.",
+  "confidence": "medium",
+  "source": "https://www.espn.com/nfl/story/_/id/50289047/vikings-rb-jones-avoids-serious-knee-injury-day-day"
+ },
+ "5872": {
+  "name": "Deebo Samuel Sr.",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Right hamstring from Wk5 (Wk8 is SF's bye). Shanahan says he has a 'chance' to return Wk9 vs LV but it isn't guaranteed.",
+  "confidence": "medium",
+  "source": "https://www.rotoballer.com/player-news/deebo-samuel-sr-has-a-chance-to-return-in-week-9/1976593"
+ },
+ "7543": {
+  "name": "Travis Etienne Jr.",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   9
+  ],
+  "reason": "Left hamstring, on IR since Wk4 (Wk8 is NO's bye). Wk9 vs CLE is the earliest possible return, but there's no activation or practice report, and Moore is noncommittal ('take a little while').",
+  "confidence": "low",
+  "source": "https://sports.yahoo.com/articles/5-injuries-monitor-during-orleans-210611572.html"
+ },
+ "8129": {
+  "name": "Dameon Pierce",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.4,
+  "multiplier_weeks": [
+   8
+  ],
+  "reason": "Undisclosed injury: he left Wk7 MNF with 8:38 left and didn't return. There's no team update yet, and one analyst sees a good chance he misses Wk8. Barkley's return also shrinks his role.",
+  "confidence": "low",
+  "source": "https://dknetwork.draftkings.com/2026/10/27/nfl-injury-report-week-8"
+ }
+}
