@@ -70,6 +70,15 @@ const BBB = (() => {
   }
   const lastRegularWeek = league => (league.settings && league.settings.playoff_week_start || 15) - 1;
   const weekHasScores = matchups => Array.isArray(matchups) && matchups.some(e => (e.points || 0) > 0);
+  /** Regular-season weeks whose games are final. A week in progress already has live points, so a
+   *  scored week only counts once Sleeper's last_scored_leg has reached it (no field: any scored week). */
+  function completedWeeks(league, matchupsByWeek) {
+    const raw = league.settings && league.settings.last_scored_leg;
+    const last = raw == null ? Infinity : Number(raw);
+    const out = [];
+    for (let w = 1; w <= Math.min(lastRegularWeek(league), last); w++) if (weekHasScores(matchupsByWeek[w])) out.push(w);
+    return out;
+  }
 
   /** matchupsByWeek {w: [...]} -> {scores, opponent, result} keyed by roster id. */
   function inputFromMatchups(matchupsByWeek, weeks) {
@@ -295,8 +304,7 @@ const BBB = (() => {
     const nameMap = nameMapFrom(users, rosters);
     const meta = { leagueId: league.league_id, status: league.status, rosterPositions: league.roster_positions,
                    scoring: league.scoring_settings, nameMap, lastRegularWeek: lastRegularWeek(league) };
-    const weeks = [];
-    for (let w = 1; w <= meta.lastRegularWeek; w++) if (weekHasScores(matchupsByWeek[w])) weeks.push(w);
+    const weeks = completedWeeks(league, matchupsByWeek);
     if (!weeks.length) {
       const fut = futureOpponents(matchupsByWeek, [], meta.lastRegularWeek);
       const schedule = {};
@@ -315,7 +323,7 @@ const BBB = (() => {
     return season;
   }
 
-  return { MANAGERS, r2, playerPts, optimalLineup, weekTeamProjections, nameMapFrom, lastRegularWeek, weekHasScores,
+  return { MANAGERS, r2, playerPts, optimalLineup, weekTeamProjections, nameMapFrom, lastRegularWeek, weekHasScores, completedWeeks,
            inputFromMatchups, futureOpponents, draftRosters, buildSeason, playoffFinish, applyPlayoffs, career, seasonFromRaw };
 })();
 if (typeof module !== "undefined") module.exports = BBB;

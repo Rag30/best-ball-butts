@@ -63,7 +63,7 @@ async function computeSeason(env, yr, leagueId, currentWeek) {
   fetched.forEach((m, i) => matchupsByWeek[i + 1] = m);
 
   // Team projection totals per week: cached; only the live (latest scored) week is refetched.
-  const scored = Object.keys(matchupsByWeek).map(Number).filter(w => BBB.weekHasScores(matchupsByWeek[w]));
+  const scored = BBB.completedWeeks(league, matchupsByWeek);   // final weeks only; the live week waits for last_scored_leg
   const liveWeek = scored.length ? Math.max(...scored) : null;
   const projected = {};
   for (const w of scored) {
