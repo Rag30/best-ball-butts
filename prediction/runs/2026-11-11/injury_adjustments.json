@@ -1,0 +1,410 @@
+{
+ "12481": {
+  "name": "Cam Skattebo",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Hamstring kept him out of Wk9, but Harbaugh expects him 'full go' for TNF Wk10 vs WAS. He may split work with Singletary.",
+  "confidence": "medium",
+  "source": "https://www.4for4.com/news/giants-expect-have-rb-cam-skattebo-hamstring-week-10"
+ },
+ "13279": {
+  "name": "Carnell Tate",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Shoulder: he missed Wk8 and had the Wk9 bye. He is expected back Wk10 vs JAX, but he is still listed questionable and no new practice report was found.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/645220/carnell-tate-expected-back-after-bye/"
+ },
+ "2216": {
+  "name": "Mike Evans",
+  "manager": "Avery",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   11
+  ],
+  "reason": "Right Achilles tendinitis. He was unlikely to practice Wed and is 'questionable at best' for Wk10 at DAL, and the 49ers' site says he isn't expected to be ready. Wk11 is uncertain.",
+  "confidence": "medium",
+  "source": "https://www.thefantasyfootballers.com/news/646850/mike-evans-iffy-for-wednesdays-practice/"
+ },
+ "5892": {
+  "name": "David Montgomery",
+  "manager": "Avery",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   11
+  ],
+  "reason": "Groin: he has been out since Wk5 and has not practiced. Ryans (Nov 9) hopes he resumes practice 'this week, or next week', so Wk10 vs CLE is unlikely and his return after that is unclear.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/646835/david-montgomery-could-return-to-practice-soon/"
+ },
+ "7525": {
+  "name": "DeVonta Smith",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   11
+  ],
+  "reason": "Recurring hamstring: he missed all practice and was inactive Wk9, and is out until at least Wk11 after the Wk10 bye. His return is uncertain given repeated setbacks.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/646285/devonta-smith-wont-play-sunday/"
+ },
+ "7543": {
+  "name": "Travis Etienne Jr.",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Hamstring, on IR and eligible to return. Moore (Mon) was non-committal on him returning Wk10 vs CAR ('We'll see'), and he had no practice as of Wk9.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/645924/travis-etienne-not-practicing-yet/"
+ },
+ "11655": {
+  "name": "Tyrone Tracy Jr.",
+  "manager": "Ben",
+  "weeks_out": [
+   10,
+   11,
+   12
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   13
+  ],
+  "reason": "On IR (hamstring) since Oct 27, so Wk13 is the earliest return. No activation news has been found.",
+  "confidence": "high",
+  "source": "https://abc7ny.com/post/giants-place-rb-tyrone-tracy-jr-ir-hamstring-injury/19986229/"
+ },
+ "12489": {
+  "name": "RJ Harvey",
+  "manager": "Ben",
+  "weeks_out": [
+   11,
+   12
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   13
+  ],
+  "reason": "Knee, on IR since Oct 31 with Wk10 his bye, so Wk13 is the earliest return. The injury is reportedly not long-term, and no newer news was found.",
+  "confidence": "medium",
+  "source": "https://www.denverbroncos.com/news/broncos-promote-s-taylor-rapp-to-active-roster-place-rb-rj-harvey-on-injured-reserve"
+ },
+ "7526": {
+  "name": "Jaylen Waddle",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   11
+  ],
+  "reason": "Concussion in Wk9 vs CAR. DEN has its Wk10 bye, and he is targeting a Nov 22 return vs LV pending the concussion protocol.",
+  "confidence": "medium",
+  "source": "https://www.tsn.ca/nfl/article/broncos-rule-out-wr-waddle-cb-moss-vs-panthers-with-concussions/"
+ },
+ "7611": {
+  "name": "Rhamondre Stevenson",
+  "manager": "Ben",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Knee tendon injury in Wk9 that won't need surgery. Rapoport says he's out 'the next few weeks', so he misses Wk10 in Munich, and Wk12 after the bye is possible.",
+  "confidence": "medium",
+  "source": "https://www.thefantasyfootballers.com/news/646686/rhamondre-stevenson-out-for-remainder-of-sundays-game/"
+ },
+ "8137": {
+  "name": "George Pickens",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Hamstring: he was inactive Wk9 after two weeks of limited practice. His Wk10 status vs SF is uncertain: he could play, but practice reps are likely limited again.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/646516/george-pickens-inactive-in-week-9/"
+ },
+ "12487": {
+  "name": "Terrance Ferguson",
+  "manager": "Conrad",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "His IR practice window was open (ankle), but he pulled a hamstring (likely grade 1) in practice before Wk9. He must be activated by Nov 25 or revert to season-long IR. LAR's bye is Wk11.",
+  "confidence": "low",
+  "source": "https://clutchpoints.com/nfl/los-angeles-rams/rams-news-sean-mcvay-clears-the-air-on-terrance-fergusons-practice-injury"
+ },
+ "12519": {
+  "name": "Luther Burden III",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   11
+  ],
+  "reason": "Concussion late in the Wk9 SNF win over TB. CHI has its Wk10 bye, so he has extra time to clear the protocol for Wk11.",
+  "confidence": "medium",
+  "source": "https://www.thefantasyfootballers.com/news/646797/luther-burden-iii-concussed-in-sundays-win/"
+ },
+ "2133": {
+  "name": "Davante Adams",
+  "manager": "Conrad",
+  "weeks_out": [
+   10,
+   12
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   13,
+   14
+  ],
+  "reason": "Ruptured hamstring on Oct 18, followed by surgery and IR, with a 6-10 week timeline (expected on the shorter end). Wk13-14 is the earliest plausible return.",
+  "confidence": "medium",
+  "source": "https://www.cbssports.com/nfl/news/rams-davante-adams-to-miss-6-10-weeks-ruptured-hamstring/"
+ },
+ "9493": {
+  "name": "Puka Nacua",
+  "manager": "Conrad",
+  "weeks_out": [
+   10,
+   12,
+   13,
+   14
+  ],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   15
+  ],
+  "reason": "MCL and PCL sprains plus turf toe in Wk9. McVay expects him on IR, so he misses at least four games (Wk11 is the bye).",
+  "confidence": "high",
+  "source": "https://www.thescore.com/nfl/news/3650629/sms:"
+ },
+ "12711": {
+  "name": "Tyler Loop",
+  "manager": "Emma",
+  "weeks_out": [
+   10,
+   11,
+   12
+  ],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   14
+  ],
+  "reason": "On IR since Nov 3 (right groin), so he misses at least four games. Wk14 is the earliest return (Wk13 bye).",
+  "confidence": "high",
+  "source": "https://sports.yahoo.com/articles/ravens-place-kicker-tyler-loop-212948837.html"
+ },
+ "8154": {
+  "name": "Brian Robinson Jr.",
+  "manager": "Emma",
+  "weeks_out": [
+   10,
+   12,
+   13
+  ],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   14
+  ],
+  "reason": "Hamstring; placed on IR Nov 7 before Wk9 (4-game minimum, bye Wk11), so earliest return is Wk14; no return timeline reported.",
+  "confidence": "medium",
+  "source": "https://www.ajc.com/sports/2026/11/falcons-brian-robinson-jr-injured-reserve/"
+ },
+ "5859": {
+  "name": "A.J. Brown",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.4,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Degenerative knee flare-up, missed Wks 8-9; Vrabel says plan is to travel to Munich but unsure he can play Wk10 vs DET; IR not ruled out.",
+  "confidence": "medium",
+  "source": "https://www.boston.com/sports/new-england-patriots/2026/11/05/adam-schefter-a-j-brown-knee-injury-update-nfl-football-new-england-patriots/"
+ },
+ "8146": {
+  "name": "Garrett Wilson",
+  "manager": "Henry",
+  "weeks_out": [],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Concussion, missed Wk9; expected to return Wk10 vs BUF but must clear protocol.",
+  "confidence": "medium",
+  "source": "https://nbcsports.com/fantasy/football/news/nfl-week-10-injury-report-pats-backfield-in-flux-plus-gardner-minshew-michael-wilson-puka-nacua-injuries"
+ },
+ "12534": {
+  "name": "Kyle Monangai",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   11
+  ],
+  "reason": "Toe/thumb; sat Wk9, Rapoport says expected back Wk11 vs NO after Wk10 bye; first game back in 7 weeks.",
+  "confidence": "medium",
+  "source": "https://www.nbcsports.com/fantasy/football/player-news/2026-11-08/monangai-out-week-9-expected-back-after-the-bye"
+ },
+ "5850": {
+  "name": "Josh Jacobs",
+  "manager": "Lauren",
+  "weeks_out": [
+   10,
+   12
+  ],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   13
+  ],
+  "reason": "Fractured right ring finger in Wk9, surgery this week; reported 'max of 3 weeks' / out until at least Wk13; IR (4 games) not ruled out.",
+  "confidence": "medium",
+  "source": "https://www.packers.com/news/packers-rb-josh-jacobs-to-miss-time-due-to-surgery-on-broken-finger-nov-9-2026"
+ },
+ "10232": {
+  "name": "Michael Wilson",
+  "manager": "Noelle",
+  "weeks_out": [
+   10,
+   11,
+   12,
+   13,
+   15,
+   16,
+   17
+  ],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Neck fracture suffered Wk9; out for the season per AP/Cardinals.",
+  "confidence": "high",
+  "source": "https://arizonasports.com/nfl/arizona-cardinals/cardinals-michael-wilson-out-for-season-with-neck-injury"
+ },
+ "4046": {
+  "name": "Patrick Mahomes",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Throwing-elbow strain in Wk9 but finished game; MRI clean, Reid says day-to-day and likely to play Wk10 at ATL.",
+  "confidence": "medium",
+  "source": "https://www.thefantasyfootballers.com/news/646815/patrick-mahomes-receives-diagnosis-will-be-monitored/"
+ },
+ "4943": {
+  "name": "Sam Darnold",
+  "manager": "Noelle",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Quad/rib; Macdonald ruled him out Wk10 vs LV; next chance to return is Wk12 after Wk11 bye.",
+  "confidence": "medium",
+  "source": "https://www.nfl.com/news/sam-darnold-ruled-out-for-seahawks-week-10-game-vs-raiders-drew-lock-expected-to-start-again"
+ },
+ "8121": {
+  "name": "Romeo Doubs",
+  "manager": "Noelle",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.4,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Shoulder, IR since 10/19; earliest return Wk12 after bye but Vrabel has set no timeline.",
+  "confidence": "low",
+  "source": "https://www.boston.com/sports/new-england-patriots/2026/10/20/mike-vrabel-issues-concerning-update-about-romeo-doubs-shoulder-injury/"
+ },
+ "8142": {
+  "name": "Alec Pierce",
+  "manager": "Noelle",
+  "weeks_out": [
+   10
+  ],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   11,
+   12
+  ],
+  "reason": "Heel, on IR since Wk3; rehabbing to avoid surgery, Steichen says he won't practice this week; no return timeline.",
+  "confidence": "low",
+  "source": "https://nbcsports.com/fantasy/football/news/nfl-week-10-injury-report-pats-backfield-in-flux-plus-gardner-minshew-michael-wilson-puka-nacua-injuries"
+ },
+ "11624": {
+  "name": "Xavier Worthy",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.35,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Tweaked hamstring late in Wk9; Reid calls him day-to-day with no timeline; analysts fear multi-week absence.",
+  "confidence": "low",
+  "source": "https://atozsports.com/nfl/kansas-city-chiefs-news/chiefs-andy-reid-injury-updates-patrick-mahomes-xavier-worthy-jaylon-moore-monday/"
+ },
+ "11635": {
+  "name": "Ladd McConkey",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Back spasms in Wk9 warmups, did not play; Harbaugh calls him day-to-day with extra prep time before Wk10 MNF vs BAL.",
+  "confidence": "medium",
+  "source": "https://www.rotowire.com/football/headlines/ladd-mcconkey-injury-deemed-day-to-day-by-harbaugh-646859"
+ },
+ "3214": {
+  "name": "Hunter Henry",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Played through foot injury in Wk9; no Wk10 practice report found yet.",
+  "confidence": "low",
+  "source": "https://www.patriots.com/news/inactives-analysis-te-hunter-henry-wr-mack-hollins-active-cb-charles-woods-inactive-for-patriots-vs-packers-in-week-9"
+ },
+ "5872": {
+  "name": "Deebo Samuel Sr.",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   10
+  ],
+  "reason": "Hamstring, out since Wk5; reported on track to return to practice Wednesday, Wk10 status TBD.",
+  "confidence": "low",
+  "source": "https://www.cbssports.com/nfl/players/2139735/deebo-samuel/"
+ }
+}
