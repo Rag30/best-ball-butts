@@ -32,7 +32,8 @@ Sleeper API ──fetch.py──▶ data/raw/ (git)   ◀── GitHub Action, n
 # worker tests (the launcher assertion, tab trimming, refresh role):
 cd worker && npm test
 
-# page or worker code changed:
+# page or worker code changed: merge to main. .github/workflows/deploy.yml runs the
+# tests, builds and deploys. By hand (or Actions tab > Deploy Worker > Run workflow):
 python3 scripts/build.py && cd worker && npx wrangler@4 deploy
 
 # rebuild a completed season in KV from the git archive (rare):
