@@ -27,6 +27,8 @@ Chance of finishing last: the two teams that miss the playoffs meet in Week 15, 
 
 <paste toilet.md from brief_extras.py here, unchanged>
 
+![Toilet bowl odds by week](toilet_trend.svg)
+
 ![Points scored each week by each manager](weekly_points.svg)
 
 ## What changed since Week 1

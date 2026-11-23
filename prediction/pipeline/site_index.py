@@ -15,8 +15,8 @@ for d in sorted(RUNS.iterdir(), reverse=True):   # newest first; folders are YYY
     week = json.loads((d / "week.json").read_text()).get("start") if (d / "week.json").is_file() else None
     title = next((l[2:].strip() for l in brief.read_text().splitlines() if l.startswith("# ")), f"Brief {d.name}")
     pdfs = sorted(p.name for p in d.glob("*.pdf"))
-    chart = f"{d.name}/weekly_points.svg" if (d / "weekly_points.svg").is_file() else None
+    charts = [c for c in ("weekly_points.svg", "toilet_trend.svg") if (d / c).is_file()]   # the brief_extras.py charts
     editions.append({"run": d.name, "week": week, "title": title,
-                     "brief": f"{d.name}/brief.md", "pdf": f"{d.name}/{pdfs[-1]}" if pdfs else None, "chart": chart})
+                     "brief": f"{d.name}/brief.md", "pdf": f"{d.name}/{pdfs[-1]}" if pdfs else None, "charts": charts})
 (RUNS / "index.json").write_text(json.dumps({"editions": editions}, indent=1) + "\n")
 print(f"wrote {RUNS / 'index.json'}: {len(editions)} editions, latest {editions[0]['run'] if editions else 'none'}")

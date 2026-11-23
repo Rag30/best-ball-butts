@@ -218,7 +218,7 @@ test("GET /.rrr/manifest is public and names every tab the trim knows", async ()
 
 // GET /brief and /brief.pdf read prediction/runs/ from GitHub main; stub that fetch.
 const INDEX = { editions: [
-  { run: "2026-09-30", week: 4, title: "Week 4 outlook", brief: "2026-09-30/brief.md", pdf: "2026-09-30/Best Ball Butts 2026 - Week 4 brief.pdf", chart: "2026-09-30/weekly_points.svg" },
+  { run: "2026-09-30", week: 4, title: "Week 4 outlook", brief: "2026-09-30/brief.md", pdf: "2026-09-30/Best Ball Butts 2026 - Week 4 brief.pdf", charts: ["weekly_points.svg", "toilet_trend.svg"] },
   { run: "2026-09-24", week: 3, title: "Week 3 outlook", brief: "2026-09-24/brief.md", pdf: null },
 ] };
 async function withRepo(fn) {
@@ -285,15 +285,18 @@ test("GET /brief follows the launcher: needs the brief tab, refuses a bad assert
   });
 });
 
-test("GET /brief.chart serves the edition's weekly points SVG as a sandboxed image; no chart is 404", async () => {
+test("GET /brief.chart serves only the charts index.json lists for the edition, as a sandboxed SVG", async () => {
   await withRepo(async (asked) => {
     const b = await (await worker.fetch(req("/brief"), makeEnv())).json();
-    assert.equal(b.hasChart, true);
-    const r = await worker.fetch(req("/brief.chart?run=2026-09-30"), makeEnv());
+    assert.deepEqual(b.charts, ["weekly_points.svg", "toilet_trend.svg"]);
+    let r = await worker.fetch(req("/brief.chart?run=2026-09-30&f=toilet_trend.svg"), makeEnv());
     assert.equal(r.status, 200);
     assert.equal(r.headers.get("content-type"), "image/svg+xml");
     assert.match(r.headers.get("content-security-policy"), /sandbox/);
-    assert.ok(asked.some(u => u.endsWith("/2026-09-30/weekly_points.svg")));
+    assert.ok(asked.some(u => u.endsWith("/2026-09-30/toilet_trend.svg")));
+    r = await worker.fetch(req("/brief.chart?run=2026-09-30"), makeEnv());   // defaults to the points chart
+    assert.equal(r.status, 200);
+    assert.equal((await worker.fetch(req("/brief.chart?run=2026-09-30&f=../../README.md"), makeEnv())).status, 404);
     assert.equal((await worker.fetch(req("/brief.chart?run=2026-09-24"), makeEnv())).status, 404);
   });
 });

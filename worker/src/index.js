@@ -6,7 +6,7 @@
 //   cron              same as /refresh, once a night at 9 PM ET
 //   GET  /brief       the weekly prediction brief (markdown) + the list of editions, from GitHub main
 //   GET  /brief.pdf   that edition's 2-page PDF, from GitHub main
-//   GET  /brief.chart that edition's weekly points chart (SVG), from GitHub main
+//   GET  /brief.chart that edition's charts (?f=weekly_points.svg | toilet_trend.svg), from GitHub main
 //   GET  /.rrr/manifest  the tab list, for the launcher's Sharing page
 //
 // KV keys:  season:<yr>  computed season (frozen once league status is "complete")
@@ -265,8 +265,10 @@ async function serveBrief(url, pdf, chart) {
     if (!ed) return json({ error: editions.length ? "no such edition" : "no brief yet" }, 404);
     if (chart) {
       // Shown through <img>, where an SVG can't run script; the CSP sandbox also covers opening it directly.
-      if (!ed.chart) return json({ error: "no chart for this edition" }, 404);
-      const r = await fromRepo(ed.chart);
+      // Only a file name index.json lists for this edition, so ?f= can't reach any other path.
+      const f = url.searchParams.get("f") || "weekly_points.svg";
+      if (!(ed.charts || []).includes(f)) return json({ error: "no such chart for this edition" }, 404);
+      const r = await fromRepo(`${ed.run}/${f}`);
       return new Response(r.body, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": "no-store",
         "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox", "X-Content-Type-Options": "nosniff" } });
     }
@@ -277,7 +279,7 @@ async function serveBrief(url, pdf, chart) {
         "Content-Disposition": `inline; filename="${ed.pdf.split("/").pop().replace(/[^\w .-]/g, "")}"` } });
     }
     const markdown = await (await fromRepo(ed.brief)).text();
-    return json({ run: ed.run, week: ed.week, title: ed.title, hasPdf: !!ed.pdf, hasChart: !!ed.chart, markdown,
+    return json({ run: ed.run, week: ed.week, title: ed.title, hasPdf: !!ed.pdf, charts: ed.charts || [], markdown,
                   editions: editions.map(({ run, week, title }) => ({ run, week, title })) });
   } catch (e) {
     return json({ error: "brief unavailable", message: String(e.message || e) }, 502);

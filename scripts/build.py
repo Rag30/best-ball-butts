@@ -626,9 +626,12 @@ function mdToHtml(md, b) {
   for (let i = 0; i < lines.length;) {
     const l = lines[i];
     if (!l.trim()) { i++; continue; }
-    // The only image a brief carries: the edition's weekly points chart, served by GET /brief.chart.
-    const img = l.match(/^\\s*!\\[([^\\]]*)\\]\\(weekly_points\\.svg\\)\\s*$/);
-    if (img) { if (b && b.hasChart) out.push(`<img class="brief-chart" src="/brief.chart?run=${encodeURIComponent(b.run)}" alt="${esc(img[1])}">`); i++; continue; }
+    // The only images a brief carries: the edition's own charts (brief_extras.py), served by GET /brief.chart.
+    const img = l.match(/^\\s*!\\[([^\\]]*)\\]\\(([\\w-]+\\.svg)\\)\\s*$/);
+    if (img) {
+      if (b && (b.charts || []).includes(img[2])) out.push(`<img class="brief-chart" src="/brief.chart?run=${encodeURIComponent(b.run)}&f=${encodeURIComponent(img[2])}" alt="${esc(img[1])}">`);
+      i++; continue;
+    }
     const h = l.match(/^(#{1,3})\\s+(.*)$/);
     if (h) { out.push(`<h${h[1].length}>${mdInline(h[2])}</h${h[1].length}>`); i++; continue; }
     if (/^\\s*\\|/.test(l) && i + 1 < lines.length && /^\\s*\\|?\\s*:?-{2,}/.test(lines[i + 1])) {
