@@ -218,7 +218,7 @@ test("GET /.rrr/manifest is public and names every tab the trim knows", async ()
 
 // GET /brief and /brief.pdf read prediction/runs/ from GitHub main; stub that fetch.
 const INDEX = { editions: [
-  { run: "2026-09-30", week: 4, title: "Week 4 outlook", brief: "2026-09-30/brief.md", pdf: "2026-09-30/Best Ball Butts 2026 - Week 4 brief.pdf" },
+  { run: "2026-09-30", week: 4, title: "Week 4 outlook", brief: "2026-09-30/brief.md", pdf: "2026-09-30/Best Ball Butts 2026 - Week 4 brief.pdf", chart: "2026-09-30/weekly_points.svg" },
   { run: "2026-09-24", week: 3, title: "Week 3 outlook", brief: "2026-09-24/brief.md", pdf: null },
 ] };
 async function withRepo(fn) {
@@ -230,6 +230,7 @@ async function withRepo(fn) {
     if (path === "index.json") return new Response(JSON.stringify(INDEX));
     if (path.endsWith("brief.md")) return new Response(`# brief for ${path}`);
     if (path.endsWith(".pdf")) return new Response("%PDF-1.4 stub");
+    if (path.endsWith(".svg")) return new Response("<svg xmlns=\"http://www.w3.org/2000/svg\"/>");
     return new Response("nope", { status: 404 });
   };
   try { return await fn(asked); } finally { globalThis.fetch = realFetch; }
@@ -281,5 +282,18 @@ test("GET /brief follows the launcher: needs the brief tab, refuses a bad assert
     assert.equal(asked.length, 0, "a refused request must not reach GitHub");
     assert.equal((await worker.fetch(req("/brief", signed(assertion({ tabs: ["brief"] }))), makeEnv())).status, 200);
     assert.equal((await worker.fetch(req("/brief", signed(assertion({}))), makeEnv())).status, 200);
+  });
+});
+
+test("GET /brief.chart serves the edition's weekly points SVG as a sandboxed image; no chart is 404", async () => {
+  await withRepo(async (asked) => {
+    const b = await (await worker.fetch(req("/brief"), makeEnv())).json();
+    assert.equal(b.hasChart, true);
+    const r = await worker.fetch(req("/brief.chart?run=2026-09-30"), makeEnv());
+    assert.equal(r.status, 200);
+    assert.equal(r.headers.get("content-type"), "image/svg+xml");
+    assert.match(r.headers.get("content-security-policy"), /sandbox/);
+    assert.ok(asked.some(u => u.endsWith("/2026-09-30/weekly_points.svg")));
+    assert.equal((await worker.fetch(req("/brief.chart?run=2026-09-24"), makeEnv())).status, 404);
   });
 });

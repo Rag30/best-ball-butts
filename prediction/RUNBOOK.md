@@ -48,10 +48,15 @@ It runs from the MacBook, or from any Claude cloud session whose environment has
    - Blend: `python3 "$P/pipeline/src_blend_build.py"`
 4. **Simulate.** Run `bash "$P/pipeline/run_engine.sh" <e>` for each of `sleeper_kfix espn market production blend blend_inj`. They can run in parallel with `&` and `wait`. Each engine writes both locked and `_nolock` results.
 5. **Aggregate.** Run `python3 "$P/pipeline/src_agg.py"`. It writes `agg.json` and prints the consensus next to the previous edition.
+   - Then run `python3 "$P/pipeline/brief_extras.py"`. It writes:
+     - `toilet.md`: the toilet bowl table. Each manager's chance of finishing last (8th), with the last three editions and the Δ. In this league the two non-playoff teams play one Week 15 game and its loser is last; `sim4.py` already plays that game, so this is the consensus `finish["8"]` from `agg.json`. "7–8 game %" is the chance of missing the playoffs, i.e. of being in that game.
+     - `weekly_points.svg`: one dotted line per manager with the name written along it, showing the best-ball points scored in each finished week (from `m26_w<w>.json`).
 6. **Write `brief.md`**, following the previous run's `brief.md` (template: `P/pipeline/brief_template.md`). Sections:
    - Title with the upcoming week, and an "As of" line
    - TL;DR: 3 bullets
    - Standings odds: record, PF, title %, range, playoff %, bye %, previous edition, Δ
+   - Toilet bowl watch: one sentence on how last place is decided, then paste `toilet.md` unchanged. Name the favourite to finish last and the biggest mover in the TL;DR or What changed.
+   - The weekly points chart: the line `![Points scored each week by each manager](weekly_points.svg)` on its own, right after the toilet bowl table and with no heading of its own (a heading at a page bottom gets stranded from the chart). The PDF and the site both show it.
    - What changed since last week: the latest week's results, big injuries, waiver moves and hot players
    - Team by team: one neutral line for each of the 8 managers
    - Data checks: the D/ST check, whether the data came through the MCP, and caveats
@@ -71,7 +76,7 @@ It runs from the MacBook, or from any Claude cloud session whose environment has
    - If a file with the same name already exists, upload anyway. Never delete or share anything in Drive.
 9. **Commit the outputs and publish to the site.**
    - Run `python3 "$P/pipeline/site_index.py"`. It rewrites `P/runs/index.json`, the list of editions the site's **Weekly Analysis** tab shows, one subtab per week (https://bestballbutts.rrr-projects.com).
-   - Commit the run's small outputs, which `runs/.gitignore` allows: `agg.json`, `injury_adjustments.json`, `brief.md`, `week.json`, `dst_check.json` and the PDF, plus `runs/index.json`.
+   - Commit the run's small outputs, which `runs/.gitignore` allows: `agg.json`, `injury_adjustments.json`, `brief.md`, `week.json`, `dst_check.json`, `toilet.md`, `weekly_points.svg` and the PDF, plus `runs/index.json`. The site shows the chart from `weekly_points.svg`, so it must be committed.
    - The site's Worker reads `runs/index.json`, `brief.md` and the PDF from `main` on GitHub, so the push is the publish step. There is no deploy and no gateway tool involved. The new edition shows on the site within about 5 minutes of the push.
    - Message: `prediction: Week <start> brief`.
    - Push to `main` of `Rag30/best-ball-butts`, the same way the data Action commits its snapshots. Next week's run needs this `agg.json`.

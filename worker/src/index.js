@@ -6,6 +6,7 @@
 //   cron              same as /refresh, once a night at 9 PM ET
 //   GET  /brief       the weekly prediction brief (markdown) + the list of editions, from GitHub main
 //   GET  /brief.pdf   that edition's 2-page PDF, from GitHub main
+//   GET  /brief.chart that edition's weekly points chart (SVG), from GitHub main
 //   GET  /.rrr/manifest  the tab list, for the launcher's Sharing page
 //
 // KV keys:  season:<yr>  computed season (frozen once league status is "complete")
@@ -258,10 +259,17 @@ async function pickEdition(url) {
   const ed = want ? editions.find(e => e.run === want) : editions[0];
   return { ed, editions };
 }
-async function serveBrief(url, pdf) {
+async function serveBrief(url, pdf, chart) {
   try {
     const { ed, editions } = await pickEdition(url);
     if (!ed) return json({ error: editions.length ? "no such edition" : "no brief yet" }, 404);
+    if (chart) {
+      // Shown through <img>, where an SVG can't run script; the CSP sandbox also covers opening it directly.
+      if (!ed.chart) return json({ error: "no chart for this edition" }, 404);
+      const r = await fromRepo(ed.chart);
+      return new Response(r.body, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": "no-store",
+        "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox", "X-Content-Type-Options": "nosniff" } });
+    }
     if (pdf) {
       if (!ed.pdf) return json({ error: "no PDF for this edition" }, 404);
       const r = await fromRepo(ed.pdf);
@@ -269,7 +277,7 @@ async function serveBrief(url, pdf) {
         "Content-Disposition": `inline; filename="${ed.pdf.split("/").pop().replace(/[^\w .-]/g, "")}"` } });
     }
     const markdown = await (await fromRepo(ed.brief)).text();
-    return json({ run: ed.run, week: ed.week, title: ed.title, hasPdf: !!ed.pdf, markdown,
+    return json({ run: ed.run, week: ed.week, title: ed.title, hasPdf: !!ed.pdf, hasChart: !!ed.chart, markdown,
                   editions: editions.map(({ run, week, title }) => ({ run, week, title })) });
   } catch (e) {
     return json({ error: "brief unavailable", message: String(e.message || e) }, 502);
@@ -280,11 +288,11 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/.rrr/manifest") return json(MANIFEST);
-    if (url.pathname === "/brief" || url.pathname === "/brief.pdf") {
+    if (url.pathname === "/brief" || url.pathname === "/brief.pdf" || url.pathname === "/brief.chart") {
       const { who, refused } = await whoIs(request, env);
       if (refused) return json({ error: "bad assertion" }, 403);
       if (who && who.tabs !== null && !who.tabs.includes("brief")) return json({ error: "not shared" }, 403);
-      return serveBrief(url, url.pathname === "/brief.pdf");
+      return serveBrief(url, url.pathname === "/brief.pdf", url.pathname === "/brief.chart");
     }
     if (url.pathname === "/data") {
       const { who, refused } = await whoIs(request, env);

@@ -211,6 +211,7 @@ table.grid-table thead th:not(:first-child) { text-align: center; }
 .brief p { margin: 6px 0; } .brief ul { margin: 6px 0; padding-left: 20px; } .brief li { margin: 4px 0; }
 .brief code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: var(--surface-2); padding: 1px 4px; border-radius: 4px; }
 .brief .table-scroll { margin: 10px 0 14px; box-shadow: none; }
+.brief .brief-chart { display: block; width: 100%; max-width: 760px; height: auto; margin: 10px 0 14px; border-radius: 8px; background: #fff; }
 
 .foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--ink-dim); font-size: 12px;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
@@ -619,12 +620,15 @@ function mdInline(t) {
     .replace(/(^|[^*\\w])\\*([^*\\s][^*]*)\\*(?![*\\w])/g, '$1<i>$2</i>')
     .replace(/\\[([^\\]]+)\\]\\((https?:\\/\\/[^\\s)]+)\\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 }
-function mdToHtml(md) {
+function mdToHtml(md, b) {
   const lines = md.replace(/\\r/g, '').split('\\n'), out = [];
   const cells = l => l.trim().replace(/^\\|/, '').replace(/\\|$/, '').split('|').map(c => c.trim());
   for (let i = 0; i < lines.length;) {
     const l = lines[i];
     if (!l.trim()) { i++; continue; }
+    // The only image a brief carries: the edition's weekly points chart, served by GET /brief.chart.
+    const img = l.match(/^\\s*!\\[([^\\]]*)\\]\\(weekly_points\\.svg\\)\\s*$/);
+    if (img) { if (b && b.hasChart) out.push(`<img class="brief-chart" src="/brief.chart?run=${encodeURIComponent(b.run)}" alt="${esc(img[1])}">`); i++; continue; }
     const h = l.match(/^(#{1,3})\\s+(.*)$/);
     if (h) { out.push(`<h${h[1].length}>${mdInline(h[2])}</h${h[1].length}>`); i++; continue; }
     if (/^\\s*\\|/.test(l) && i + 1 < lines.length && /^\\s*\\|?\\s*:?-{2,}/.test(lines[i + 1])) {
@@ -669,7 +673,7 @@ function showBrief(b) {
   const body = document.getElementById('briefBody');
   if (!body) return;
   body.innerHTML = `${b.hasPdf ? `<div class="brief-head"><a href="/brief.pdf?run=${encodeURIComponent(b.run)}" target="_blank" rel="noopener">PDF</a><span style="color:var(--ink-dim);font-size:12px">${esc(b.run)}</span></div>` : ''}
-    <div class="brief">${mdToHtml(b.markdown || '')}</div>`;
+    <div class="brief">${mdToHtml(b.markdown || '', b)}</div>`;
 }
 async function loadBrief() {
   const el = document.getElementById('season-brief');
