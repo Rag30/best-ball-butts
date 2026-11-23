@@ -4,24 +4,24 @@ The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md
 
 | | |
 |---|---|
-| Schedule | `2 4 * * 3`, Wednesdays 04:02 UTC (Tuesday evening US time, after Monday Night Football) |
-| Model | Opus 5.5 |
-| Where it runs | the "Weekly routine" thread in the NFL fantasy Claude project (trigger `trig_01B1zqNCwjzq3T1nGP889TGk`) |
+| Schedule | `CRON_TZ=America/New_York 2 4 * * 3`, Wednesdays 4:02 AM Eastern, after that morning's waivers clear |
+| Model | the project's default model (Opus 5.5 is the intent; project-level routines can't set their own) |
+| Where it runs | a project-level routine in the NFL fantasy Claude project: each run starts a new project thread (trigger `trig_01KCPyLFniSxyp8q3qvb5pM5`, created 2026-11-23). Model and connectors come from the project settings |
 | Connector | Routines MCP Gateway (the gateway's `routines` tier) |
 | Prompt | [prompt.md](prompt.md), identical to the live routine's prompt |
 | Config | [routine.json](routine.json) |
 
-This folder is the source of truth for the routine. The live routine is the trigger on claude.ai, so editing these files does not change it. After you change the prompt here, apply it to the trigger (for example with `update_trigger` from the Weekly routine thread) so the two stay in sync.
+This folder is the source of truth for the routine. The live routine is the trigger on claude.ai, so editing these files does not change it. After you change the prompt here, recreate the trigger (see below) so the two stay in sync.
 
-## Keep the thread open
+## Project-level routine
 
-The routine is tied to the Weekly routine thread's session. If that thread is resolved, cleaned up, or its session is deleted, the routine is deleted with it. That's what happened to the copy created on 2026-09-27. Don't close or delete that thread.
+Since 2026-11-23 the routine is project-level: each run starts a fresh thread in the NFL fantasy project, so it no longer depends on any one thread staying open. Earlier copies were bound to a single thread's session and vanished when that session was deleted.
 
-If the routine disappears anyway, recreate it from that thread (or a new project thread) with `create_trigger`, using the cron above and `prompt.md` as the prompt. A fresh-session routine avoids the problem entirely, but it can't be created from inside a private Claude project. It has to be created on claude.ai/code/routines or from a regular Claude Code session.
+A project-level routine can't be edited in place with `update_trigger`. To change the prompt or schedule, delete it and create it again from a project thread with `create_trigger` (`create_new_session_on_fire: true`), using the cron above and `prompt.md`. Only switching it off works in place, and switching it back on has to be done on claude.ai.
 
 ## Dependencies
 
-- **Routines MCP Gateway connector** (the gateway at `mcp.rrr-projects.com`, `routines` tier, shared with the FleetManager routines). A thread-bound routine has no connector list of its own and inherits every connector on the thread's session, including the admin-tier MCP Gateway, so the prompt is what keeps it on this tier. If a tool is missing, tick it in the `routines` tier rather than pointing the routine at admin:
+- **Routines MCP Gateway connector** (the gateway at `mcp.rrr-projects.com`, `routines` tier, shared with the FleetManager routines). Runs get the project's connectors, including the admin-tier MCP Gateway, so the prompt is what keeps it on this tier. If a tool is missing, tick it in the `routines` tier rather than pointing the routine at admin:
   - `sleeper-draft` provides `export_league_snapshot`, and all Sleeper data comes through it.
   - `gateway` provides the `/files` lane (`upload_direct_lane`, `delete_file`), which moves the snapshot and the PDF in and out of the session; `upload_base64_fallback` is the runbook's fallback when the lane can't be reached.
   - `gws-personal` provides `drive_files_create` for the "Best Ball Butts Weekly" folder.
