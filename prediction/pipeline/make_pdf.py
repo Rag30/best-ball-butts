@@ -5,7 +5,8 @@ src, name = sys.argv[1], sys.argv[2]
 css = """@page{size:Letter;margin:12mm 13mm}body{font:9.3pt/1.38 Helvetica,Arial,sans-serif;color:#1a201c}
 h1{font-size:16pt;margin:0 0 3pt;color:#1d6b47}h2{font-size:11.5pt;margin:9pt 0 3pt;border-bottom:1.5px solid #1d6b47;padding-bottom:1pt}
 p{margin:3pt 0}ul{margin:2pt 0;padding-left:15pt}li{margin:1.5pt 0}table{border-collapse:collapse;width:100%;font-size:8.4pt;margin:3pt 0}
-th,td{border:1px solid #c9d1cb;padding:1.5pt 4pt}th{background:#e3efe7}tr:nth-child(even) td{background:#f5f7f4}"""
+th,td{border:1px solid #c9d1cb;padding:1.5pt 4pt}th{background:#e3efe7}tr:nth-child(even) td{background:#f5f7f4}
+img{break-inside:avoid;display:block;width:100%;height:auto;max-height:2.45in;object-fit:contain;margin:2pt 0}"""
 h = markdown.markdown(open(src).read(), extensions=["tables", "sane_lists"])
 open("brief.html", "w").write(f"<!doctype html><html><head><meta charset='utf-8'><title>{name}</title><style>{css}</style></head><body>{h}</body></html>")
 import shutil

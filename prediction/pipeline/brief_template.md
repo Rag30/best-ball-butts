@@ -21,6 +21,16 @@
 | 7 | Conrad | 0-2 | 301.9 | 6.6 | 3–10 | 58.2 | 7.0 | 7.6 | −1.0 |
 | 8 | Avery | 0-2 | 336.6 | 1.6 | 1–3 | 30.0 | 1.7 | 1.6 | 0.0 |
 
+## Toilet bowl watch
+
+Chance of finishing last: the two teams that miss the playoffs meet in Week 15, and the loser finishes 8th. "7–8 game %" is the chance of being in that game.
+
+<paste toilet.md from brief_extras.py here, unchanged>
+
+![Toilet bowl odds by week](toilet_trend.svg)
+
+![Points scored each week by each manager](weekly_points.svg)
+
 ## What changed since Week 1
 
 - **Week 2:** Noelle beat Henry (198.9–156.6), Lauren beat Emma (186.9–158.2), Raghav beat Conrad (166.9–141.3) and Ben beat Avery (214.8–179.0). The 2-0/0-2 records are now worth about ±2.5–3 points of title odds.
