@@ -4,18 +4,18 @@ The Claude Code routine (a scheduled trigger on claude.ai) that runs [RUNBOOK.md
 
 | | |
 |---|---|
-| Schedule | `2 4 * * 3`, Wednesdays 04:02 UTC (Tuesday evening US time, after Monday Night Football) |
+| Schedule | `CRON_TZ=America/New_York 2 4 * * 3`, Wednesdays 4:02 AM Eastern, after that morning's waivers clear |
 | Model | Opus 5.5 |
-| Where it runs | the "Weekly routine" thread in the NFL fantasy Claude project (trigger `trig_01B1zqNCwjzq3T1nGP889TGk`) |
+| Where it runs | the "Run weekly brief routine" thread in the NFL fantasy Claude project (trigger `trig_019VVsgGCmXMSMb3Q7bWrbAV`, created 2026-11-23; replaced `trig_01B1zqNCwjzq3T1nGP889TGk`) |
 | Connector | Routines MCP Gateway (the gateway's `routines` tier) |
 | Prompt | [prompt.md](prompt.md), identical to the live routine's prompt |
 | Config | [routine.json](routine.json) |
 
-This folder is the source of truth for the routine. The live routine is the trigger on claude.ai, so editing these files does not change it. After you change the prompt here, apply it to the trigger (for example with `update_trigger` from the Weekly routine thread) so the two stay in sync.
+This folder is the source of truth for the routine. The live routine is the trigger on claude.ai, so editing these files does not change it. After you change the prompt here, apply it to the trigger (for example with `update_trigger` from the routine's thread) so the two stay in sync.
 
 ## Keep the thread open
 
-The routine is tied to the Weekly routine thread's session. If that thread is resolved, cleaned up, or its session is deleted, the routine is deleted with it. That's what happened to the copy created on 2026-09-27. Don't close or delete that thread.
+The routine is tied to its thread's session ("Run weekly brief routine"). If that thread is resolved, cleaned up, or its session is deleted, the routine is deleted with it. That's what happened to the copy created on 2026-09-27. Don't close or delete that thread.
 
 If the routine disappears anyway, recreate it from that thread (or a new project thread) with `create_trigger`, using the cron above and `prompt.md` as the prompt. A fresh-session routine avoids the problem entirely, but it can't be created from inside a private Claude project. It has to be created on claude.ai/code/routines or from a regular Claude Code session.
 

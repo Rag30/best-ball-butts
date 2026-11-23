@@ -1,9 +1,9 @@
 {
   "name": "Best Ball Butts weekly brief",
-  "cron_expression": "2 4 * * 3",
-  "timezone": "UTC",
+  "cron_expression": "CRON_TZ=America/New_York 2 4 * * 3",
+  "timezone": "America/New_York",
   "model": "claude-opus-5-5",
-  "session": "fires into the NFL fantasy project thread 'Weekly routine' (trigger trig_01B1zqNCwjzq3T1nGP889TGk)",
+  "session": "fires into the NFL fantasy project thread 'Run weekly brief routine' (trigger trig_019VVsgGCmXMSMb3Q7bWrbAV, created 2026-11-23)",
   "repository": "Rag30/best-ball-butts",
   "prompt_file": "prompt.md",
   "mcp_connections": [
