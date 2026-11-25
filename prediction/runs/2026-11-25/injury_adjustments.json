@@ -1,0 +1,248 @@
+{
+ "12474": {
+  "name": "Woody Marks",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Concussion in Wk10; stayed in protocol and was ruled out for Wk11. One preview gives him a chance to return Wk12; not cleared yet.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/648504/woody-marks-sidelined-for-week-11/"
+ },
+ "5859": {
+  "name": "A.J. Brown",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Hamstring injury in Wk10 in Munich, then NE's Wk11 bye. Sleeper lists him Doubtful for Wk12 vs LAC.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/648037/aj-brown-limping-following-loss-sunday/"
+ },
+ "11655": {
+  "name": "Tyrone Tracy Jr.",
+  "manager": "Ben",
+  "weeks_out": [
+   12
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   13
+  ],
+  "reason": "On IR (hamstring) since Oct 28, so Wk13 vs SF is the earliest return. No practice-window news was found.",
+  "confidence": "high",
+  "source": "https://abc7ny.com/post/giants-place-rb-tyrone-tracy-jr-ir-hamstring-injury/19986229/"
+ },
+ "12489": {
+  "name": "RJ Harvey",
+  "manager": "Ben",
+  "weeks_out": [
+   12
+  ],
+  "multiplier": 0.8,
+  "multiplier_weeks": [
+   13
+  ],
+  "reason": "On IR (knee) since Oct 31, so Wk13 is the earliest return. No newer update was found.",
+  "confidence": "medium",
+  "source": "https://www.denverbroncos.com/news/broncos-promote-s-taylor-rapp-to-active-roster-place-rb-rj-harvey-on-injured-reserve"
+ },
+ "2133": {
+  "name": "Davante Adams",
+  "manager": "Conrad",
+  "weeks_out": [
+   12
+  ],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   13,
+   14
+  ],
+  "reason": "Ruptured hamstring with surgery on Oct 18 and a 6-10 week timeline. He is on IR, and no newer update was found.",
+  "confidence": "medium",
+  "source": "https://www.cbssports.com/nfl/news/rams-davante-adams-to-miss-6-10-weeks-ruptured-hamstring/"
+ },
+ "8151": {
+  "name": "Kenneth Walker III",
+  "manager": "Emma",
+  "weeks_out": [],
+  "multiplier": 0.4,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Groin; missed Wk10 and Wk11 and was not practicing; KC plays again on Thanksgiving, a short week.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/648678/kenneth-walker-iii-misses-thursdays-practice/"
+ },
+ "8154": {
+  "name": "Brian Robinson Jr.",
+  "manager": "Emma",
+  "weeks_out": [
+   12,
+   13
+  ],
+  "multiplier": 0.7,
+  "multiplier_weeks": [
+   14
+  ],
+  "reason": "Hamstring; on IR since Nov 7 (pre-Wk9) after a practice setback. The 4-game minimum (Wk9,10,12,13 with the Wk11 bye) makes Wk14 his earliest return. No newer update.",
+  "confidence": "medium",
+  "source": "https://www.ajc.com/sports/2026/11/falcons-brian-robinson-jr-injured-reserve/"
+ },
+ "11564": {
+  "name": "Drake Maye",
+  "manager": "Henry",
+  "weeks_out": [
+   12,
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "multiplier": 1.0,
+  "multiplier_weeks": [],
+  "reason": "Right ankle injury Wk10 in Munich; Schefter/Rapoport report a fracture that could end his season, AP says out indefinitely, and Vrabel doesn't expect him back after the Wk11 bye. Surgery decision is pending.",
+  "confidence": "medium",
+  "source": "https://www.boston25news.com/news/local/vrabel-maye-unlikely-play-coming-out-bye-week-qb-en-route-back-foxborough/DRW7DEXUHJC3NL5W453YJK5DCI/"
+ },
+ "13276": {
+  "name": "Omar Cooper Jr.",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.4,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Re-aggravated his right ankle in Wk10 and missed Wk11; still Questionable. NYJ bye is Wk13.",
+  "confidence": "low",
+  "source": "https://www.thefantasyfootballers.com/news/648137/omar-cooper-jr-headed-for-imaging-on-ankle/"
+ },
+ "5850": {
+  "name": "Josh Jacobs",
+  "manager": "Lauren",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Ring-finger surgery ~Nov 13 with a 2-3 week timeline; Rapoport sees a realistic chance he returns Wk12 after GB's bye. Questionable.",
+  "confidence": "medium",
+  "source": "https://www.thefantasyfootballers.com/news/648321/josh-jacobs-could-be-back-for-week-12/"
+ },
+ "4943": {
+  "name": "Sam Darnold",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.85,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Quad/ribs; missed Wks 9-10, then the Wk11 bye. Practiced Nov 20 and Macdonald is 'really optimistic' he starts Wk12.",
+  "confidence": "medium",
+  "source": "https://www.fox13seattle.com/news/seahawks-sam-darnold"
+ },
+ "8121": {
+  "name": "Romeo Doubs",
+  "manager": "Noelle",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Shoulder; on IR since Oct 19 and eligible to return Wk12 after NE's bye. No activation confirmed; QB Maye is out.",
+  "confidence": "low",
+  "source": "https://clutchpoints.com/nfl/new-england-patriots/patriots-news-2-small-bits-positive-injury-vibes-amid-drake-maye-disaster"
+ },
+ "8142": {
+  "name": "Alec Pierce",
+  "manager": "Noelle",
+  "weeks_out": [
+   12
+  ],
+  "multiplier": 0.3,
+  "multiplier_weeks": [
+   14,
+   15
+  ],
+  "reason": "Heel; on IR since Sept and rehabbing without surgery. His 21-day practice window has not opened per the latest reports (Steichen, early Nov), and there is no timetable.",
+  "confidence": "low",
+  "source": "https://www.4for4.com/node/182178"
+ },
+ "11604": {
+  "name": "Brock Bowers",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.65,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Ankle/quad from Wk10; did not practice early in Wk11 week and did not play Wk11. Day-to-day, still Questionable; LV bye is Wk13.",
+  "confidence": "low",
+  "source": "https://www.fanduel.com/research/nfl/player-news/injuries/brock-bowers-did-not-practice-ahead-of-week-11-against-broncos-november-22-2026"
+ },
+ "10236": {
+  "name": "Dalton Kincaid",
+  "manager": "Avery",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Thumb/ankle; missed practice the week of Wk11 and did not play. Still Questionable.",
+  "confidence": "low",
+  "source": "https://www.rotoballer.com/?p=1998234"
+ },
+ "13346": {
+  "name": "Denzel Boston",
+  "manager": "Ben",
+  "weeks_out": [],
+  "multiplier": 0.75,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Toe; Questionable coming out of CLE's Wk11 bye. No practice news found.",
+  "confidence": "low",
+  "source": "Sleeper status in the Nov 25 MCP snapshot; no newer news found"
+ },
+ "12490": {
+  "name": "Bhayshul Tuten",
+  "manager": "Conrad",
+  "weeks_out": [],
+  "multiplier": 0.9,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Questionable (undisclosed) but played Wk11 (8.3 pts).",
+  "confidence": "low",
+  "source": "Sleeper status in the Nov 25 MCP snapshot; no newer news found"
+ },
+ "7002": {
+  "name": "Juwan Johnson",
+  "manager": "Emma",
+  "weeks_out": [],
+  "multiplier": 0.6,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Hamstring; played Wk11 but scored 0 and is listed Questionable. Reports conflict on severity.",
+  "confidence": "low",
+  "source": "https://www.rotoballer.com/?p=1997964"
+ },
+ "6806": {
+  "name": "J.K. Dobbins",
+  "manager": "Raghav",
+  "weeks_out": [],
+  "multiplier": 0.5,
+  "multiplier_weeks": [
+   12
+  ],
+  "reason": "Listed Out (personal) and scored 0 in Wk11. No public detail on the absence.",
+  "confidence": "low",
+  "source": "Sleeper status in the Nov 25 MCP snapshot; no newer news found"
+ }
+}
