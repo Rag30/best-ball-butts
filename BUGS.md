@@ -32,7 +32,7 @@ This repo is public: no secrets, tokens, home network details or personal data i
 
 ## 2026-09-23 · Prediction: run folder date
 - **Symptom:** A same-day cloud run could overwrite the Week 3 edition.
-- **Real cause:** The run folder was named by UTC date; an evening Eastern/Pacific run lands on the next UTC day, so two runs could pick different or the same folder unexpectedly.
+- **Real cause:** The run folder was named by UTC date, so the Tuesday-evening Week 3 edition landed under Wednesday's date, the same folder a later cloud run that day would write into.
 - **Fix:** Editions are filed under the Pacific date. (#1, commit a89d34c)
 
 ## 2026-09-04 · Worker: KV writes
